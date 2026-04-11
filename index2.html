@@ -1,0 +1,229 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+  .gta-root { background:#0a0a0f;min-height:100vh;padding:0;font-family:'Rajdhani',sans-serif;color:#e8e0cc;position:relative;overflow:hidden; }
+  .scan-lines { position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px); }
+  .card-wrap { position:relative;z-index:2;max-width:720px;margin:0 auto;padding:24px 20px 40px; }
+  .top-bar { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
+  .top-bar-label { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;text-transform:uppercase; }
+  .wanted-row { display:flex;gap:5px;align-items:center; }
+  .star { width:18px;height:18px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:background 0.3s; }
+  .star.on { background:#e8b84b; }
+  .star.off { background:#2a2a35; }
+  .hero { display:grid;grid-template-columns:160px 1fr;gap:24px;margin-bottom:24px;align-items:start; }
+  .portrait-wrap { position:relative; }
+  .portrait { width:160px;height:200px;border:2px solid #c8a84b;display:block;background:#1a1a24;position:relative;overflow:hidden; }
+  .portrait img { width:100%;height:100%;object-fit:cover;display:block; }
+  .portrait-corner { position:absolute;width:12px;height:12px;border-color:#c8a84b;border-style:solid; }
+  .portrait-corner.tl { top:-4px;left:-4px;border-width:2px 0 0 2px; }
+  .portrait-corner.tr { top:-4px;right:-4px;border-width:2px 2px 0 0; }
+  .portrait-corner.bl { bottom:-4px;left:-4px;border-width:0 0 2px 2px; }
+  .portrait-corner.br { bottom:-4px;right:-4px;border-width:0 2px 2px 0; }
+  .mp-name { font-size:32px;font-weight:700;line-height:1;color:#f0e8cc;letter-spacing:1px;margin-bottom:4px; }
+  .mp-sub { font-family:'Share Tech Mono',monospace;font-size:12px;color:#8a8070;letter-spacing:2px;margin-bottom:16px; }
+  .tag-row { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px; }
+  .tag { font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border:1px solid;border-radius:2px; }
+  .tag-orange { color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08); }
+  .tag-blue { color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08); }
+  .tag-green { color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08); }
+  .tag-red { color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08); }
+  .stats-block { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px; }
+  .stat-row { display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(200,168,75,0.12); }
+  .stat-icon { font-size:16px;width:22px;text-align:center;flex-shrink:0; }
+  .stat-label { font-family:'Share Tech Mono',monospace;font-size:10px;color:#6a6258;letter-spacing:1px;flex:1; }
+  .stat-val { font-size:15px;font-weight:600;color:#e8e0cc;text-align:right; }
+  .stat-val.red { color:#e85050; }
+  .stat-val.gold { color:#c8a84b; }
+  .stat-val.green { color:#5ec97a; }
+  .bar-section { margin-bottom:24px; }
+  .bar-row { margin-bottom:12px; }
+  .bar-label-row { display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px; }
+  .bar-label { font-size:13px;color:#a09080;font-weight:500;letter-spacing:0.5px; }
+  .bar-pct { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b; }
+  .bar-track { height:6px;background:#1e1e2a;border-radius:1px;overflow:hidden; }
+  .bar-fill { height:100%;border-radius:1px;transition:width 1.2s cubic-bezier(0.23,1,0.32,1); }
+  .bar-fill.gold { background:#c8a84b; }
+  .bar-fill.red { background:#c84b4b; }
+  .bar-fill.blue { background:#4b8bc8; }
+  .bar-fill.green { background:#5ec97a; }
+  .timeline-section { margin-bottom:24px; }
+  .section-title { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;margin-bottom:14px;display:flex;align-items:center;gap:10px; }
+  .section-title::after { content:'';flex:1;height:1px;background:rgba(200,168,75,0.25); }
+  .timeline { position:relative;padding-left:20px; }
+  .timeline::before { content:'';position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:rgba(200,168,75,0.2); }
+  .tl-item { position:relative;margin-bottom:14px; }
+  .tl-dot { position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;border:1.5px solid #c8a84b;background:#0a0a0f; }
+  .tl-dot.filled { background:#c8a84b; }
+  .tl-year { font-family:'Share Tech Mono',monospace;font-size:10px;color:#c8a84b;margin-bottom:2px; }
+  .tl-text { font-size:14px;color:#c8c0b0;font-weight:500; }
+  .tl-party { font-size:12px;color:#6a6258;margin-top:1px; }
+  .cases-section { margin-bottom:24px; }
+  .case-item { display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(232,80,80,0.2);background:rgba(232,80,80,0.04);border-radius:3px; }
+  .case-num { font-family:'Share Tech Mono',monospace;font-size:10px;color:#e85050;padding:2px 6px;border:1px solid rgba(232,80,80,0.4);border-radius:2px;flex-shrink:0;margin-top:2px; }
+  .case-text { font-size:13px;color:#c0b8a8;line-height:1.4; }
+  .network-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px; }
+  .person-chip { padding:10px;border:1px solid rgba(200,168,75,0.15);background:rgba(200,168,75,0.03);border-radius:3px;text-align:center; }
+  .person-chip-name { font-size:13px;font-weight:600;color:#d8d0b8;margin-bottom:2px; }
+  .person-chip-rel { font-family:'Share Tech Mono',monospace;font-size:10px;color:#7a7068; }
+  .bottom-bar { display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(200,168,75,0.15); }
+  .affidavit-link { font-family:'Share Tech Mono',monospace;font-size:10px;color:#4ea3e0;letter-spacing:1px;cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(78,163,224,0.3); }
+  .adr-badge { font-family:'Share Tech Mono',monospace;font-size:10px;color:#5ec97a;letter-spacing:2px; }
+  .selector-bar { display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap; }
+  .mp-btn { font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;padding:7px 14px;background:#14141e;border:1px solid rgba(200,168,75,0.2);color:#8a8070;cursor:pointer;border-radius:2px;letter-spacing:0.5px;transition:all 0.2s; }
+  .mp-btn:hover { border-color:rgba(200,168,75,0.5);color:#c8a84b;background:#1a1a28; }
+  .mp-btn.active { border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.1); }
+  .animate-in { animation:slideUp 0.5s cubic-bezier(0.23,1,0.32,1) both; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+  .stagger-1{animation-delay:0.05s}.stagger-2{animation-delay:0.1s}.stagger-3{animation-delay:0.15s}.stagger-4{animation-delay:0.2s}.stagger-5{animation-delay:0.25s}
+  @media(max-width:480px){.hero{grid-template-columns:1fr}.portrait{width:100%;height:200px}.portrait-wrap{width:100%}.stats-block{grid-template-columns:1fr}.network-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<div class="gta-root">
+  <div class="scan-lines"></div>
+  <div class="card-wrap">
+    <div class="top-bar animate-in">
+      <span class="top-bar-label">// parliament dossier v1.0</span>
+      <div class="wanted-row" id="stars"></div>
+    </div>
+    <div class="selector-bar animate-in stagger-1" id="mp-selector"></div>
+    <div id="card-content"></div>
+  </div>
+</div>
+
+<script>
+const MPs = [
+  {
+    id:'pappu_yadav',name:'Rajesh Ranjan',alias:'"Pappu Yadav"',constituency:'Purnia, Bihar • Lok Sabha',party:'JAP',partyColor:'#e87c3e',wantedLevel:4,
+    portrait:'/image.png',initials:'RR',
+    tags:[{label:'Sitting MP',cls:'tag-blue'},{label:'39 cases',cls:'tag-red'},{label:'Bihar strongman',cls:'tag-orange'}],
+    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'39',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹5.8 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+340%',cls:'red'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'8',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'5',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'214',cls:'green'}],
+    bars:[{label:'Attendance',pct:58,cls:'blue'},{label:'Debate participation',pct:42,cls:'blue'},{label:'Criminal severity index',pct:87,cls:'red'},{label:'Loyalty score (party switches: 5)',pct:20,cls:'gold'}],
+    timeline:[{year:'1990',text:'Student leader, Patna University',party:'',filled:false},{year:'1991',text:'First elected to Lok Sabha, age 22',party:'INC',filled:false},{year:'1996',text:'Arrested — murder of rival',party:'Samajwadi',filled:false},{year:'2004',text:'Won from jail cell',party:'LJP',filled:false},{year:'2014',text:'Lost seat, party dissolved',party:'—',filled:false},{year:'2024',text:'Returned as MP, Purnia',party:'JAP',filled:true}],
+    cases:[{num:'IPC 302',text:'Murder — Case pending since 1998, Siwan district court'},{num:'IPC 307',text:'Attempt to murder — Multiple FIRs across Bihar, UP'},{num:'IPC 384',text:'Extortion — Filed by Bihar police, 2003'}],
+    network:[{name:'Ranjeet Ranjan',rel:'Wife • Rajya Sabha MP'},{name:'Lalu Prasad',rel:'Political ally • RJD'},{name:'Tej Pratap Yadav',rel:'Ally • Son of Lalu'}],
+    source:'myneta.info/ls2024'
+  },
+  {
+    id:'smriti_irani',name:'Smriti Zubin Irani',alias:'Union Minister',constituency:'Amethi, Uttar Pradesh • Lok Sabha',party:'BJP',partyColor:'#e87c3e',wantedLevel:1,
+    portrait:'/smriti.png',initials:'SI',
+    tags:[{label:'Former Minister',cls:'tag-orange'},{label:'TV actor origin',cls:'tag-blue'},{label:'Defeated Rahul Gandhi',cls:'tag-green'}],
+    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'2',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹25.3 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+680%',cls:'red'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'5',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'3',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'89',cls:'green'}],
+    bars:[{label:'Attendance',pct:71,cls:'blue'},{label:'Debate participation',pct:65,cls:'blue'},{label:'Criminal severity index',pct:15,cls:'red'},{label:'Loyalty score (party switches: 1)',pct:90,cls:'gold'}],
+    timeline:[{year:'1996',text:'Lead actress, "Kyunki Saas Bhi..."',party:'',filled:false},{year:'2003',text:'Joined BJP, National Secretary',party:'BJP',filled:false},{year:'2011',text:'Rajya Sabha — Gujarat seat',party:'BJP',filled:false},{year:'2014',text:'Lost Amethi to Rahul Gandhi',party:'BJP',filled:false},{year:'2019',text:'Won Amethi — shocked the nation',party:'BJP',filled:false},{year:'2024',text:'Lost Amethi, lost cabinet post',party:'BJP',filled:true}],
+    cases:[{num:'IPC 420',text:'Cheating — Related to education degree controversy, 2014 court case'},{num:'IPC 499',text:'Defamation — Filed in connection with political statements'}],
+    network:[{name:'Zubin Irani',rel:'Husband • Businessman'},{name:'Narendra Modi',rel:'PM • Political patron'},{name:'Rahul Gandhi',rel:'Rival • Lost to her 2019'}],
+    source:'myneta.info/ls2024'
+  },
+  {
+    id:'rahul_gandhi',name:'Rahul Gandhi',alias:'"RaGa"',constituency:'Wayanad, Kerala • Lok Sabha',party:'INC',partyColor:'#4ea3e0',wantedLevel:2,
+    portrait:'/rahul.png',initials:'RG',
+    tags:[{label:'Nehru-Gandhi dynasty',cls:'tag-orange'},{label:'Disqualified 2023',cls:'tag-red'},{label:'Bharat Jodo Yatra',cls:'tag-blue'}],
+    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'5',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹20.7 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+112%',cls:'gold'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'6',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'4',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'52',cls:''}],
+    bars:[{label:'Attendance',pct:48,cls:'blue'},{label:'Debate participation',pct:37,cls:'blue'},{label:'Criminal severity index',pct:22,cls:'red'},{label:'Loyalty score (party switches: 0)',pct:98,cls:'gold'}],
+    timeline:[{year:'1991',text:'Father Rajiv Gandhi assassinated',party:'',filled:false},{year:'2004',text:'First MP, Amethi — family seat',party:'INC',filled:false},{year:'2013',text:'Named INC VP, led 2014 campaign',party:'INC',filled:false},{year:'2014',text:'INC lost 400+ seats, worst ever',party:'INC',filled:false},{year:'2023',text:'Disqualified MP — defamation conviction',party:'INC',filled:false},{year:'2024',text:'Won Wayanad, LoP in 18th Lok Sabha',party:'INC',filled:true}],
+    cases:[{num:'IPC 499',text:'Defamation — "Modi surname" remark, Surat court 2023. Conviction later stayed'},{num:'IPC 153A',text:'Promoting enmity — Multiple FIRs, various states'}],
+    network:[{name:'Sonia Gandhi',rel:'Mother • INC Chairperson'},{name:'Priyanka Gandhi',rel:'Sister • MP Wayanad'},{name:'Robert Vadra',rel:'Brother-in-law • businessman'}],
+    source:'myneta.info/ls2024'
+  }
+];
+
+let current = MPs[0];
+let animating = false;
+
+function buildStars(n) {
+  const c = document.getElementById('stars');
+  c.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const s = document.createElement('div');
+    s.className = 'star ' + (i < n ? 'on' : 'off');
+    c.appendChild(s);
+  }
+}
+
+function buildSelector() {
+  const bar = document.getElementById('mp-selector');
+  bar.innerHTML = '';
+  MPs.forEach(mp => {
+    const b = document.createElement('button');
+    b.className = 'mp-btn' + (mp.id === current.id ? ' active' : '');
+    b.textContent = mp.name.split(' ')[0] + ' ' + (mp.alias || '');
+    b.onclick = () => { if (!animating && mp.id !== current.id) { current = mp; render(); } };
+    bar.appendChild(b);
+  });
+}
+
+function portraitHTML(mp) {
+  if (mp.portrait) {
+    return `<img src="${mp.portrait}" alt="${mp.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;display:block;">
+    <div style="width:100%;height:100%;display:none;align-items:center;justify-content:center;background:#14141e;position:absolute;inset:0;">
+      <span style="font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:rgba(200,168,75,0.3);">${mp.initials}</span>
+    </div>`;
+  }
+  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#14141e;">
+    <span style="font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:rgba(200,168,75,0.3);">${mp.initials}</span>
+  </div>`;
+}
+
+function render() {
+  animating = true;
+  buildStars(current.wantedLevel);
+  buildSelector();
+  const mp = current;
+  const content = document.getElementById('card-content');
+  content.style.opacity = 0;
+
+  setTimeout(() => {
+    content.innerHTML = `
+      <div class="hero animate-in stagger-2">
+        <div class="portrait-wrap">
+          <div class="portrait" style="position:relative;">${portraitHTML(mp)}
+            <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.7);padding:8px 6px;text-align:center;">
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:700;color:${mp.partyColor};letter-spacing:2px;">${mp.party}</div>
+            </div>
+          </div>
+          <div class="portrait-corner tl"></div><div class="portrait-corner tr"></div>
+          <div class="portrait-corner bl"></div><div class="portrait-corner br"></div>
+        </div>
+        <div>
+          <div class="mp-name">${mp.name}</div>
+          <div class="mp-sub">${mp.alias} // ${mp.constituency}</div>
+          <div class="tag-row">${mp.tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
+          <div class="stats-block">${mp.stats.map(s=>`<div class="stat-row"><span class="stat-icon">${s.icon}</span><span class="stat-label">${s.label}</span><span class="stat-val ${s.cls}">${s.val}</span></div>`).join('')}</div>
+        </div>
+      </div>
+      <div class="bar-section animate-in stagger-3">
+        <div class="section-title">// performance stats</div>
+        ${mp.bars.map(b=>`<div class="bar-row"><div class="bar-label-row"><span class="bar-label">${b.label}</span><span class="bar-pct">${b.pct}%</span></div><div class="bar-track"><div class="bar-fill ${b.cls}" style="width:0%" data-pct="${b.pct}"></div></div></div>`).join('')}
+      </div>
+      <div class="timeline-section animate-in stagger-4">
+        <div class="section-title">// career timeline</div>
+        <div class="timeline">${mp.timeline.map(t=>`<div class="tl-item"><div class="tl-dot ${t.filled?'filled':''}"></div><div class="tl-year">${t.year}</div><div class="tl-text">${t.text}</div>${t.party?`<div class="tl-party">${t.party}</div>`:''}</div>`).join('')}</div>
+      </div>
+      <div class="cases-section animate-in stagger-4">
+        <div class="section-title">// pending cases</div>
+        ${mp.cases.map(c=>`<div class="case-item"><span class="case-num">${c.num}</span><div class="case-text">${c.text}</div></div>`).join('')}
+      </div>
+      <div class="animate-in stagger-5">
+        <div class="section-title">// connections & influence network</div>
+        <div class="network-grid">${mp.network.map(p=>`<div class="person-chip"><div class="person-chip-name">${p.name}</div><div class="person-chip-rel">${p.rel}</div></div>`).join('')}</div>
+      </div>
+      <div class="bottom-bar animate-in stagger-5">
+        <a class="affidavit-link" href="#">source: ${mp.source} + sansad.in + ADR affidavit</a>
+        <span class="adr-badge">data: ADR verified</span>
+      </div>
+    `;
+
+    content.style.transition = 'opacity 0.3s';
+    content.style.opacity = 1;
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill[data-pct]').forEach(el => {
+        el.style.transition = 'width 1.2s cubic-bezier(0.23,1,0.32,1)';
+        el.style.width = el.dataset.pct + '%';
+      });
+      animating = false;
+    }, 50);
+  }, 200);
+}
+
+render();
+</script>

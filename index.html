@@ -1,229 +1,521 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neta Check — 18th Lok Sabha</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
-  .gta-root { background:#0a0a0f;min-height:100vh;padding:0;font-family:'Rajdhani',sans-serif;color:#e8e0cc;position:relative;overflow:hidden; }
-  .scan-lines { position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px); }
-  .card-wrap { position:relative;z-index:2;max-width:720px;margin:0 auto;padding:24px 20px 40px; }
-  .top-bar { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
-  .top-bar-label { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;text-transform:uppercase; }
-  .wanted-row { display:flex;gap:5px;align-items:center; }
-  .star { width:18px;height:18px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:background 0.3s; }
-  .star.on { background:#e8b84b; }
-  .star.off { background:#2a2a35; }
-  .hero { display:grid;grid-template-columns:160px 1fr;gap:24px;margin-bottom:24px;align-items:start; }
-  .portrait-wrap { position:relative; }
-  .portrait { width:160px;height:200px;border:2px solid #c8a84b;display:block;background:#1a1a24;position:relative;overflow:hidden; }
-  .portrait img { width:100%;height:100%;object-fit:cover;display:block; }
-  .portrait-corner { position:absolute;width:12px;height:12px;border-color:#c8a84b;border-style:solid; }
-  .portrait-corner.tl { top:-4px;left:-4px;border-width:2px 0 0 2px; }
-  .portrait-corner.tr { top:-4px;right:-4px;border-width:2px 2px 0 0; }
-  .portrait-corner.bl { bottom:-4px;left:-4px;border-width:0 0 2px 2px; }
-  .portrait-corner.br { bottom:-4px;right:-4px;border-width:0 2px 2px 0; }
-  .mp-name { font-size:32px;font-weight:700;line-height:1;color:#f0e8cc;letter-spacing:1px;margin-bottom:4px; }
-  .mp-sub { font-family:'Share Tech Mono',monospace;font-size:12px;color:#8a8070;letter-spacing:2px;margin-bottom:16px; }
-  .tag-row { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px; }
-  .tag { font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border:1px solid;border-radius:2px; }
-  .tag-orange { color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08); }
-  .tag-blue { color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08); }
-  .tag-green { color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08); }
-  .tag-red { color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08); }
-  .stats-block { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px; }
-  .stat-row { display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(200,168,75,0.12); }
-  .stat-icon { font-size:16px;width:22px;text-align:center;flex-shrink:0; }
-  .stat-label { font-family:'Share Tech Mono',monospace;font-size:10px;color:#6a6258;letter-spacing:1px;flex:1; }
-  .stat-val { font-size:15px;font-weight:600;color:#e8e0cc;text-align:right; }
-  .stat-val.red { color:#e85050; }
-  .stat-val.gold { color:#c8a84b; }
-  .stat-val.green { color:#5ec97a; }
-  .bar-section { margin-bottom:24px; }
-  .bar-row { margin-bottom:12px; }
-  .bar-label-row { display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px; }
-  .bar-label { font-size:13px;color:#a09080;font-weight:500;letter-spacing:0.5px; }
-  .bar-pct { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b; }
-  .bar-track { height:6px;background:#1e1e2a;border-radius:1px;overflow:hidden; }
-  .bar-fill { height:100%;border-radius:1px;transition:width 1.2s cubic-bezier(0.23,1,0.32,1); }
-  .bar-fill.gold { background:#c8a84b; }
-  .bar-fill.red { background:#c84b4b; }
-  .bar-fill.blue { background:#4b8bc8; }
-  .bar-fill.green { background:#5ec97a; }
-  .timeline-section { margin-bottom:24px; }
-  .section-title { font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;margin-bottom:14px;display:flex;align-items:center;gap:10px; }
-  .section-title::after { content:'';flex:1;height:1px;background:rgba(200,168,75,0.25); }
-  .timeline { position:relative;padding-left:20px; }
-  .timeline::before { content:'';position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:rgba(200,168,75,0.2); }
-  .tl-item { position:relative;margin-bottom:14px; }
-  .tl-dot { position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;border:1.5px solid #c8a84b;background:#0a0a0f; }
-  .tl-dot.filled { background:#c8a84b; }
-  .tl-year { font-family:'Share Tech Mono',monospace;font-size:10px;color:#c8a84b;margin-bottom:2px; }
-  .tl-text { font-size:14px;color:#c8c0b0;font-weight:500; }
-  .tl-party { font-size:12px;color:#6a6258;margin-top:1px; }
-  .cases-section { margin-bottom:24px; }
-  .case-item { display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(232,80,80,0.2);background:rgba(232,80,80,0.04);border-radius:3px; }
-  .case-num { font-family:'Share Tech Mono',monospace;font-size:10px;color:#e85050;padding:2px 6px;border:1px solid rgba(232,80,80,0.4);border-radius:2px;flex-shrink:0;margin-top:2px; }
-  .case-text { font-size:13px;color:#c0b8a8;line-height:1.4; }
-  .network-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px; }
-  .person-chip { padding:10px;border:1px solid rgba(200,168,75,0.15);background:rgba(200,168,75,0.03);border-radius:3px;text-align:center; }
-  .person-chip-name { font-size:13px;font-weight:600;color:#d8d0b8;margin-bottom:2px; }
-  .person-chip-rel { font-family:'Share Tech Mono',monospace;font-size:10px;color:#7a7068; }
-  .bottom-bar { display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(200,168,75,0.15); }
-  .affidavit-link { font-family:'Share Tech Mono',monospace;font-size:10px;color:#4ea3e0;letter-spacing:1px;cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(78,163,224,0.3); }
-  .adr-badge { font-family:'Share Tech Mono',monospace;font-size:10px;color:#5ec97a;letter-spacing:2px; }
-  .selector-bar { display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap; }
-  .mp-btn { font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;padding:7px 14px;background:#14141e;border:1px solid rgba(200,168,75,0.2);color:#8a8070;cursor:pointer;border-radius:2px;letter-spacing:0.5px;transition:all 0.2s; }
-  .mp-btn:hover { border-color:rgba(200,168,75,0.5);color:#c8a84b;background:#1a1a28; }
-  .mp-btn.active { border-color:#c8a84b;color:#c8a84b;background:rgba(200,168,75,0.1); }
-  .animate-in { animation:slideUp 0.5s cubic-bezier(0.23,1,0.32,1) both; }
-  @keyframes slideUp { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
-  .stagger-1{animation-delay:0.05s}.stagger-2{animation-delay:0.1s}.stagger-3{animation-delay:0.15s}.stagger-4{animation-delay:0.2s}.stagger-5{animation-delay:0.25s}
-  @media(max-width:480px){.hero{grid-template-columns:1fr}.portrait{width:100%;height:200px}.portrait-wrap{width:100%}.stats-block{grid-template-columns:1fr}.network-grid{grid-template-columns:repeat(2,1fr)}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--bg2:#080d18;--bg3:#0b1220;
+  --border:#0f2035;--border2:#162840;
+  --accent:#1a7fe0;--text:#c8dff0;--text2:#4a7fa8;--text3:#1e4060;
+  --gold:#d4a400;--mono:'Share Tech Mono',monospace;--sans:'Rajdhani',sans-serif;
+  --card-w:420px;
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+.app{width:100vw;height:100vh;display:grid;grid-template-rows:48px 1fr 100px}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.logo{font-family:var(--mono);font-size:13px;color:#4a9fd4;letter-spacing:.12em}
+.divv{width:1px;height:20px;background:var(--border2)}
+.session{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.pills{display:flex;gap:10px;align-items:center}
+.pill{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:11px;font-family:var(--mono)}
+.pill .dot{width:6px;height:6px;border-radius:50%}
+.pill .val{font-size:13px;font-weight:600}
+
+/* MAIN */
+.main{position:relative;display:flex;overflow:hidden}
+
+/* CANVAS */
+.canvas-wrap{flex:1;position:relative;transition:flex .45s cubic-bezier(.23,1,.32,1);overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+
+/* TOOLTIP */
+.tooltip{position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;z-index:50;min-width:200px}
+.tt-bar{height:2px;border-radius:1px;margin-bottom:8px}
+.tt-name{font-size:15px;font-weight:600;color:#e8f4ff;margin-bottom:2px}
+.tt-role-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:2px;margin-bottom:6px;border:1px solid}
+.tt-const{font-size:11px;color:var(--text2);font-family:var(--mono);margin-bottom:6px}
+.tt-row{display:flex;gap:12px}
+.tt-cell .l{color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px}
+.tt-cell .v{color:var(--text);font-size:11px;font-weight:500}
+.tt-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:6px}
+
+/* CARD PANEL */
+.card-panel{width:0;background:var(--bg2);border-left:1px solid var(--border2);overflow:hidden;position:relative;transition:width .45s cubic-bezier(.23,1,.32,1);flex-shrink:0}
+.card-panel.open{width:var(--card-w)}
+.card-inner{width:var(--card-w);height:100%;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:thin;scrollbar-color:#0f2035 transparent}
+.card-inner::-webkit-scrollbar{width:4px}
+.card-inner::-webkit-scrollbar-thumb{background:#0f2035;border-radius:2px}
+.scan-lines{position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px)}
+.gta-wrap{position:relative;z-index:2;padding:20px 20px 32px}
+
+.close-btn{position:absolute;top:14px;right:14px;z-index:10;width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;transition:all .2s}
+.close-btn:hover{border-color:#4a7fa8;color:var(--text)}
+
+/* GTA CARD INTERNALS */
+.dossier-label{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:3px;margin-bottom:10px}
+.wanted-row{display:flex;gap:4px;margin-bottom:16px}
+.star{width:15px;height:15px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.star.on{background:#e8b84b}.star.off{background:#1a2030}
+
+.hero-grid{display:grid;grid-template-columns:130px 1fr;gap:16px;margin-bottom:18px;align-items:start}
+.portrait{width:130px;height:165px;border:2px solid #c8a84b;background:#14141e;position:relative;overflow:hidden}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.portrait-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#10141e;font-family:var(--sans);font-size:42px;font-weight:700;color:rgba(200,168,75,0.25)}
+.portrait-party{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.75);padding:5px 4px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700}
+.pc{position:absolute;width:10px;height:10px;border-color:#c8a84b;border-style:solid}
+.pc.tl{top:-3px;left:-3px;border-width:2px 0 0 2px}.pc.tr{top:-3px;right:-3px;border-width:2px 2px 0 0}
+.pc.bl{bottom:-3px;left:-3px;border-width:0 0 2px 2px}.pc.br{bottom:-3px;right:-3px;border-width:0 2px 2px 0}
+
+.mp-name{font-size:22px;font-weight:700;color:#f0e8cc;line-height:1.1;margin-bottom:3px}
+.mp-alias{font-family:var(--mono);font-size:10px;color:#8a8070;letter-spacing:1px;margin-bottom:10px;line-height:1.4}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 7px;border:1px solid;border-radius:2px}
+.tag-orange{color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08)}
+.tag-blue{color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08)}
+.tag-green{color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08)}
+.tag-red{color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08)}
+.tag-gold{color:#c8a84b;border-color:#c8a84b;background:rgba(200,168,75,0.08)}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.stat-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(200,168,75,0.1)}
+.s-icon{font-size:12px;width:18px;text-align:center;flex-shrink:0}
+.s-label{font-family:var(--mono);font-size:9px;color:#6a6258;letter-spacing:.8px;flex:1}
+.s-val{font-size:12px;font-weight:600;color:#e8e0cc;text-align:right}
+.s-val.red{color:#e85050}.s-val.gold{color:#c8a84b}.s-val.green{color:#5ec97a}
+
+.section-title{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:2.5px;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.2)}
+
+.bar-row{margin-bottom:10px}
+.bar-lrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.bar-label{font-size:12px;color:#a09080;font-weight:500}
+.bar-pct{font-family:var(--mono);font-size:10px;color:#c8a84b}
+.bar-track{height:5px;background:#1a2030;border-radius:1px;overflow:hidden}
+.bar-fill{height:100%;border-radius:1px;width:0;transition:width 1.2s cubic-bezier(.23,1,.32,1)}
+.bar-fill.gold{background:#c8a84b}.bar-fill.red{background:#c84b4b}.bar-fill.blue{background:#4b8bc8}.bar-fill.green{background:#5ec97a}
+
+.net-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.person-chip{padding:8px 10px;border:1px solid rgba(200,168,75,0.12);background:rgba(200,168,75,0.02);border-radius:3px;text-align:center}
+.chip-name{font-size:12px;font-weight:600;color:#d8d0b8;margin-bottom:2px}
+.chip-rel{font-family:var(--mono);font-size:9px;color:#7a7068}
+
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(200,168,75,0.12);margin-top:8px}
+.src-link{font-family:var(--mono);font-size:9px;color:#4ea3e0;letter-spacing:.8px}
+.adr-badge{font-family:var(--mono);font-size:9px;color:#5ec97a;letter-spacing:1.5px}
+
+@keyframes slideInCard{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+.si{animation:slideInCard .35s cubic-bezier(.23,1,.32,1) both}
+.si1{animation-delay:.03s}.si2{animation-delay:.07s}.si3{animation-delay:.11s}
+.si4{animation-delay:.15s}.si5{animation-delay:.19s}
+
+/* BOTTOMBAR */
+.bottombar{background:var(--bg2);border-top:1px solid var(--border);padding:8px 20px 6px;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.legend-row{display:flex;flex-wrap:wrap;gap:5px 14px;align-items:center}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:var(--mono)}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tips-row{display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center}
+.tip{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)}
+.tk{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;font-size:10px;color:#4a9fd4;font-family:var(--mono)}
+
+/* LOADING */
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:100;gap:14px}
+.loading-text{font-family:var(--mono);font-size:12px;color:#4a9fd4;letter-spacing:.1em}
+.loading-bar{width:180px;height:2px;background:var(--border2);border-radius:1px;overflow:hidden}
+.loading-fill{height:100%;background:var(--accent);animation:lp 1.2s ease-in-out infinite}
+@keyframes lp{0%{width:0%}60%{width:100%}100%{width:100%}}
 </style>
+</head>
+<body>
+<div class="app">
 
-<div class="gta-root">
-  <div class="scan-lines"></div>
-  <div class="card-wrap">
-    <div class="top-bar animate-in">
-      <span class="top-bar-label">// parliament dossier v1.0</span>
-      <div class="wanted-row" id="stars"></div>
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <span class="logo">NETA CHECK</span>
+      <div class="divv"></div>
+      <span class="session">18th Lok Sabha · 2024–2029</span>
     </div>
-    <div class="selector-bar animate-in stagger-1" id="mp-selector"></div>
-    <div id="card-content"></div>
+    <div class="pills">
+      <div class="pill"><div class="dot" style="background:#e8630a"></div><span style="color:#7aa4cc;font-size:11px">NDA</span><span class="val" style="color:#e8630a">293</span></div>
+      <div class="pill"><div class="dot" style="background:#1a7fe0"></div><span style="color:#7aa4cc;font-size:11px">INDIA</span><span class="val" style="color:#1a7fe0">234</span></div>
+      <div class="pill"><div class="dot" style="background:#607080"></div><span style="color:#7aa4cc;font-size:11px">Others</span><span class="val" style="color:#aaa">16</span></div>
+      <div class="pill"><span style="color:#7aa4cc;font-size:11px">Majority</span><span class="val" style="color:#d4a400">272</span></div>
+    </div>
   </div>
+
+  <div class="main">
+    <div class="canvas-wrap" id="cwrap">
+      <canvas id="c"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+      <div class="loading" id="loading">
+        <div class="loading-text">LOADING PARLIAMENT DATA...</div>
+        <div class="loading-bar"><div class="loading-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="card-panel" id="card-panel">
+      <div class="card-inner" id="card-inner">
+        <div class="scan-lines"></div>
+        <button class="close-btn" onclick="closePanel()">✕</button>
+        <div class="gta-wrap" id="gta-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div class="legend-row" id="legend-row"></div>
+    <div class="tips-row">
+      <div class="tip"><span class="tk">Hover</span>see MP name & party</div>
+      <div class="tip"><span class="tk">Click</span>open dossier card</div>
+      <div class="tip"><span class="tk">Gold ring</span>Cabinet minister</div>
+      <div class="tip"><span class="tk">Esc</span>close panel</div>
+    </div>
+  </div>
+
 </div>
-
 <script>
-const MPs = [
-  {
-    id:'pappu_yadav',name:'Rajesh Ranjan',alias:'"Pappu Yadav"',constituency:'Purnia, Bihar • Lok Sabha',party:'JAP',partyColor:'#e87c3e',wantedLevel:4,
-    portrait:'/image.png',initials:'RR',
-    tags:[{label:'Sitting MP',cls:'tag-blue'},{label:'39 cases',cls:'tag-red'},{label:'Bihar strongman',cls:'tag-orange'}],
-    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'39',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹5.8 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+340%',cls:'red'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'8',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'5',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'214',cls:'green'}],
-    bars:[{label:'Attendance',pct:58,cls:'blue'},{label:'Debate participation',pct:42,cls:'blue'},{label:'Criminal severity index',pct:87,cls:'red'},{label:'Loyalty score (party switches: 5)',pct:20,cls:'gold'}],
-    timeline:[{year:'1990',text:'Student leader, Patna University',party:'',filled:false},{year:'1991',text:'First elected to Lok Sabha, age 22',party:'INC',filled:false},{year:'1996',text:'Arrested — murder of rival',party:'Samajwadi',filled:false},{year:'2004',text:'Won from jail cell',party:'LJP',filled:false},{year:'2014',text:'Lost seat, party dissolved',party:'—',filled:false},{year:'2024',text:'Returned as MP, Purnia',party:'JAP',filled:true}],
-    cases:[{num:'IPC 302',text:'Murder — Case pending since 1998, Siwan district court'},{num:'IPC 307',text:'Attempt to murder — Multiple FIRs across Bihar, UP'},{num:'IPC 384',text:'Extortion — Filed by Bihar police, 2003'}],
-    network:[{name:'Ranjeet Ranjan',rel:'Wife • Rajya Sabha MP'},{name:'Lalu Prasad',rel:'Political ally • RJD'},{name:'Tej Pratap Yadav',rel:'Ally • Son of Lalu'}],
-    source:'myneta.info/ls2024'
-  },
-  {
-    id:'smriti_irani',name:'Smriti Zubin Irani',alias:'Union Minister',constituency:'Amethi, Uttar Pradesh • Lok Sabha',party:'BJP',partyColor:'#e87c3e',wantedLevel:1,
-    portrait:'/smriti.png',initials:'SI',
-    tags:[{label:'Former Minister',cls:'tag-orange'},{label:'TV actor origin',cls:'tag-blue'},{label:'Defeated Rahul Gandhi',cls:'tag-green'}],
-    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'2',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹25.3 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+680%',cls:'red'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'5',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'3',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'89',cls:'green'}],
-    bars:[{label:'Attendance',pct:71,cls:'blue'},{label:'Debate participation',pct:65,cls:'blue'},{label:'Criminal severity index',pct:15,cls:'red'},{label:'Loyalty score (party switches: 1)',pct:90,cls:'gold'}],
-    timeline:[{year:'1996',text:'Lead actress, "Kyunki Saas Bhi..."',party:'',filled:false},{year:'2003',text:'Joined BJP, National Secretary',party:'BJP',filled:false},{year:'2011',text:'Rajya Sabha — Gujarat seat',party:'BJP',filled:false},{year:'2014',text:'Lost Amethi to Rahul Gandhi',party:'BJP',filled:false},{year:'2019',text:'Won Amethi — shocked the nation',party:'BJP',filled:false},{year:'2024',text:'Lost Amethi, lost cabinet post',party:'BJP',filled:true}],
-    cases:[{num:'IPC 420',text:'Cheating — Related to education degree controversy, 2014 court case'},{num:'IPC 499',text:'Defamation — Filed in connection with political statements'}],
-    network:[{name:'Zubin Irani',rel:'Husband • Businessman'},{name:'Narendra Modi',rel:'PM • Political patron'},{name:'Rahul Gandhi',rel:'Rival • Lost to her 2019'}],
-    source:'myneta.info/ls2024'
-  },
-  {
-    id:'rahul_gandhi',name:'Rahul Gandhi',alias:'"RaGa"',constituency:'Wayanad, Kerala • Lok Sabha',party:'INC',partyColor:'#4ea3e0',wantedLevel:2,
-    portrait:'/rahul.png',initials:'RG',
-    tags:[{label:'Nehru-Gandhi dynasty',cls:'tag-orange'},{label:'Disqualified 2023',cls:'tag-red'},{label:'Bharat Jodo Yatra',cls:'tag-blue'}],
-    stats:[{icon:'⚖️',label:'CRIMINAL CASES',val:'5',cls:'red'},{icon:'💰',label:'DECLARED ASSETS',val:'₹20.7 Cr',cls:'gold'},{icon:'📈',label:'ASSET GROWTH',val:'+112%',cls:'gold'},{icon:'🗳️',label:'ELECTIONS FOUGHT',val:'6',cls:''},{icon:'🏛️',label:'TERMS AS MP',val:'4',cls:'gold'},{icon:'📋',label:'QUESTIONS RAISED',val:'52',cls:''}],
-    bars:[{label:'Attendance',pct:48,cls:'blue'},{label:'Debate participation',pct:37,cls:'blue'},{label:'Criminal severity index',pct:22,cls:'red'},{label:'Loyalty score (party switches: 0)',pct:98,cls:'gold'}],
-    timeline:[{year:'1991',text:'Father Rajiv Gandhi assassinated',party:'',filled:false},{year:'2004',text:'First MP, Amethi — family seat',party:'INC',filled:false},{year:'2013',text:'Named INC VP, led 2014 campaign',party:'INC',filled:false},{year:'2014',text:'INC lost 400+ seats, worst ever',party:'INC',filled:false},{year:'2023',text:'Disqualified MP — defamation conviction',party:'INC',filled:false},{year:'2024',text:'Won Wayanad, LoP in 18th Lok Sabha',party:'INC',filled:true}],
-    cases:[{num:'IPC 499',text:'Defamation — "Modi surname" remark, Surat court 2023. Conviction later stayed'},{num:'IPC 153A',text:'Promoting enmity — Multiple FIRs, various states'}],
-    network:[{name:'Sonia Gandhi',rel:'Mother • INC Chairperson'},{name:'Priyanka Gandhi',rel:'Sister • MP Wayanad'},{name:'Robert Vadra',rel:'Brother-in-law • businessman'}],
-    source:'myneta.info/ls2024'
-  }
-];
+const BLOCKS=6,ROWS=11;
+const BLOCK_SEATS=[97,89,89,89,89,97];
+const ARC_SPAN=162,BLOCK_GAP=3.5;
+const BSPAN=(ARC_SPAN-BLOCK_GAP*(BLOCKS-1))/BLOCKS;
+const ARC_START=180+(180-ARC_SPAN)/2;
 
-let current = MPs[0];
-let animating = false;
+const ROLES={
+  'Narendra Modi':        {role:'Prime Minister',        tag:'tag-gold',  wl:5},
+  'Om Birla':             {role:'Speaker',               tag:'tag-gold',  wl:3},
+  'Rajnath Singh':        {role:'Defence Minister',      tag:'tag-orange',wl:3},
+  'Amit Shah':            {role:'Home Minister',         tag:'tag-orange',wl:4},
+  'Nitin Gadkari':        {role:'Road Transport Min.',   tag:'tag-orange',wl:3},
+  'Piyush Goyal':         {role:'Commerce Minister',     tag:'tag-orange',wl:2},
+  'Shivraj Singh Chauhan':{role:'Agriculture Minister',  tag:'tag-orange',wl:2},
+  'Jyotiraditya Scindia': {role:'Civil Aviation Min.',   tag:'tag-orange',wl:2},
+  'Manohar Lal Khattar':  {role:'Housing Minister',      tag:'tag-orange',wl:2},
+  'Dharmendra Pradhan':   {role:'Education Minister',    tag:'tag-orange',wl:2},
+  'Sarbananda Sonowal':   {role:'Ports Minister',        tag:'tag-orange',wl:2},
+  'Mansukh Mandaviya':    {role:'Labour Minister',       tag:'tag-orange',wl:2},
+  'G. Kishan Reddy':      {role:'Coal Minister',         tag:'tag-orange',wl:2},
+  'Kiren Rijiju':         {role:'Parliamentary Affairs', tag:'tag-orange',wl:2},
+  'Chirag Paswan':        {role:'Food Processing Min.',  tag:'tag-orange',wl:2},
+  'Arjun Ram Meghwal':    {role:'Law Minister',          tag:'tag-orange',wl:2},
+  'Pralhad Joshi':        {role:'New & Renewable Energy',tag:'tag-orange',wl:2},
+  'Kinjarapu Ram Mohan Naidu':{role:'Civil Aviation Min.',tag:'tag-orange',wl:2},
+  'Rahul Gandhi':         {role:'Leader of Opposition',  tag:'tag-blue',  wl:3},
+  'K. C. Venugopal':      {role:'INC Org. Secretary',   tag:'tag-blue',  wl:2},
+};
 
-function buildStars(n) {
-  const c = document.getElementById('stars');
-  c.innerHTML = '';
-  for (let i = 0; i < 5; i++) {
-    const s = document.createElement('div');
-    s.className = 'star ' + (i < n ? 'on' : 'off');
-    c.appendChild(s);
-  }
+let mpsData=null,partiesData=null,positioned=[],speakerSeat=null,hovered=null;
+let CW=0,CH=0,cx=0,cy=0,panelOpen=false;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const tooltip=document.getElementById('tooltip');
+const cwrap=document.getElementById('cwrap');
+const cardPanel=document.getElementById('card-panel');
+
+function makeRowCounts(total){
+  const base=Math.floor(total/ROWS),rem=total%ROWS;
+  return Array.from({length:ROWS},(_,i)=>i<rem?base+1:base);
 }
+const rowCounts=BLOCK_SEATS.map(makeRowCounts);
 
-function buildSelector() {
-  const bar = document.getElementById('mp-selector');
-  bar.innerHTML = '';
-  MPs.forEach(mp => {
-    const b = document.createElement('button');
-    b.className = 'mp-btn' + (mp.id === current.id ? ' active' : '');
-    b.textContent = mp.name.split(' ')[0] + ' ' + (mp.alias || '');
-    b.onclick = () => { if (!animating && mp.id !== current.id) { current = mp; render(); } };
-    bar.appendChild(b);
+function lighten(hex,amt=75){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+amt)},${Math.min(255,g+amt)},${Math.min(255,b+amt)})`;
+}
+function initials(name){return name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+
+function buildSeats(w,h){
+  CW=w;CH=h;cx=w/2;cy=h;
+  positioned=[];
+  const MIN_R=Math.min(w,h*1.8)*0.11;
+  const MAX_R=Math.min(w/2,h)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.29));
+
+  const allPos=[];
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      const arcR=MIN_R+r*ROW_SPACING,n=rowCounts[b][r];
+      for(let s=0;s<n;s++){
+        const t=n===1?(bS+bE)/2:bS+(s/(n-1))*(bE-bS);
+        allPos.push({x:cx+arcR*Math.cos(t),y:cy+arcR*Math.sin(t),r:SEAT_R,block:b,row:r});
+      }
+    }
+  }
+
+  const rightPos=allPos.filter(s=>s.block<=2).sort((a,b)=>a.row-b.row||a.x-b.x);
+  const leftPos =allPos.filter(s=>s.block>=3).sort((a,b)=>a.row-b.row||b.x-a.x);
+
+  const ndaM=mpsData.filter(m=>partiesData[m.party]?.side==='right');
+  const othM=mpsData.filter(m=>partiesData[m.party]?.side!=='right');
+
+  function hoist(arr,name){const i=arr.findIndex(m=>m.name===name);if(i>0){const[x]=arr.splice(i,1);arr.unshift(x);}}
+  hoist(ndaM,'Narendra Modi');hoist(ndaM,'Rajnath Singh');hoist(ndaM,'Amit Shah');hoist(ndaM,'Nitin Gadkari');
+  hoist(othM,'Rahul Gandhi');hoist(othM,'K. C. Venugopal');
+
+  rightPos.forEach((sp,i)=>{
+    if(i>=ndaM.length)return;
+    const mp=ndaM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
   });
+  leftPos.forEach((sp,i)=>{
+    if(i>=othM.length)return;
+    const mp=othM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
+  });
+
+  speakerSeat={x:cx,y:cy-MIN_R*0.52,r:Math.max(7,SEAT_R*1.7),
+    mp:{name:'Om Birla',constituency:'Kota',state:'Rajasthan',party:'BJP'},
+    color:'#d4a400',block:-1,row:-1,isMin:false};
 }
 
-function portraitHTML(mp) {
-  if (mp.portrait) {
-    return `<img src="${mp.portrait}" alt="${mp.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;display:block;">
-    <div style="width:100%;height:100%;display:none;align-items:center;justify-content:center;background:#14141e;position:absolute;inset:0;">
-      <span style="font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:rgba(200,168,75,0.3);">${mp.initials}</span>
-    </div>`;
+function draw(){
+  ctx.clearRect(0,0,CW,CH);
+  ctx.fillStyle='#05080f';ctx.fillRect(0,0,CW,CH);
+
+  const MIN_R=Math.min(CW,CH*1.8)*0.11;
+  const MAX_R=Math.min(CW/2,CH)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.29));
+
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      ctx.beginPath();
+      ctx.arc(cx,cy,MIN_R+r*ROW_SPACING,bS,bE);
+      ctx.strokeStyle='#0d1e30';ctx.lineWidth=SEAT_R*2+3;ctx.stroke();
+    }
   }
-  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#14141e;">
-    <span style="font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:rgba(200,168,75,0.3);">${mp.initials}</span>
-  </div>`;
+
+  for(const s of positioned){
+    const isH=s===hovered;
+    // minister glow ring
+    if(s.isMin){
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r+3.5,0,2*Math.PI);
+      ctx.strokeStyle=isH?'rgba(255,220,80,0.9)':'rgba(255,220,80,0.5)';
+      ctx.lineWidth=1.5;ctx.stroke();
+    }
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r+(isH?2.5:0),0,2*Math.PI);
+    ctx.fillStyle=isH?lighten(s.color):s.color;ctx.fill();
+    if(isH){ctx.strokeStyle='#ffffff66';ctx.lineWidth=1.5;ctx.stroke();}
+  }
+
+  // Speaker
+  const sp=speakerSeat;
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+4,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,164,0,0.3)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+(hovered===sp?3:0),0,2*Math.PI);
+  ctx.fillStyle='#d4a400';ctx.fill();
+  if(hovered===sp){ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=2;ctx.stroke();}
+
+  const fs=Math.max(9,Math.min(11,CW*0.012));
+  ctx.font=`${fs}px 'Share Tech Mono',monospace`;
+  ctx.fillStyle='rgba(196,148,0,0.65)';ctx.textAlign='center';
+  ctx.fillText('SPEAKER',cx,sp.y-sp.r-6);
+  ctx.fillStyle='#1a4060';
+  ctx.textAlign='left';ctx.fillText('NDA →',cx+14,cy-8);
+  ctx.textAlign='right';ctx.fillText('← INDIA',cx-14,cy-8);
 }
 
-function render() {
-  animating = true;
-  buildStars(current.wantedLevel);
-  buildSelector();
-  const mp = current;
-  const content = document.getElementById('card-content');
-  content.style.opacity = 0;
-
-  setTimeout(() => {
-    content.innerHTML = `
-      <div class="hero animate-in stagger-2">
-        <div class="portrait-wrap">
-          <div class="portrait" style="position:relative;">${portraitHTML(mp)}
-            <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.7);padding:8px 6px;text-align:center;">
-              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:700;color:${mp.partyColor};letter-spacing:2px;">${mp.party}</div>
-            </div>
-          </div>
-          <div class="portrait-corner tl"></div><div class="portrait-corner tr"></div>
-          <div class="portrait-corner bl"></div><div class="portrait-corner br"></div>
-        </div>
-        <div>
-          <div class="mp-name">${mp.name}</div>
-          <div class="mp-sub">${mp.alias} // ${mp.constituency}</div>
-          <div class="tag-row">${mp.tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
-          <div class="stats-block">${mp.stats.map(s=>`<div class="stat-row"><span class="stat-icon">${s.icon}</span><span class="stat-label">${s.label}</span><span class="stat-val ${s.cls}">${s.val}</span></div>`).join('')}</div>
-        </div>
-      </div>
-      <div class="bar-section animate-in stagger-3">
-        <div class="section-title">// performance stats</div>
-        ${mp.bars.map(b=>`<div class="bar-row"><div class="bar-label-row"><span class="bar-label">${b.label}</span><span class="bar-pct">${b.pct}%</span></div><div class="bar-track"><div class="bar-fill ${b.cls}" style="width:0%" data-pct="${b.pct}"></div></div></div>`).join('')}
-      </div>
-      <div class="timeline-section animate-in stagger-4">
-        <div class="section-title">// career timeline</div>
-        <div class="timeline">${mp.timeline.map(t=>`<div class="tl-item"><div class="tl-dot ${t.filled?'filled':''}"></div><div class="tl-year">${t.year}</div><div class="tl-text">${t.text}</div>${t.party?`<div class="tl-party">${t.party}</div>`:''}</div>`).join('')}</div>
-      </div>
-      <div class="cases-section animate-in stagger-4">
-        <div class="section-title">// pending cases</div>
-        ${mp.cases.map(c=>`<div class="case-item"><span class="case-num">${c.num}</span><div class="case-text">${c.text}</div></div>`).join('')}
-      </div>
-      <div class="animate-in stagger-5">
-        <div class="section-title">// connections & influence network</div>
-        <div class="network-grid">${mp.network.map(p=>`<div class="person-chip"><div class="person-chip-name">${p.name}</div><div class="person-chip-rel">${p.rel}</div></div>`).join('')}</div>
-      </div>
-      <div class="bottom-bar animate-in stagger-5">
-        <a class="affidavit-link" href="#">source: ${mp.source} + sansad.in + ADR affidavit</a>
-        <span class="adr-badge">data: ADR verified</span>
-      </div>
-    `;
-
-    content.style.transition = 'opacity 0.3s';
-    content.style.opacity = 1;
-    setTimeout(() => {
-      document.querySelectorAll('.bar-fill[data-pct]').forEach(el => {
-        el.style.transition = 'width 1.2s cubic-bezier(0.23,1,0.32,1)';
-        el.style.width = el.dataset.pct + '%';
-      });
-      animating = false;
-    }, 50);
-  }, 200);
+function showTooltip(s,ex,ey){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color;
+  const role=ROLES[mp.name];
+  tooltip.innerHTML=`
+    <div class="tt-bar" style="background:${color}"></div>
+    <div class="tt-name">${mp.name}</div>
+    ${role?`<div class="tt-role-tag" style="color:${color};border-color:${color};background:${color}15">${role.role}</div>`:''}
+    <div class="tt-const">${mp.constituency||'—'} · ${mp.state||''}</div>
+    <div class="tt-row">
+      <div class="tt-cell"><div class="l">Party</div><div class="v" style="color:${color}">${party.name||mp.party}</div></div>
+      <div class="tt-cell"><div class="l">Coalition</div><div class="v">${party.coalition||'—'}</div></div>
+    </div>
+    <div class="tt-hint">[ click to open dossier ]</div>`;
+  tooltip.style.display='block';
+  const wr=cwrap.getBoundingClientRect();
+  let tx=ex+16,ty=ey-55;
+  if(tx+270>wr.width)tx=ex-275;
+  if(ty<0)ty=4;
+  if(ty+tooltip.offsetHeight>wr.height)ty=wr.height-tooltip.offsetHeight-4;
+  tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
 }
 
-render();
+function openCard(s){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color||'#c8a84b';
+  const role=ROLES[mp.name]||null;
+  const ini=initials(mp.name);
+  const wl=role?.wl||1;
+  const stars=Array.from({length:5},(_,i)=>`<div class="star ${i<wl?'on':'off'}"></div>`).join('');
+
+  const tags=[];
+  if(role) tags.push({label:role.role,cls:role.tag});
+  if(party.coalition) tags.push({label:party.coalition,cls:party.coalition==='NDA'?'tag-orange':'tag-blue'});
+  tags.push({label:party.name||mp.party,cls:'tag-green'});
+  tags.push({label:mp.state,cls:'tag-gold'});
+
+  // derive some placeholder bar values seeded from name length (stable but varied)
+  const seed=mp.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const pct=(base,range)=>Math.min(99,Math.max(20,base+(seed%range)));
+
+  document.getElementById('gta-wrap').innerHTML=`
+    <div class="si dossier-label">// PARLIAMENT DOSSIER v1.0</div>
+    <div class="si si1 wanted-row">${stars}</div>
+
+    <div class="si si2 hero-grid">
+      <div style="position:relative">
+        <div class="portrait">
+          <div class="portrait-fallback">${ini}</div>
+          <div class="portrait-party" style="color:${color}">${mp.party}</div>
+        </div>
+        <div class="pc tl"></div><div class="pc tr"></div>
+        <div class="pc bl"></div><div class="pc br"></div>
+      </div>
+      <div>
+        <div class="mp-name">${mp.name}</div>
+        <div class="mp-alias">${mp.constituency}<br>${mp.state} · Lok Sabha</div>
+        <div class="tag-row">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
+        <div class="stats-grid">
+          <div class="stat-row"><span class="s-icon">🏛️</span><span class="s-label">PARTY</span><span class="s-val" style="color:${color};font-size:10px">${mp.party}</span></div>
+          <div class="stat-row"><span class="s-icon">🗺️</span><span class="s-label">STATE</span><span class="s-val" style="font-size:10px">${mp.state}</span></div>
+          <div class="stat-row"><span class="s-icon">🤝</span><span class="s-label">COALITION</span><span class="s-val ${party.coalition==='NDA'?'gold':'green'}">${party.coalition||'Other'}</span></div>
+          <div class="stat-row"><span class="s-icon">🪑</span><span class="s-label">SEAT</span><span class="s-val">${s.block>=0?`B${s.block+1}·R${s.row+1}`:'Speaker'}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="si si3">
+      <div class="section-title">// performance stats</div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Attendance</span><span class="bar-pct" id="bp0">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${pct(55,30)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Questions & debates</span><span class="bar-pct" id="bp1">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${pct(40,40)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Criminal cases index</span><span class="bar-pct" id="bp2">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill red" data-pct="${pct(10,50)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Party loyalty score</span><span class="bar-pct" id="bp3">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill gold" data-pct="${pct(65,30)}"></div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:6px">* real affidavit data — Phase 4</div>
+    </div>
+
+    <div class="si si4">
+      <div class="section-title">// connections & network</div>
+      <div class="net-grid">
+        <div class="person-chip"><div class="chip-name">${party.name||mp.party}</div><div class="chip-rel">political party</div></div>
+        <div class="person-chip"><div class="chip-name">${party.coalition||'Independent'}</div><div class="chip-rel">coalition bloc</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.state}</div><div class="chip-rel">home state</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.constituency}</div><div class="chip-rel">constituency</div></div>
+      </div>
+    </div>
+
+    <div class="si si5 card-footer">
+      <span class="src-link">sansad.in · myneta.info · ADR</span>
+      <span class="adr-badge">NETA CHECK v1</span>
+    </div>
+  `;
+
+  cardPanel.classList.add('open');
+  panelOpen=true;
+  tooltip.style.display='none';
+  document.getElementById('card-inner').scrollTop=0;
+
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill[data-pct]').forEach((el,i)=>{
+      const pct=parseInt(el.dataset.pct);
+      el.style.width=pct+'%';
+      const labels=['bp0','bp1','bp2','bp3'];
+      const lbl=document.getElementById(labels[i]);
+      if(lbl)lbl.textContent=pct+'%';
+    });
+  },90);
+
+  setTimeout(()=>resize(),460);
+}
+
+function closePanel(){
+  cardPanel.classList.remove('open');
+  panelOpen=false;
+  setTimeout(()=>resize(),460);
+}
+
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const sx=CW/rect.width,sy=CH/rect.height;
+  const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+  let found=null;
+  for(const s of [...positioned,speakerSeat]){
+    const dx=mx-s.x,dy=my-s.y;
+    if(dx*dx+dy*dy<=(s.r+6)*(s.r+6)){found=s;break;}
+  }
+  if(found!==hovered){hovered=found;draw();}
+  if(found){
+    canvas.style.cursor='pointer';
+    showTooltip(found,e.clientX-cwrap.getBoundingClientRect().left,e.clientY-cwrap.getBoundingClientRect().top);
+  } else {
+    canvas.style.cursor='default';
+    tooltip.style.display='none';
+  }
+});
+canvas.addEventListener('mouseleave',()=>{hovered=null;tooltip.style.display='none';draw();});
+canvas.addEventListener('click',()=>{if(hovered)openCard(hovered);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panelOpen)closePanel();});
+
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  const w=cwrap.clientWidth,h=cwrap.clientHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  ctx.scale(dpr,dpr);
+  if(mpsData){buildSeats(w,h);draw();}
+}
+new ResizeObserver(resize).observe(cwrap);
+
+function buildLegend(){
+  const row=document.getElementById('legend-row');
+  [['BJP','BJP'],['INC','INC'],['SP','SP'],['TMC','TMC'],['DMK','DMK'],
+   ['TDP','TDP'],['JDU','JDU'],['SSUBT','SS(UBT)'],['NCPSP','NCP-SP'],
+   ['SHS','Shiv Sena'],['LJP','LJP'],['JMM','JMM'],['AAP','AAP'],['IND','Ind']
+  ].forEach(([key,label])=>{
+    const p=partiesData[key];if(!p)return;
+    const d=document.createElement('div');d.className='li';
+    d.innerHTML=`<div class="ld" style="background:${p.color}"></div>${label}`;
+    row.appendChild(d);
+  });
+  // Speaker
+  const sp=document.createElement('div');sp.className='li';
+  sp.innerHTML=`<div class="ld" style="background:#d4a400"></div>Speaker`;
+  row.appendChild(sp);
+  // Minister ring
+  const mn=document.createElement('div');mn.className='li';
+  mn.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,220,80,0.7);background:#e8630a;flex-shrink:0"></div>Minister`;
+  row.appendChild(mn);
+}
+
+async function init(){
+  try{
+    const res=await fetch('mps.json');
+    const data=await res.json();
+    mpsData=data.members;partiesData=data.parties;
+    buildLegend();resize();
+    document.getElementById('loading').style.display='none';
+  }catch(err){
+    document.querySelector('.loading-text').textContent='ERROR: run via localhost + mps.json in same folder';
+    console.error(err);
+  }
+}
+init();
 </script>
+</body>
+</html>

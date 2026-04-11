@@ -1,0 +1,468 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+  }
+
+  .shell {
+    background: #070d18;
+    border-radius: 14px;
+    padding: 24px 24px 18px;
+    font-family: var(--font-sans, sans-serif);
+    position: relative;
+    min-height: 100vh
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px
+  }
+
+  .brand {
+    font-size: 11px;
+    font-weight: 500;
+    color: #4a7fa8;
+    letter-spacing: .1em;
+    text-transform: uppercase
+  }
+
+  .tagline {
+    font-size: 11px;
+    color: #1e3d5c
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    cursor: default
+  }
+
+  .tooltip {
+    position: absolute;
+    background: #0d1f33;
+    border: .5px solid #1e4060;
+    border-radius: 8px;
+    padding: 9px 13px;
+    font-size: 12px;
+    color: #a8ccec;
+    pointer-events: none;
+    display: none;
+    z-index: 20;
+    min-width: 160px;
+    line-height: 1.6
+  }
+
+  .tooltip b {
+    display: block;
+    font-size: 13px;
+    color: #daeeff;
+    font-weight: 500;
+    margin-bottom: 2px
+  }
+
+  .tooltip small {
+    color: #2e6090;
+    font-size: 11px
+  }
+
+  .bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+  }
+
+  .sbox {
+    background: #0b1828;
+    border: .5px solid #122035;
+    border-radius: 8px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 70px
+  }
+
+  .sval {
+    font-size: 20px;
+    font-weight: 500
+  }
+
+  .slbl {
+    font-size: 10px;
+    color: #2e5070;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: .05em
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: center
+  }
+
+  .li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #4a7fa8
+  }
+
+  .ld {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0
+  }
+
+  .tips {
+    background: #080f1a;
+    border: .5px solid #0f2035;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px
+  }
+
+  .tips-h {
+    font-size: 10px;
+    font-weight: 500;
+    color: #1e4060;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin-bottom: 8px
+  }
+
+  .tr {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #2e6090;
+    margin-bottom: 5px
+  }
+
+  .tk {
+    background: #0b1828;
+    border: .5px solid #122035;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 11px;
+    color: #4a8ab5;
+    white-space: nowrap
+  }
+
+  .divl {
+    border: none;
+    border-top: .5px solid #0d1f30;
+    margin: 12px 0
+  }
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <span class="brand">18th Lok Sabha — Chamber View</span>
+    <span class="tagline">543 elected members</span>
+  </div>
+
+  <canvas id="c"></canvas>
+  <div class="tooltip" id="tip"></div>
+
+  <div class="stats-row" style="margin-top:14px">
+    <div class="sbox">
+      <div class="sval" style="color:#e8630a">293</div>
+      <div class="slbl">NDA (Right bloc)</div>
+    </div>
+    <div class="sbox">
+      <div class="sval" style="color:#1a7fe0">234</div>
+      <div class="slbl">INDIA bloc (Left)</div>
+    </div>
+    <div class="sbox">
+      <div class="sval" style="color:#607080">16</div>
+      <div class="slbl">Others</div>
+    </div>
+    <div class="sbox">
+      <div class="sval" style="color:#d4a400">272</div>
+      <div class="slbl">Majority mark</div>
+    </div>
+  </div>
+
+  <div class="legend" style="margin-top:12px">
+    <div class="li">
+      <div class="ld" style="background:#e8630a"></div>BJP
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#f5a623"></div>NDA allies
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#1a7fe0"></div>INC
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#22aa66"></div>SP
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#8b5cf6"></div>TMC
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#e53e3e"></div>DMK
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#38bdf8"></div>Other INDIA
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#607080"></div>Independents
+    </div>
+    <div class="li">
+      <div class="ld" style="background:#d4a400"></div>Speaker
+    </div>
+  </div>
+
+  <hr class="divl">
+
+  <div class="tips">
+    <div class="tips-h">Navigate</div>
+    <div class="tr"><span class="tk">Hover</span> any seat — see party & seat number</div>
+    <div class="tr"><span class="tk">Click</span> a seat — opens neta card (coming Phase 3)</div>
+    <div class="tr"><span class="tk">Right side</span> of Speaker = ruling NDA (PM Modi is seat 1, front row right)
+    </div>
+    <div class="tr"><span class="tk">Left side</span> of Speaker = INDIA opposition (Rahul Gandhi front row left)</div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const tip = document.getElementById('tip');
+  const shell = document.querySelector('.shell');
+
+  const DPR = window.devicePixelRatio || 1;
+  const CW = canvas.offsetWidth || 760;
+  const CH = 460;
+  canvas.width = CW * DPR;
+  canvas.height = CH * DPR;
+  canvas.style.height = CH + 'px';
+  ctx.scale(DPR, DPR);
+
+  const cx = CW / 2;
+  const cy = CH - 30;
+
+  const SEAT_R = 4.8;
+  const GAP = 1.8;
+  const PITCH = SEAT_R * 2 + GAP;
+
+  const PARTIES = [
+    { key: 'BJP', color: '#e8630a', label: 'BJP (NDA)', count: 240, side: 'right' },
+    { key: 'TDP', color: '#f5a623', label: 'TDP (NDA)', count: 16, side: 'right' },
+    { key: 'JDU', color: '#f5a623', label: 'JD(U) (NDA)', count: 12, side: 'right' },
+    { key: 'SHS', color: '#f07020', label: 'Shiv Sena (NDA)', count: 7, side: 'right' },
+    { key: 'LJP', color: '#f5a623', label: 'LJP (NDA)', count: 5, side: 'right' },
+    { key: 'NDA2', color: '#f5a623', label: 'NDA others', count: 13, side: 'right' },
+    { key: 'INC', color: '#1a7fe0', label: 'INC (INDIA)', count: 99, side: 'left' },
+    { key: 'SP', color: '#22aa66', label: 'SP (INDIA)', count: 37, side: 'left' },
+    { key: 'TMC', color: '#8b5cf6', label: 'TMC (INDIA)', count: 29, side: 'left' },
+    { key: 'DMK', color: '#e53e3e', label: 'DMK (INDIA)', count: 22, side: 'left' },
+    { key: 'IND2', color: '#38bdf8', label: 'INDIA allies', count: 47, side: 'left' },
+    { key: 'OTH', color: '#607080', label: 'Others/Ind', count: 16, side: 'right' },
+  ];
+
+  let seatList = [];
+  for (const p of PARTIES) {
+    for (let i = 0; i < p.count; i++) seatList.push({ ...p });
+  }
+
+  const BLOCKS = 6;
+  const ROWS = 11;
+  const SEATS_PER_BLOCK_ROW_BASE = [9, 8, 8, 8, 8, 9];
+  const BLOCK_GAP_DEG = 4;
+
+  const blockSeatsTotal = [97, 89, 89, 89, 89, 97];
+  const rowCounts = blockSeatsTotal.map(total => {
+    let counts = [];
+    for (let r = 0; r < ROWS; r++) {
+      counts.push(Math.round(total / ROWS));
+    }
+    counts[ROWS - 1] += total - counts.reduce((a, b) => a + b, 0);
+    return counts;
+  });
+
+  const ARC_SPAN = 160;
+  const ARC_START_DEG = 180 + (180 - ARC_SPAN) / 2;
+  const ARC_END_DEG = ARC_START_DEG + ARC_SPAN;
+
+  const BLOCK_SPAN = (ARC_SPAN - BLOCK_GAP_DEG * (BLOCKS - 1)) / BLOCKS;
+  const blockStartDeg = [];
+  for (let b = 0; b < BLOCKS; b++) {
+    blockStartDeg[b] = ARC_START_DEG + b * (BLOCK_SPAN + BLOCK_GAP_DEG);
+  }
+
+  const MIN_R = 90;
+  const ROW_SPACING = 32;
+
+  const seats2d = [];
+
+  for (let b = 0; b < BLOCKS; b++) {
+    for (let r = 0; r < ROWS; r++) {
+      const arcR = MIN_R + r * ROW_SPACING;
+      const n = rowCounts[b][r];
+      const bStart = blockStartDeg[b] * Math.PI / 180;
+      const bEnd = (blockStartDeg[b] + BLOCK_SPAN) * Math.PI / 180;
+      for (let s = 0; s < n; s++) {
+        const t = n === 1 ? (bStart + bEnd) / 2 : bStart + (s / (n - 1)) * (bEnd - bStart);
+        const x = cx + arcR * Math.cos(t);
+        const y = cy + arcR * Math.sin(t);
+        seats2d.push({ x, y, r: SEAT_R, block: b, row: r });
+      }
+    }
+  }
+
+  const rightBlocks = [0, 1, 2];
+  const leftBlocks = [3, 4, 5];
+
+  const rightSeats = seats2d.filter(s => rightBlocks.includes(s.block));
+  const leftSeats = seats2d.filter(s => leftBlocks.includes(s.block));
+
+  const rightParties = seatList.filter(p => p.side === 'right');
+  const leftParties = seatList.filter(p => p.side === 'left');
+
+  const positioned = [];
+
+  rightSeats.forEach((s, i) => {
+    if (i < rightParties.length) positioned.push({ ...s, party: rightParties[i] });
+  });
+  leftSeats.forEach((s, i) => {
+    if (i < leftParties.length) positioned.push({ ...s, party: leftParties[i] });
+  });
+
+  const speakerSeat = {
+    x: cx, y: cy - 24, r: 8,
+    party: { label: 'Speaker (Om Birla)', color: '#d4a400', key: 'SPKR' },
+    block: -1, row: -1
+  };
+
+  function darken(hex, amt = 40) {
+    let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return `rgb(${Math.max(0, r - amt)},${Math.max(0, g - amt)},${Math.max(0, b - amt)})`;
+  }
+
+  let hovered = null;
+
+  function draw() {
+    ctx.clearRect(0, 0, CW, CH);
+    ctx.fillStyle = '#070d18';
+    ctx.fillRect(0, 0, CW, CH);
+
+    for (let b = 0; b < BLOCKS; b++) {
+      for (let r = 0; r < ROWS; r++) {
+        const arcR = MIN_R + r * ROW_SPACING;
+        const bStart = blockStartDeg[b] * Math.PI / 180;
+        const bEnd = (blockStartDeg[b] + BLOCK_SPAN) * Math.PI / 180;
+        ctx.beginPath();
+        ctx.arc(cx, cy, arcR, bStart, bEnd);
+        ctx.strokeStyle = '#0d1e30';
+        ctx.lineWidth = PITCH + 2;
+        ctx.stroke();
+      }
+    }
+
+    for (const s of positioned) {
+      const isH = s === hovered;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r + (isH ? 2.5 : 0), 0, 2 * Math.PI);
+      ctx.fillStyle = isH ? lighten(s.party.color) : s.party.color;
+      ctx.fill();
+      if (isH) {
+        ctx.strokeStyle = '#ffffff55';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    ctx.beginPath();
+    ctx.arc(speakerSeat.x, speakerSeat.y, speakerSeat.r, 0, 2 * Math.PI);
+    ctx.fillStyle = '#d4a400';
+    ctx.fill();
+    ctx.strokeStyle = '#ffd70033';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = '#d4a40099';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Speaker', cx, cy - 36);
+
+    ctx.beginPath();
+    ctx.moveTo(cx - Math.cos(ARC_START_DEG * Math.PI / 180) * (MIN_R + ROWS * ROW_SPACING), cy - Math.sin(ARC_START_DEG * Math.PI / 180) * (MIN_R + ROWS * ROW_SPACING));
+
+    ctx.strokeStyle = '#0f2a40';
+    ctx.lineWidth = .5;
+
+    ctx.fillStyle = '#1a4060';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('NDA → (right of Speaker)', cx + 20, cy + 16);
+    ctx.textAlign = 'right';
+    ctx.fillText('← INDIA bloc (left of Speaker)', cx - 20, cy + 16);
+
+    ctx.fillStyle = '#1a3050';
+    ctx.textAlign = 'center';
+    ctx.fillText('Blocks 1–3 (Ruling)', cx - 130, cy - 8);
+    ctx.fillText('Blocks 4–6 (Opposition)', cx + 140, cy - 8);
+  }
+
+  function lighten(hex) {
+    const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return `rgb(${Math.min(255, r + 70)},${Math.min(255, g + 70)},${Math.min(255, b + 70)})`;
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const sx = CW / rect.width, sy = CH / rect.height;
+    const mx = (e.clientX - rect.left) * sx;
+    const my = (e.clientY - rect.top) * sy;
+
+    let found = null;
+    const allS = [...positioned, speakerSeat];
+    for (const s of allS) {
+      const dx = mx - s.x, dy = my - s.y;
+      if (dx * dx + dy * dy <= (s.r + 5) * (s.r + 5)) { found = s; break; }
+    }
+
+    if (found !== hovered) { hovered = found; draw(); }
+
+    if (found) {
+      canvas.style.cursor = 'pointer';
+      const blkLabel = found.block >= 0 ? `Block ${found.block + 1}, Row ${found.row + 1}` : 'Presiding Officer';
+      tip.style.display = 'block';
+      tip.innerHTML = `<b>${found.party.label}</b>${blkLabel}<br><small>Click to open neta card</small>`;
+      const wr = shell.getBoundingClientRect();
+      let tx = e.clientX - wr.left + 14;
+      let ty = e.clientY - wr.top - 50;
+      if (tx + 180 > wr.width) tx -= 195;
+      if (ty < 0) ty = 4;
+      tip.style.left = tx + 'px';
+      tip.style.top = ty + 'px';
+    } else {
+      canvas.style.cursor = 'default';
+      tip.style.display = 'none';
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    hovered = null; tip.style.display = 'none'; draw();
+  });
+
+  canvas.addEventListener('click', () => {
+    if (hovered) sendPrompt(`Clicked on ${hovered.party.label} — Block ${hovered.block + 1} Row ${hovered.row + 1}. Let's now design the Phase 3 GTA neta card popup.`);
+  });
+
+  draw();
+</script>
