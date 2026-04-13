@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neta Check — 18th Lok Sabha</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--bg2:#080d18;--bg3:#0b1220;
+  --border:#0f2035;--border2:#162840;
+  --accent:#1a7fe0;--text:#c8dff0;--text2:#4a7fa8;--text3:#1e4060;
+  --gold:#d4a400;--mono:'Share Tech Mono',monospace;--sans:'Rajdhani',sans-serif;
+  --card-w:420px;
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+.app{width:100vw;height:100vh;display:grid;grid-template-rows:48px 1fr 100px}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.logo{font-family:var(--mono);font-size:13px;color:#4a9fd4;letter-spacing:.12em}
+.divv{width:1px;height:20px;background:var(--border2)}
+.session{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.pills{display:flex;gap:10px;align-items:center}
+.pill{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:11px;font-family:var(--mono)}
+.pill .dot{width:6px;height:6px;border-radius:50%}
+.pill .val{font-size:13px;font-weight:600}
+
+/* MAIN */
+.main{position:relative;display:flex;overflow:hidden}
+
+/* CANVAS */
+.canvas-wrap{flex:1;position:relative;transition:flex .45s cubic-bezier(.23,1,.32,1);overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+
+/* TOOLTIP */
+.tooltip{position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;z-index:50;min-width:200px}
+.tt-bar{height:2px;border-radius:1px;margin-bottom:8px}
+.tt-name{font-size:15px;font-weight:600;color:#e8f4ff;margin-bottom:2px}
+.tt-role-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:2px;margin-bottom:6px;border:1px solid}
+.tt-const{font-size:11px;color:var(--text2);font-family:var(--mono);margin-bottom:6px}
+.tt-row{display:flex;gap:12px}
+.tt-cell .l{color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px}
+.tt-cell .v{color:var(--text);font-size:11px;font-weight:500}
+.tt-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:6px}
+
+/* CARD PANEL */
+.card-panel{width:0;background:var(--bg2);border-left:1px solid var(--border2);overflow:hidden;position:relative;transition:width .45s cubic-bezier(.23,1,.32,1);flex-shrink:0}
+.card-panel.open{width:var(--card-w)}
+.card-inner{width:var(--card-w);height:100%;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:thin;scrollbar-color:#0f2035 transparent}
+.card-inner::-webkit-scrollbar{width:4px}
+.card-inner::-webkit-scrollbar-thumb{background:#0f2035;border-radius:2px}
+.scan-lines{position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px)}
+.gta-wrap{position:relative;z-index:2;padding:20px 20px 32px}
+
+.close-btn{position:absolute;top:14px;right:14px;z-index:10;width:28px;height:28px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;transition:all .2s}
+.close-btn:hover{border-color:#4a7fa8;color:var(--text)}
+
+/* GTA CARD INTERNALS */
+.dossier-label{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:3px;margin-bottom:10px}
+.wanted-row{display:flex;gap:4px;margin-bottom:16px}
+.star{width:15px;height:15px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.star.on{background:#e8b84b}.star.off{background:#1a2030}
+
+.hero-grid{display:grid;grid-template-columns:130px 1fr;gap:16px;margin-bottom:18px;align-items:start}
+.portrait{width:130px;height:165px;border:2px solid #c8a84b;background:#14141e;position:relative;overflow:hidden}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.portrait-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#10141e;font-family:var(--sans);font-size:42px;font-weight:700;color:rgba(200,168,75,0.25)}
+.portrait-party{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.75);padding:5px 4px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700}
+.pc{position:absolute;width:10px;height:10px;border-color:#c8a84b;border-style:solid}
+.pc.tl{top:-3px;left:-3px;border-width:2px 0 0 2px}.pc.tr{top:-3px;right:-3px;border-width:2px 2px 0 0}
+.pc.bl{bottom:-3px;left:-3px;border-width:0 0 2px 2px}.pc.br{bottom:-3px;right:-3px;border-width:0 2px 2px 0}
+
+.mp-name{font-size:22px;font-weight:700;color:#f0e8cc;line-height:1.1;margin-bottom:3px}
+.mp-alias{font-family:var(--mono);font-size:10px;color:#8a8070;letter-spacing:1px;margin-bottom:10px;line-height:1.4}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 7px;border:1px solid;border-radius:2px}
+.tag-orange{color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08)}
+.tag-blue{color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08)}
+.tag-green{color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08)}
+.tag-red{color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08)}
+.tag-gold{color:#c8a84b;border-color:#c8a84b;background:rgba(200,168,75,0.08)}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.stat-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(200,168,75,0.1)}
+.s-icon{font-size:12px;width:18px;text-align:center;flex-shrink:0}
+.s-label{font-family:var(--mono);font-size:9px;color:#6a6258;letter-spacing:.8px;flex:1}
+.s-val{font-size:12px;font-weight:600;color:#e8e0cc;text-align:right}
+.s-val.red{color:#e85050}.s-val.gold{color:#c8a84b}.s-val.green{color:#5ec97a}
+
+.section-title{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:2.5px;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.2)}
+
+.bar-row{margin-bottom:10px}
+.bar-lrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.bar-label{font-size:12px;color:#a09080;font-weight:500}
+.bar-pct{font-family:var(--mono);font-size:10px;color:#c8a84b}
+.bar-track{height:5px;background:#1a2030;border-radius:1px;overflow:hidden}
+.bar-fill{height:100%;border-radius:1px;width:0;transition:width 1.2s cubic-bezier(.23,1,.32,1)}
+.bar-fill.gold{background:#c8a84b}.bar-fill.red{background:#c84b4b}.bar-fill.blue{background:#4b8bc8}.bar-fill.green{background:#5ec97a}
+
+.net-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.person-chip{padding:8px 10px;border:1px solid rgba(200,168,75,0.12);background:rgba(200,168,75,0.02);border-radius:3px;text-align:center}
+.chip-name{font-size:12px;font-weight:600;color:#d8d0b8;margin-bottom:2px}
+.chip-rel{font-family:var(--mono);font-size:9px;color:#7a7068}
+
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(200,168,75,0.12);margin-top:8px}
+.src-link{font-family:var(--mono);font-size:9px;color:#4ea3e0;letter-spacing:.8px}
+.adr-badge{font-family:var(--mono);font-size:9px;color:#5ec97a;letter-spacing:1.5px}
+
+@keyframes slideInCard{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+.si{animation:slideInCard .35s cubic-bezier(.23,1,.32,1) both}
+.si1{animation-delay:.03s}.si2{animation-delay:.07s}.si3{animation-delay:.11s}
+.si4{animation-delay:.15s}.si5{animation-delay:.19s}
+
+/* BOTTOMBAR */
+.bottombar{background:var(--bg2);border-top:1px solid var(--border);padding:8px 20px 6px;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.legend-row{display:flex;flex-wrap:wrap;gap:5px 14px;align-items:center}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:var(--mono)}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tips-row{display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center}
+.tip{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)}
+.tk{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;font-size:10px;color:#4a9fd4;font-family:var(--mono)}
+
+/* LOADING */
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:100;gap:14px}
+.loading-text{font-family:var(--mono);font-size:12px;color:#4a9fd4;letter-spacing:.1em}
+.loading-bar{width:180px;height:2px;background:var(--border2);border-radius:1px;overflow:hidden}
+.loading-fill{height:100%;background:var(--accent);animation:lp 1.2s ease-in-out infinite}
+@keyframes lp{0%{width:0%}60%{width:100%}100%{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <span class="logo">NETA CHECK</span>
+      <div class="divv"></div>
+      <span class="session">18th Lok Sabha · 2024–2029</span>
+    </div>
+    <div class="pills">
+      <div class="pill"><div class="dot" style="background:#e8630a"></div><span style="color:#7aa4cc;font-size:11px">NDA</span><span class="val" style="color:#e8630a">293</span></div>
+      <div class="pill"><div class="dot" style="background:#1a7fe0"></div><span style="color:#7aa4cc;font-size:11px">INDIA</span><span class="val" style="color:#1a7fe0">234</span></div>
+      <div class="pill"><div class="dot" style="background:#607080"></div><span style="color:#7aa4cc;font-size:11px">Others</span><span class="val" style="color:#aaa">16</span></div>
+      <div class="pill"><span style="color:#7aa4cc;font-size:11px">Majority</span><span class="val" style="color:#d4a400">272</span></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="canvas-wrap" id="cwrap">
+      <canvas id="c"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+      <div class="loading" id="loading">
+        <div class="loading-text">LOADING PARLIAMENT DATA...</div>
+        <div class="loading-bar"><div class="loading-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="card-panel" id="card-panel">
+      <div class="card-inner" id="card-inner">
+        <div class="scan-lines"></div>
+        <button class="close-btn" onclick="closePanel()">✕</button>
+        <div class="gta-wrap" id="gta-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div class="legend-row" id="legend-row"></div>
+    <div class="tips-row">
+      <div class="tip"><span class="tk">Hover</span>see MP name & party</div>
+      <div class="tip"><span class="tk">Click</span>open dossier card</div>
+      <div class="tip"><span class="tk">Gold ring</span>Cabinet minister</div>
+      <div class="tip"><span class="tk">Esc</span>close panel</div>
+    </div>
+  </div>
+
+</div>
+<script>
+const BLOCKS=6,ROWS=11;
+const BLOCK_SEATS=[97,89,89,89,89,97];
+const ARC_SPAN=162,BLOCK_GAP=3.5;
+const BSPAN=(ARC_SPAN-BLOCK_GAP*(BLOCKS-1))/BLOCKS;
+const ARC_START=180+(180-ARC_SPAN)/2;
+
+const ROLES={
+  'Narendra Modi':        {role:'Prime Minister',        tag:'tag-gold',  wl:5},
+  'Om Birla':             {role:'Speaker',               tag:'tag-gold',  wl:3},
+  'Rajnath Singh':        {role:'Defence Minister',      tag:'tag-orange',wl:3},
+  'Amit Shah':            {role:'Home Minister',         tag:'tag-orange',wl:4},
+  'Nitin Gadkari':        {role:'Road Transport Min.',   tag:'tag-orange',wl:3},
+  'Piyush Goyal':         {role:'Commerce Minister',     tag:'tag-orange',wl:2},
+  'Shivraj Singh Chauhan':{role:'Agriculture Minister',  tag:'tag-orange',wl:2},
+  'Jyotiraditya Scindia': {role:'Civil Aviation Min.',   tag:'tag-orange',wl:2},
+  'Manohar Lal Khattar':  {role:'Housing Minister',      tag:'tag-orange',wl:2},
+  'Dharmendra Pradhan':   {role:'Education Minister',    tag:'tag-orange',wl:2},
+  'Sarbananda Sonowal':   {role:'Ports Minister',        tag:'tag-orange',wl:2},
+  'Mansukh Mandaviya':    {role:'Labour Minister',       tag:'tag-orange',wl:2},
+  'G. Kishan Reddy':      {role:'Coal Minister',         tag:'tag-orange',wl:2},
+  'Kiren Rijiju':         {role:'Parliamentary Affairs', tag:'tag-orange',wl:2},
+  'Chirag Paswan':        {role:'Food Processing Min.',  tag:'tag-orange',wl:2},
+  'Arjun Ram Meghwal':    {role:'Law Minister',          tag:'tag-orange',wl:2},
+  'Pralhad Joshi':        {role:'New & Renewable Energy',tag:'tag-orange',wl:2},
+  'Kinjarapu Ram Mohan Naidu':{role:'Civil Aviation Min.',tag:'tag-orange',wl:2},
+  'Rahul Gandhi':         {role:'Leader of Opposition',  tag:'tag-blue',  wl:3},
+  'K. C. Venugopal':      {role:'INC Org. Secretary',   tag:'tag-blue',  wl:2},
+};
+
+let mpsData=null,partiesData=null,positioned=[],speakerSeat=null,hovered=null;
+let CW=0,CH=0,cx=0,cy=0,panelOpen=false;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const tooltip=document.getElementById('tooltip');
+const cwrap=document.getElementById('cwrap');
+const cardPanel=document.getElementById('card-panel');
+
+function makeRowCounts(total){
+  const base=Math.floor(total/ROWS),rem=total%ROWS;
+  return Array.from({length:ROWS},(_,i)=>i<rem?base+1:base);
+}
+const rowCounts=BLOCK_SEATS.map(makeRowCounts);
+
+function lighten(hex,amt=75){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+amt)},${Math.min(255,g+amt)},${Math.min(255,b+amt)})`;
+}
+function initials(name){return name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+
+function buildSeats(w,h){
+  CW=w;CH=h;cx=w/2;cy=h;
+  positioned=[];
+  const MIN_R=Math.min(w,h*1.8)*0.11;
+  const MAX_R=Math.min(w/2,h)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.29));
+
+  const allPos=[];
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      const arcR=MIN_R+r*ROW_SPACING,n=rowCounts[b][r];
+      for(let s=0;s<n;s++){
+        const t=n===1?(bS+bE)/2:bS+(s/(n-1))*(bE-bS);
+        allPos.push({x:cx+arcR*Math.cos(t),y:cy+arcR*Math.sin(t),r:SEAT_R,block:b,row:r});
+      }
+    }
+  }
+
+  const rightPos=allPos.filter(s=>s.block<=2).sort((a,b)=>a.row-b.row||a.x-b.x);
+  const leftPos =allPos.filter(s=>s.block>=3).sort((a,b)=>a.row-b.row||b.x-a.x);
+
+  const ndaM=mpsData.filter(m=>partiesData[m.party]?.side==='right');
+  const othM=mpsData.filter(m=>partiesData[m.party]?.side!=='right');
+
+  function hoist(arr,name){const i=arr.findIndex(m=>m.name===name);if(i>0){const[x]=arr.splice(i,1);arr.unshift(x);}}
+  hoist(ndaM,'Narendra Modi');hoist(ndaM,'Rajnath Singh');hoist(ndaM,'Amit Shah');hoist(ndaM,'Nitin Gadkari');
+  hoist(othM,'Rahul Gandhi');hoist(othM,'K. C. Venugopal');
+
+  rightPos.forEach((sp,i)=>{
+    if(i>=ndaM.length)return;
+    const mp=ndaM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
+  });
+  leftPos.forEach((sp,i)=>{
+    if(i>=othM.length)return;
+    const mp=othM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
+  });
+
+  speakerSeat={x:cx,y:cy-MIN_R*0.52,r:Math.max(7,SEAT_R*1.7),
+    mp:{name:'Om Birla',constituency:'Kota',state:'Rajasthan',party:'BJP'},
+    color:'#d4a400',block:-1,row:-1,isMin:false};
+}
+
+function draw(){
+  ctx.clearRect(0,0,CW,CH);
+  ctx.fillStyle='#05080f';ctx.fillRect(0,0,CW,CH);
+
+  const MIN_R=Math.min(CW,CH*1.8)*0.11;
+  const MAX_R=Math.min(CW/2,CH)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.29));
+
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      ctx.beginPath();
+      ctx.arc(cx,cy,MIN_R+r*ROW_SPACING,bS,bE);
+      ctx.strokeStyle='#0d1e30';ctx.lineWidth=SEAT_R*2+3;ctx.stroke();
+    }
+  }
+
+  for(const s of positioned){
+    const isH=s===hovered;
+    // minister glow ring
+    if(s.isMin){
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r+3.5,0,2*Math.PI);
+      ctx.strokeStyle=isH?'rgba(255,220,80,0.9)':'rgba(255,220,80,0.5)';
+      ctx.lineWidth=1.5;ctx.stroke();
+    }
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r+(isH?2.5:0),0,2*Math.PI);
+    ctx.fillStyle=isH?lighten(s.color):s.color;ctx.fill();
+    if(isH){ctx.strokeStyle='#ffffff66';ctx.lineWidth=1.5;ctx.stroke();}
+  }
+
+  // Speaker
+  const sp=speakerSeat;
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+4,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,164,0,0.3)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+(hovered===sp?3:0),0,2*Math.PI);
+  ctx.fillStyle='#d4a400';ctx.fill();
+  if(hovered===sp){ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=2;ctx.stroke();}
+
+  const fs=Math.max(9,Math.min(11,CW*0.012));
+  ctx.font=`${fs}px 'Share Tech Mono',monospace`;
+  ctx.fillStyle='rgba(196,148,0,0.65)';ctx.textAlign='center';
+  ctx.fillText('SPEAKER',cx,sp.y-sp.r-6);
+  ctx.fillStyle='#1a4060';
+  ctx.textAlign='left';ctx.fillText('NDA →',cx+14,cy-8);
+  ctx.textAlign='right';ctx.fillText('← INDIA',cx-14,cy-8);
+}
+
+function showTooltip(s,ex,ey){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color;
+  const role=ROLES[mp.name];
+  tooltip.innerHTML=`
+    <div class="tt-bar" style="background:${color}"></div>
+    <div class="tt-name">${mp.name}</div>
+    ${role?`<div class="tt-role-tag" style="color:${color};border-color:${color};background:${color}15">${role.role}</div>`:''}
+    <div class="tt-const">${mp.constituency||'—'} · ${mp.state||''}</div>
+    <div class="tt-row">
+      <div class="tt-cell"><div class="l">Party</div><div class="v" style="color:${color}">${party.name||mp.party}</div></div>
+      <div class="tt-cell"><div class="l">Coalition</div><div class="v">${party.coalition||'—'}</div></div>
+    </div>
+    <div class="tt-hint">[ click to open dossier ]</div>`;
+  tooltip.style.display='block';
+  const wr=cwrap.getBoundingClientRect();
+  let tx=ex+16,ty=ey-55;
+  if(tx+270>wr.width)tx=ex-275;
+  if(ty<0)ty=4;
+  if(ty+tooltip.offsetHeight>wr.height)ty=wr.height-tooltip.offsetHeight-4;
+  tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
+}
+
+function openCard(s){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color||'#c8a84b';
+  const role=ROLES[mp.name]||null;
+  const ini=initials(mp.name);
+  const wl=role?.wl||1;
+  const stars=Array.from({length:5},(_,i)=>`<div class="star ${i<wl?'on':'off'}"></div>`).join('');
+
+  const tags=[];
+  if(role) tags.push({label:role.role,cls:role.tag});
+  if(party.coalition) tags.push({label:party.coalition,cls:party.coalition==='NDA'?'tag-orange':'tag-blue'});
+  tags.push({label:party.name||mp.party,cls:'tag-green'});
+  tags.push({label:mp.state,cls:'tag-gold'});
+
+  // derive some placeholder bar values seeded from name length (stable but varied)
+  const seed=mp.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const pct=(base,range)=>Math.min(99,Math.max(20,base+(seed%range)));
+
+  document.getElementById('gta-wrap').innerHTML=`
+    <div class="si dossier-label">// PARLIAMENT DOSSIER v1.0</div>
+    <div class="si si1 wanted-row">${stars}</div>
+
+    <div class="si si2 hero-grid">
+      <div style="position:relative">
+        <div class="portrait">
+          <div class="portrait-fallback">${ini}</div>
+          <div class="portrait-party" style="color:${color}">${mp.party}</div>
+        </div>
+        <div class="pc tl"></div><div class="pc tr"></div>
+        <div class="pc bl"></div><div class="pc br"></div>
+      </div>
+      <div>
+        <div class="mp-name">${mp.name}</div>
+        <div class="mp-alias">${mp.constituency}<br>${mp.state} · Lok Sabha</div>
+        <div class="tag-row">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
+        <div class="stats-grid">
+          <div class="stat-row"><span class="s-icon">🏛️</span><span class="s-label">PARTY</span><span class="s-val" style="color:${color};font-size:10px">${mp.party}</span></div>
+          <div class="stat-row"><span class="s-icon">🗺️</span><span class="s-label">STATE</span><span class="s-val" style="font-size:10px">${mp.state}</span></div>
+          <div class="stat-row"><span class="s-icon">🤝</span><span class="s-label">COALITION</span><span class="s-val ${party.coalition==='NDA'?'gold':'green'}">${party.coalition||'Other'}</span></div>
+          <div class="stat-row"><span class="s-icon">🪑</span><span class="s-label">SEAT</span><span class="s-val">${s.block>=0?`B${s.block+1}·R${s.row+1}`:'Speaker'}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="si si3">
+      <div class="section-title">// performance stats</div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Attendance</span><span class="bar-pct" id="bp0">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${pct(55,30)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Questions & debates</span><span class="bar-pct" id="bp1">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${pct(40,40)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Criminal cases index</span><span class="bar-pct" id="bp2">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill red" data-pct="${pct(10,50)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Party loyalty score</span><span class="bar-pct" id="bp3">&mdash;</span></div>
+        <div class="bar-track"><div class="bar-fill gold" data-pct="${pct(65,30)}"></div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:6px">* real affidavit data — Phase 4</div>
+    </div>
+
+    <div class="si si4">
+      <div class="section-title">// connections & network</div>
+      <div class="net-grid">
+        <div class="person-chip"><div class="chip-name">${party.name||mp.party}</div><div class="chip-rel">political party</div></div>
+        <div class="person-chip"><div class="chip-name">${party.coalition||'Independent'}</div><div class="chip-rel">coalition bloc</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.state}</div><div class="chip-rel">home state</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.constituency}</div><div class="chip-rel">constituency</div></div>
+      </div>
+    </div>
+
+    <div class="si si5 card-footer">
+      <span class="src-link">sansad.in · myneta.info · ADR</span>
+      <span class="adr-badge">NETA CHECK v1</span>
+    </div>
+  `;
+
+  cardPanel.classList.add('open');
+  panelOpen=true;
+  tooltip.style.display='none';
+  document.getElementById('card-inner').scrollTop=0;
+
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill[data-pct]').forEach((el,i)=>{
+      const pct=parseInt(el.dataset.pct);
+      el.style.width=pct+'%';
+      const labels=['bp0','bp1','bp2','bp3'];
+      const lbl=document.getElementById(labels[i]);
+      if(lbl)lbl.textContent=pct+'%';
+    });
+  },90);
+
+  setTimeout(()=>resize(),460);
+}
+
+function closePanel(){
+  cardPanel.classList.remove('open');
+  panelOpen=false;
+  setTimeout(()=>resize(),460);
+}
+
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const sx=CW/rect.width,sy=CH/rect.height;
+  const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+  let found=null;
+  for(const s of [...positioned,speakerSeat]){
+    const dx=mx-s.x,dy=my-s.y;
+    if(dx*dx+dy*dy<=(s.r+6)*(s.r+6)){found=s;break;}
+  }
+  if(found!==hovered){hovered=found;draw();}
+  if(found){
+    canvas.style.cursor='pointer';
+    showTooltip(found,e.clientX-cwrap.getBoundingClientRect().left,e.clientY-cwrap.getBoundingClientRect().top);
+  } else {
+    canvas.style.cursor='default';
+    tooltip.style.display='none';
+  }
+});
+canvas.addEventListener('mouseleave',()=>{hovered=null;tooltip.style.display='none';draw();});
+canvas.addEventListener('click',()=>{if(hovered)openCard(hovered);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panelOpen)closePanel();});
+
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  const w=cwrap.clientWidth,h=cwrap.clientHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  ctx.scale(dpr,dpr);
+  if(mpsData){buildSeats(w,h);draw();}
+}
+new ResizeObserver(resize).observe(cwrap);
+
+function buildLegend(){
+  const row=document.getElementById('legend-row');
+  [['BJP','BJP'],['INC','INC'],['SP','SP'],['TMC','TMC'],['DMK','DMK'],
+   ['TDP','TDP'],['JDU','JDU'],['SSUBT','SS(UBT)'],['NCPSP','NCP-SP'],
+   ['SHS','Shiv Sena'],['LJP','LJP'],['JMM','JMM'],['AAP','AAP'],['IND','Ind']
+  ].forEach(([key,label])=>{
+    const p=partiesData[key];if(!p)return;
+    const d=document.createElement('div');d.className='li';
+    d.innerHTML=`<div class="ld" style="background:${p.color}"></div>${label}`;
+    row.appendChild(d);
+  });
+  // Speaker
+  const sp=document.createElement('div');sp.className='li';
+  sp.innerHTML=`<div class="ld" style="background:#d4a400"></div>Speaker`;
+  row.appendChild(sp);
+  // Minister ring
+  const mn=document.createElement('div');mn.className='li';
+  mn.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,220,80,0.7);background:#e8630a;flex-shrink:0"></div>Minister`;
+  row.appendChild(mn);
+}
+
+async function init(){
+  try{
+    const res=await fetch('mps.json');
+    const data=await res.json();
+    mpsData=data.members;partiesData=data.parties;
+    buildLegend();resize();
+    document.getElementById('loading').style.display='none';
+  }catch(err){
+    document.querySelector('.loading-text').textContent='ERROR: run via localhost + mps.json in same folder';
+    console.error(err);
+  }
+}
+init();
+</script>
+</body>
+</html>
