@@ -552,6 +552,19 @@ function closePanel(){
   setTimeout(()=>resize(),460);
 }
 
+function openFromQueryParam(){
+  const params=new URLSearchParams(window.location.search);
+  const raw=params.get('id');
+  if(!raw)return;
+  const id=parseInt(raw,10);
+  if(!Number.isFinite(id))return;
+  const seat=positioned.find(s=>s.mp&&s.mp.id===id);
+  if(!seat)return;
+  hovered=seat;
+  draw();
+  openCard(seat);
+}
+
 canvas.addEventListener('mousemove',e=>{
   const rect=canvas.getBoundingClientRect();
   const sx=CW/rect.width,sy=CH/rect.height;
@@ -655,6 +668,7 @@ async function init(){
     }
 
     buildLegend();resize();
+    openFromQueryParam();
     document.getElementById('loading').style.display='none';
   }catch(err){
     document.querySelector('.loading-text').textContent='ERROR: run via localhost + mps.json in same folder';

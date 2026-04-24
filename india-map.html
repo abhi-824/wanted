@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neta Check — Know Your MP</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--bg2:#080d18;--bg3:#0b1220;
+  --border:#0f2035;--border2:#162840;
+  --gold:#c8a84b;--red:#e85050;--blue:#1a7fe0;--green:#5ec97a;
+  --text:#c8dff0;--text2:#4a7fa8;--text3:#1e3a58;
+  --mono:'Share Tech Mono',monospace;--sans:'Rajdhani',sans-serif;
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:100;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px);
+}
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(26,127,224,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(26,127,224,0.04) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+
+/* ── LAYOUT ── */
+.page{display:grid;grid-template-rows:48px 1fr 28px;width:100vw;height:100vh;position:relative;z-index:1}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.logo{font-family:var(--mono);font-size:14px;color:#4a9fd4;letter-spacing:.14em}
+.logo span{color:var(--gold)}
+.top-right{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.1em}
+.main{display:grid;grid-template-columns:1fr 380px;overflow:hidden;min-height:0}
+
+/* ── MAP ── */
+.map-panel{position:relative;background:var(--bg);overflow:hidden;border-right:1px solid var(--border)}
+.map-label{position:absolute;top:14px;left:20px;font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em;z-index:5}
+#map-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+#map-wrap svg{width:100%;height:100%;display:block}
+
+/* ── CONSTITUENCY SHAPES ── */
+.constituency{
+  stroke:#0c1e32;
+  stroke-width:0.6;
+  cursor:pointer;
+  transition:filter .12s, stroke .12s;
+}
+.constituency:hover{
+  stroke:rgba(200,168,75,0.85);
+  stroke-width:1.8;
+  filter:brightness(1.9);
+}
+.constituency.active{
+  stroke:#c8a84b;
+  stroke-width:2;
+  filter:brightness(2.2);
+}
+
+/* ── MAP LOADING ── */
+#map-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:var(--bg);z-index:10;
+}
+.load-text{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em}
+.load-bar{width:160px;height:1px;background:var(--border2);border-radius:1px;overflow:hidden}
+.load-fill{height:100%;background:var(--gold);animation:lp 1.4s ease-in-out infinite}
+@keyframes lp{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
+
+/* ── MAP TOOLTIP ── */
+.map-tooltip{
+  position:absolute;pointer-events:none;display:none;z-index:50;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:6px;
+  padding:12px 14px;min-width:210px;
+}
+.mt-bar{height:2px;border-radius:1px;margin-bottom:10px}
+.mt-label{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.12em;margin-bottom:3px}
+.mt-name{font-size:16px;font-weight:700;color:#f0e8cc;margin-bottom:2px;line-height:1.1}
+.mt-state{font-family:var(--mono);font-size:10px;color:var(--text2);margin-bottom:8px}
+.mt-stats{display:flex;gap:18px}
+.mt-stat .l{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.06em;margin-bottom:2px}
+.mt-stat .v{font-size:13px;font-weight:600;color:var(--text)}
+.mt-stat .v.gold{color:var(--gold)}
+.mt-hint{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+
+/* ── RIGHT PANEL ── */
+.right-panel{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden}
+.r-header{padding:24px 24px 0;flex-shrink:0}
+.r-sys{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.14em;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.r-sys::before{content:'';width:20px;height:1px;background:var(--border2)}
+.r-title{font-size:30px;font-weight:700;color:#f0e8cc;line-height:.95;margin-bottom:8px;letter-spacing:-0.5px}
+.r-title span{color:var(--gold)}
+.r-sub{font-family:var(--mono);font-size:10px;color:var(--text2);line-height:1.7;margin-bottom:22px}
+
+.r-body{padding:0 24px;flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.r-body::-webkit-scrollbar{width:3px}
+.r-body::-webkit-scrollbar-thumb{background:var(--border2)}
+
+.field-label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em;margin-bottom:7px}
+
+/* ── SINGLE COMBO SEARCH ── */
+.combo-wrap{position:relative;margin-bottom:22px}
+.combo-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;
+  padding:12px 40px 12px 14px;
+  font-family:var(--sans);font-size:14px;font-weight:500;
+  color:var(--text);outline:none;transition:border-color .2s;
+  caret-color:var(--gold);
+}
+.combo-input::placeholder{color:var(--text3)}
+.combo-input:focus{border-color:rgba(200,168,75,0.5)}
+.combo-clear{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:11px;color:var(--text3);
+  cursor:pointer;display:none;border:none;background:none;padding:4px;
+  transition:color .15s;
+}
+.combo-clear:hover{color:var(--gold)}
+.combo-dropdown{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:200;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:3px;
+  max-height:240px;overflow-y:auto;display:none;
+  scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
+}
+.combo-dropdown::-webkit-scrollbar{width:3px}
+.combo-dropdown::-webkit-scrollbar-thumb{background:var(--border2)}
+.combo-option{
+  padding:10px 14px;font-size:13px;font-weight:500;color:var(--text2);
+  cursor:pointer;transition:background .1s, color .1s;
+  font-family:var(--sans);
+}
+.combo-option:hover,.combo-option.focused{background:rgba(200,168,75,0.08);color:#f0e8cc}
+.combo-option .match{color:var(--gold)}
+.combo-empty{padding:10px 14px;font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* stats */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-chip{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:10px;text-align:center}
+.stat-chip .n{font-size:18px;font-weight:700;line-height:1;color:#f0e8cc}
+.stat-chip .n.red{color:var(--red)}
+.stat-chip .n.gold{color:var(--gold)}
+.stat-chip .n.blue{color:var(--blue)}
+.stat-chip .l{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.06em;margin-top:3px}
+
+/* cta */
+.cta-btn{
+  width:100%;background:var(--gold);color:#0a0800;border:none;border-radius:3px;
+  padding:15px;font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.08em;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:background .2s,transform .1s;position:relative;overflow:hidden;margin-bottom:16px;
+}
+.cta-btn:hover{background:#dbb84a}
+.cta-btn:active{transform:scale(.98)}
+.cta-btn::after{
+  content:'';position:absolute;top:-100%;left:-60%;width:40%;height:300%;
+  background:rgba(255,255,255,0.1);transform:skewX(-20deg);
+  animation:shine 3.5s ease-in-out infinite;
+}
+@keyframes shine{0%,70%{left:-60%}85%{left:130%}100%{left:130%}}
+.btn-arrow{font-size:18px;transition:transform .2s}
+.cta-btn:hover .btn-arrow{transform:translateX(4px)}
+.disclaimer{font-family:var(--mono);font-size:8px;color:var(--text3);line-height:1.7;margin-bottom:24px}
+
+/* status bar */
+.statusbar{background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:20px}
+.sb{font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;gap:5px}
+.sb-dot{width:5px;height:5px;border-radius:50%}
+.live{background:var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.corner{position:fixed;width:48px;height:48px;border-color:var(--border2);border-style:solid;pointer-events:none;z-index:200}
+.corner.tl{top:56px;left:8px;border-width:1px 0 0 1px}
+.corner.tr{top:56px;right:8px;border-width:1px 1px 0 0}
+.corner.bl{bottom:36px;left:8px;border-width:0 0 1px 1px}
+.corner.br{bottom:36px;right:8px;border-width:0 1px 1px 0}
+
+@media(max-width:800px){
+  html,body{overflow:auto}
+  .page{grid-template-rows:48px 1fr auto;height:auto}
+  .main{grid-template-columns:1fr;grid-template-rows:400px 1fr}
+  .map-panel{border-right:none;border-bottom:1px solid var(--border)}
+  .corner{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="corner tl"></div><div class="corner tr"></div>
+<div class="corner bl"></div><div class="corner br"></div>
+
+<div class="page">
+  <div class="topbar">
+    <div class="logo">NETA<span>CHECK</span><span style="color:var(--text3);font-size:10px;margin-left:10px">// 18TH LOK SABHA</span></div>
+    <div class="top-right">543 SEATS · 41 PARTIES · ECI + ADR DATA</div>
+  </div>
+
+  <div class="main">
+
+    <!-- MAP PANEL -->
+    <div class="map-panel" id="map-panel">
+      <div class="map-label">// INDIA — 543 LOK SABHA CONSTITUENCIES</div>
+      <div id="map-wrap"></div>
+      <div id="map-loading">
+        <div class="load-text">LOADING CONSTITUENCY MAP...</div>
+        <div class="load-bar"><div class="load-fill"></div></div>
+      </div>
+      <div class="map-tooltip" id="map-tooltip">
+        <div class="mt-bar" id="mt-bar"></div>
+        <div class="mt-label">CONSTITUENCY</div>
+        <div class="mt-name" id="mt-name">—</div>
+        <div class="mt-state" id="mt-state"></div>
+        <div class="mt-stats">
+          <div class="mt-stat"><div class="l">PARTY</div><div class="v gold" id="mt-party">—</div></div>
+          <div class="mt-stat"><div class="l">MP</div><div class="v" id="mt-mp">—</div></div>
+          <div class="mt-stat"><div class="l">COALITION</div><div class="v" id="mt-coal">—</div></div>
+        </div>
+        <div class="mt-hint">[ click to view MP dossier ]</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="r-header">
+        <div class="r-sys">CONSTITUENCY FINDER v1.0</div>
+        <div class="r-title">FIND YOUR<br><span>MP</span></div>
+        <div class="r-sub">Search or select your constituency to see your MP's full dossier.</div>
+      </div>
+      <div class="r-body">
+
+        <div class="field-label">// SEARCH CONSTITUENCY</div>
+
+        <!-- SINGLE COMBO BOX -->
+        <div class="combo-wrap" id="combo-wrap">
+          <input
+            class="combo-input" id="combo-input"
+            type="text"
+            placeholder="Type constituency name..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="combo-clear" id="combo-clear" title="Clear">✕</button>
+          <div class="combo-dropdown" id="combo-dropdown"></div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-chip"><div class="n blue">543</div><div class="l">TOTAL MPS</div></div>
+          <div class="stat-chip"><div class="n red">251</div><div class="l">WITH CASES</div></div>
+          <div class="stat-chip"><div class="n gold">₹46Cr</div><div class="l">AVG ASSETS</div></div>
+        </div>
+
+        <button class="cta-btn" id="cta-btn" onclick="goToMP()">
+          VIEW MP DOSSIER <span class="btn-arrow">→</span>
+        </button>
+
+        <div class="disclaimer">
+          Data from ECI self-declared affidavits (2024 General Election)<br>
+          via ADR / myneta.info. Public domain. Cases are pending unless<br>
+          marked convicted. Last updated: June 2024.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="statusbar">
+    <div class="sb"><div class="sb-dot live"></div>LIVE — 18TH LOK SABHA 2024</div>
+    <div class="sb">SOURCE: ECI + ADR</div>
+    <div class="sb">543 SEATS · 41 PARTIES</div>
+    <div class="sb" style="margin-left:auto">NETACHECK v1.0</div>
+  </div>
+</div>
+
+<script>
+/* ── STATE ── */
+const tooltip    = document.getElementById('map-tooltip');
+const mapWrap    = document.getElementById('map-wrap');
+const mapPanel   = document.getElementById('map-panel');
+const comboInput = document.getElementById('combo-input');
+const comboClear = document.getElementById('combo-clear');
+const comboDrop  = document.getElementById('combo-dropdown');
+
+let selectedName      = '';
+let allNames          = [];
+let focusedIdx        = -1;
+let constituencyByName = new Map();
+let constituencyToMpId = new Map();
+
+function normConstName(name) {
+  return (name || '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function buildConstituencyIndex(members) {
+  const byNorm = new Map();
+  (members || []).forEach(m => {
+    const key = normConstName(m.constituency);
+    if (key && !byNorm.has(key) && typeof m.id === 'number') byNorm.set(key, m.id);
+  });
+  return byNorm;
+}
+
+/* ── TOOLTIP ── */
+function posTooltip(cx, cy) {
+  const r = mapPanel.getBoundingClientRect();
+  let tx = cx - r.left + 16, ty = cy - r.top - 50;
+  if (tx + 235 > r.width)  tx = cx - r.left - 245;
+  if (ty < 5)              ty = 5;
+  if (ty + 160 > r.height) ty = r.height - 165;
+  tooltip.style.left = tx + 'px';
+  tooltip.style.top  = ty + 'px';
+}
+
+function showTooltip(el, cx, cy) {
+  const color = el.dataset.color || '#607080';
+  document.getElementById('mt-bar').style.background  = color;
+  document.getElementById('mt-name').textContent       = el.dataset.name  || '—';
+  document.getElementById('mt-state').textContent      = el.dataset.state || '';
+  document.getElementById('mt-party').textContent      = el.dataset.party || '—';
+  document.getElementById('mt-party').style.color      = color;
+  document.getElementById('mt-mp').textContent         = el.dataset.mp    || '—';
+  document.getElementById('mt-coal').textContent       = el.dataset.coalition || '—';
+  posTooltip(cx, cy);
+  tooltip.style.display = 'block';
+}
+
+/* ── MAP HIGHLIGHT ── */
+function setSelectedConstituency(name) {
+  // remove old highlight
+  if (selectedName) {
+    const prev = constituencyByName.get(selectedName);
+    if (prev) prev.classList.remove('active');
+  }
+  selectedName = name || '';
+  // apply new highlight
+  if (selectedName) {
+    const cur = constituencyByName.get(selectedName);
+    if (cur) {
+      cur.classList.add('active');
+      // scroll the SVG element into view on mobile if needed
+      cur.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+  // sync input display
+  comboInput.value = selectedName;
+  comboClear.style.display = selectedName ? 'block' : 'none';
+}
+
+/* ── COMBO DROPDOWN ── */
+function highlight(text, query) {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return text.slice(0, idx)
+    + '<span class="match">' + text.slice(idx, idx + query.length) + '</span>'
+    + text.slice(idx + query.length);
+}
+
+function renderDropdown(query) {
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? allNames.filter(n => n.toLowerCase().includes(q)).slice(0, 60)
+    : allNames.slice(0, 60);
+
+  if (filtered.length === 0) {
+    comboDrop.innerHTML = '<div class="combo-empty">NO MATCH FOUND</div>';
+  } else {
+    comboDrop.innerHTML = filtered.map((name, i) =>
+      `<div class="combo-option" data-name="${name}" data-idx="${i}">${highlight(name, q)}</div>`
+    ).join('');
+  }
+  focusedIdx = -1;
+  comboDrop.style.display = 'block';
+}
+
+function closeDropdown() {
+  comboDrop.style.display = 'none';
+  focusedIdx = -1;
+}
+
+function updateFocus(newIdx) {
+  const opts = comboDrop.querySelectorAll('.combo-option');
+  opts.forEach(o => o.classList.remove('focused'));
+  focusedIdx = Math.max(-1, Math.min(newIdx, opts.length - 1));
+  if (focusedIdx >= 0) {
+    opts[focusedIdx].classList.add('focused');
+    opts[focusedIdx].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+comboInput.addEventListener('focus', () => {
+  renderDropdown(comboInput.value);
+});
+
+comboInput.addEventListener('input', () => {
+  const q = comboInput.value;
+  comboClear.style.display = q ? 'block' : 'none';
+  // deselect if user is typing again
+  if (selectedName && q !== selectedName) {
+    setSelectedConstituency('');
+    selectedName = '';
+  }
+  renderDropdown(q);
+});
+
+comboInput.addEventListener('keydown', e => {
+  if (comboDrop.style.display === 'none') { renderDropdown(comboInput.value); return; }
+  const opts = comboDrop.querySelectorAll('.combo-option');
+  if (e.key === 'ArrowDown')       { e.preventDefault(); updateFocus(focusedIdx + 1); }
+  else if (e.key === 'ArrowUp')    { e.preventDefault(); updateFocus(focusedIdx - 1); }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (focusedIdx >= 0 && opts[focusedIdx]) {
+      selectOption(opts[focusedIdx].dataset.name);
+    } else {
+      // pick first match
+      const first = comboDrop.querySelector('.combo-option');
+      if (first) selectOption(first.dataset.name);
+    }
+  }
+  else if (e.key === 'Escape') { closeDropdown(); comboInput.blur(); }
+});
+
+comboDrop.addEventListener('mousedown', e => {
+  const opt = e.target.closest('.combo-option');
+  if (opt) { e.preventDefault(); selectOption(opt.dataset.name); }
+});
+
+comboClear.addEventListener('mousedown', e => {
+  e.preventDefault();
+  comboInput.value = '';
+  setSelectedConstituency('');
+  comboClear.style.display = 'none';
+  renderDropdown('');
+  comboInput.focus();
+});
+
+// close on outside click
+document.addEventListener('mousedown', e => {
+  if (!document.getElementById('combo-wrap').contains(e.target)) closeDropdown();
+});
+
+function selectOption(name) {
+  setSelectedConstituency(name);
+  closeDropdown();
+  comboInput.blur();
+}
+
+/* ── WIRE MAP ── */
+function wireMap() {
+  const constituencies = document.querySelectorAll('.constituency');
+  console.log('Wired', constituencies.length, 'constituencies');
+  constituencyByName.clear();
+  constituencies.forEach(el => {
+    if (el.dataset.name) constituencyByName.set(el.dataset.name, el);
+  });
+
+  constituencies.forEach(el => {
+    el.addEventListener('mouseenter', e => {
+      if (el.dataset.name !== selectedName) el.classList.add('active');
+      showTooltip(el, e.clientX, e.clientY);
+    });
+    el.addEventListener('mousemove', e => posTooltip(e.clientX, e.clientY));
+    el.addEventListener('mouseleave', () => {
+      if (el.dataset.name !== selectedName) el.classList.remove('active');
+      tooltip.style.display = 'none';
+    });
+    el.addEventListener('click', () => {
+      selectOption(el.dataset.name || '');
+      tooltip.style.display = 'none';
+    });
+  });
+}
+
+/* ── LOAD SVG + DATA ── */
+Promise.all([
+  fetch('india_constituencies.svg').then(r => { if (!r.ok) throw new Error('SVG not found'); return r.text(); }),
+  fetch('constituencies.json').then(r => { if (!r.ok) throw new Error('constituencies.json not found'); return r.json(); }),
+  fetch('mps.json').then(r => { if (!r.ok) throw new Error('mps.json not found'); return r.json(); })
+])
+.then(([svgText, constituencyNames, mpsData]) => {
+  mapWrap.innerHTML = svgText;
+  const svg = mapWrap.querySelector('svg');
+  if (svg) {
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.style.width = '100%';
+    svg.style.height = '100%';
+  }
+  document.getElementById('map-loading').style.display = 'none';
+
+  allNames = Array.isArray(constituencyNames) ? constituencyNames.slice().sort() : [];
+  constituencyToMpId = buildConstituencyIndex(mpsData?.members || []);
+  wireMap();
+})
+.catch(err => {
+  console.error('Map load failed:', err);
+  document.querySelector('.load-text').textContent = 'MAP LOAD ERROR — serve via localhost';
+  document.querySelector('.load-fill').style.animation = 'none';
+  document.querySelector('.load-fill').style.background = '#e85050';
+});
+
+/* ── GO ── */
+function goToMP() {
+  if (!selectedName) {
+    const btn = document.getElementById('cta-btn');
+    btn.style.background = '#c84040';
+    btn.style.color = '#fff';
+    btn.innerHTML = '⚠ SELECT A CONSTITUENCY FIRST';
+    setTimeout(() => {
+      btn.style.background = 'var(--gold)';
+      btn.style.color = '#0a0800';
+      btn.innerHTML = 'VIEW MP DOSSIER <span class="btn-arrow">→</span>';
+    }, 1800);
+    return;
+  }
+  const mpId = constituencyToMpId.get(normConstName(selectedName));
+  if (!mpId) {
+    const btn = document.getElementById('cta-btn');
+    btn.style.background = '#c84040';
+    btn.style.color = '#fff';
+    btn.innerHTML = '⚠ MP ID NOT FOUND FOR THIS SEAT';
+    setTimeout(() => {
+      btn.style.background = 'var(--gold)';
+      btn.style.color = '#0a0800';
+      btn.innerHTML = 'VIEW MP DOSSIER <span class="btn-arrow">→</span>';
+    }, 1800);
+    return;
+  }
+  window.location.href = 'dossier.html?id=' + encodeURIComponent(mpId);
+}
+</script>
+</body>
+</html>
