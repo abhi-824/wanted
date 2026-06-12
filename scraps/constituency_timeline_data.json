@@ -1,0 +1,56 @@
+{
+  "ambala": {
+    "name": "Ambala",
+    "state": "Haryana",
+    "type": "SC Reserved",
+    "totalVoters": "16.8L",
+    "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "electionYears": [2014, 2019, 2024],
+    "mplads": {
+      "2014": { "alloc": 5.0, "util": 4.1, "projects": [{"name":"Roads","pct":38},{"name":"Water","pct":24},{"name":"Schools","pct":22},{"name":"Health","pct":16}] },
+      "2015": { "alloc": 5.0, "util": 3.8, "projects": [{"name":"Roads","pct":42},{"name":"Water","pct":20},{"name":"Schools","pct":20},{"name":"Health","pct":18}] },
+      "2016": { "alloc": 5.0, "util": 4.4, "projects": [{"name":"Roads","pct":35},{"name":"Water","pct":28},{"name":"Schools","pct":22},{"name":"Health","pct":15}] },
+      "2017": { "alloc": 5.0, "util": 4.6, "projects": [{"name":"Roads","pct":30},{"name":"Water","pct":30},{"name":"Schools","pct":24},{"name":"Health","pct":16}] },
+      "2018": { "alloc": 5.0, "util": 3.9, "projects": [{"name":"Roads","pct":40},{"name":"Water","pct":22},{"name":"Schools","pct":20},{"name":"Health","pct":18}] },
+      "2019": { "alloc": 5.0, "util": 4.7, "projects": [{"name":"Roads","pct":28},{"name":"Water","pct":32},{"name":"Schools","pct":25},{"name":"Health","pct":15}] },
+      "2020": { "alloc": 5.0, "util": 2.1, "projects": [{"name":"Roads","pct":20},{"name":"Water","pct":35},{"name":"Schools","pct":25},{"name":"Health","pct":20}] },
+      "2021": { "alloc": 5.0, "util": 3.2, "projects": [{"name":"Roads","pct":30},{"name":"Water","pct":30},{"name":"Schools","pct":20},{"name":"Health","pct":20}] },
+      "2022": { "alloc": 5.0, "util": 4.0, "projects": [{"name":"Roads","pct":35},{"name":"Water","pct":25},{"name":"Schools","pct":25},{"name":"Health","pct":15}] },
+      "2023": { "alloc": 5.0, "util": 3.5, "projects": [{"name":"Roads","pct":32},{"name":"Water","pct":28},{"name":"Schools","pct":24},{"name":"Health","pct":16}] },
+      "2024": { "alloc": 5.0, "util": 1.2, "projects": [{"name":"Roads","pct":45},{"name":"Water","pct":25},{"name":"Schools","pct":20},{"name":"Health","pct":10}] }
+    },
+    "mpByYear": {
+      "2014":"kataria","2015":"kataria","2016":"kataria","2017":"kataria","2018":"kataria",
+      "2019":"kataria19","2020":"kataria19","2021":"kataria19","2022":"kataria19","2023":"kataria19",
+      "2024":"varun"
+    },
+    "turnout": {"2014":72.1,"2019":70.8,"2024":65.3}
+  },
+  "bhilwara": {
+    "name": "Bhilwara",
+    "state": "Rajasthan",
+    "type": "General",
+    "totalVoters": "21.4L",
+    "years": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "electionYears": [2014, 2019, 2024],
+    "mplads": {
+      "2014": { "alloc": 5.0, "util": 3.6, "projects": [{"name":"Roads","pct":44},{"name":"Water","pct":20},{"name":"Schools","pct":20},{"name":"Health","pct":16}] },
+      "2015": { "alloc": 5.0, "util": 4.0, "projects": [{"name":"Roads","pct":40},{"name":"Water","pct":22},{"name":"Schools","pct":20},{"name":"Health","pct":18}] },
+      "2016": { "alloc": 5.0, "util": 3.8, "projects": [{"name":"Roads","pct":38},{"name":"Water","pct":24},{"name":"Schools","pct":22},{"name":"Health","pct":16}] },
+      "2017": { "alloc": 5.0, "util": 4.2, "projects": [{"name":"Roads","pct":35},{"name":"Water","pct":26},{"name":"Schools","pct":23},{"name":"Health","pct":16}] },
+      "2018": { "alloc": 5.0, "util": 3.5, "projects": [{"name":"Roads","pct":42},{"name":"Water","pct":20},{"name":"Schools","pct":22},{"name":"Health","pct":16}] },
+      "2019": { "alloc": 5.0, "util": 4.5, "projects": [{"name":"Roads","pct":30},{"name":"Water","pct":28},{"name":"Schools","pct":25},{"name":"Health","pct":17}] },
+      "2020": { "alloc": 5.0, "util": 2.4, "projects": [{"name":"Roads","pct":22},{"name":"Water","pct":32},{"name":"Schools","pct":26},{"name":"Health","pct":20}] },
+      "2021": { "alloc": 5.0, "util": 3.8, "projects": [{"name":"Roads","pct":34},{"name":"Water","pct":26},{"name":"Schools","pct":24},{"name":"Health","pct":16}] },
+      "2022": { "alloc": 5.0, "util": 4.1, "projects": [{"name":"Roads","pct":36},{"name":"Water","pct":26},{"name":"Schools","pct":22},{"name":"Health","pct":16}] },
+      "2023": { "alloc": 5.0, "util": 3.2, "projects": [{"name":"Roads","pct":38},{"name":"Water","pct":24},{"name":"Schools","pct":22},{"name":"Health","pct":16}] },
+      "2024": { "alloc": 5.0, "util": 0.8, "projects": [{"name":"Roads","pct":50},{"name":"Water","pct":20},{"name":"Schools","pct":18},{"name":"Health","pct":12}] }
+    },
+    "mpByYear": {
+      "2014":"bahedia","2015":"bahedia","2016":"bahedia","2017":"bahedia","2018":"bahedia",
+      "2019":"bahedia19","2020":"bahedia19","2021":"bahedia19","2022":"bahedia19","2023":"bahedia19",
+      "2024":"damodar"
+    },
+    "turnout": {"2014":68.2,"2019":65.8,"2024":60.4}
+  }
+}

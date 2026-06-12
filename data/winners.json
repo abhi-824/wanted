@@ -1,0 +1,3704 @@
+{
+  "1": {
+    "candidate_id": 5099,
+    "name": "Gumma Thanuja Rani",
+    "constituency": "",
+    "constituency_id": 1,
+    "state": ""
+  },
+  "2": {
+    "candidate_id": 6620,
+    "name": "Kinjarapu Rammohan Naidu",
+    "constituency": "",
+    "constituency_id": 2,
+    "state": ""
+  },
+  "3": {
+    "candidate_id": 5132,
+    "name": "Appalanaidu Kalisetti",
+    "constituency": "",
+    "constituency_id": 3,
+    "state": ""
+  },
+  "4": {
+    "candidate_id": 5130,
+    "name": "Sribharat Mathukumili",
+    "constituency": "",
+    "constituency_id": 4,
+    "state": ""
+  },
+  "5": {
+    "candidate_id": 5268,
+    "name": "C.M.Ramesh",
+    "constituency": "",
+    "constituency_id": 5,
+    "state": ""
+  },
+  "6": {
+    "candidate_id": 5302,
+    "name": "Tangella Uday Srinivas (Tea Time Uday)",
+    "constituency": "",
+    "constituency_id": 6,
+    "state": ""
+  },
+  "7": {
+    "candidate_id": 5300,
+    "name": "G M Harish (Balayogi)",
+    "constituency": "",
+    "constituency_id": 7,
+    "state": ""
+  },
+  "8": {
+    "candidate_id": 5122,
+    "name": "Daggubati Purandheshwari",
+    "constituency": "",
+    "constituency_id": 8,
+    "state": ""
+  },
+  "9": {
+    "candidate_id": 5273,
+    "name": "Bhupathi Raju Srinivasa Varma",
+    "constituency": "",
+    "constituency_id": 9,
+    "state": ""
+  },
+  "10": {
+    "candidate_id": 5105,
+    "name": "Putta Mahesh Kumar",
+    "constituency": "",
+    "constituency_id": 10,
+    "state": ""
+  },
+  "11": {
+    "candidate_id": 6657,
+    "name": "Balashowry Vallabhaneni",
+    "constituency": "",
+    "constituency_id": 11,
+    "state": ""
+  },
+  "12": {
+    "candidate_id": 5128,
+    "name": "Kesineni Sivanath (Chinni)",
+    "constituency": "",
+    "constituency_id": 12,
+    "state": ""
+  },
+  "13": {
+    "candidate_id": 5106,
+    "name": "Dr Chandra Sekhar Pemmasani",
+    "constituency": "",
+    "constituency_id": 13,
+    "state": ""
+  },
+  "14": {
+    "candidate_id": 5116,
+    "name": "Lavu Srikrishna Devarayalu",
+    "constituency": "",
+    "constituency_id": 14,
+    "state": ""
+  },
+  "15": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "16": {
+    "candidate_id": 5102,
+    "name": "Krishna Prasad Tenneti",
+    "constituency": "",
+    "constituency_id": 16,
+    "state": ""
+  },
+  "17": {
+    "candidate_id": 5120,
+    "name": "Magunta Sreenivasulu Reddy",
+    "constituency": "",
+    "constituency_id": 17,
+    "state": ""
+  },
+  "18": {
+    "candidate_id": 5114,
+    "name": "Dr Byreddy Shabari",
+    "constituency": "",
+    "constituency_id": 18,
+    "state": ""
+  },
+  "19": {
+    "candidate_id": 6787,
+    "name": "Bastipati Nagaraju Panchalingala",
+    "constituency": "",
+    "constituency_id": 19,
+    "state": ""
+  },
+  "20": {
+    "candidate_id": 5097,
+    "name": "Ambica G Lakshminarayana Valmiki",
+    "constituency": "",
+    "constituency_id": 20,
+    "state": ""
+  },
+  "21": {
+    "candidate_id": 5109,
+    "name": "B K Parthasarathi",
+    "constituency": "",
+    "constituency_id": 21,
+    "state": ""
+  },
+  "22": {
+    "candidate_id": 5111,
+    "name": "Y. S. Avinash Reddy",
+    "constituency": "",
+    "constituency_id": 22,
+    "state": ""
+  },
+  "23": {
+    "candidate_id": 5118,
+    "name": "Prabhakar Reddy Vemireddy",
+    "constituency": "",
+    "constituency_id": 23,
+    "state": ""
+  },
+  "24": {
+    "candidate_id": 5125,
+    "name": "Gurumoorthy Maddila",
+    "constituency": "",
+    "constituency_id": 24,
+    "state": ""
+  },
+  "25": {
+    "candidate_id": 5123,
+    "name": "P V Midhun Reddy",
+    "constituency": "",
+    "constituency_id": 25,
+    "state": ""
+  },
+  "26": {
+    "candidate_id": 5104,
+    "name": "Daggumalla Prasada Rao",
+    "constituency": "",
+    "constituency_id": 26,
+    "state": ""
+  },
+  "27": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "28": {
+    "candidate_id": 251,
+    "name": "Kiren Rijiju",
+    "constituency": "",
+    "constituency_id": 28,
+    "state": ""
+  },
+  "29": {
+    "candidate_id": 257,
+    "name": "Tapir Gao",
+    "constituency": "",
+    "constituency_id": 29,
+    "state": ""
+  },
+  "30": {
+    "candidate_id": 732,
+    "name": "Kamakhya Prasad Tasa",
+    "constituency": "",
+    "constituency_id": 30,
+    "state": ""
+  },
+  "31": {
+    "candidate_id": 741,
+    "name": "Ranjit Dutta",
+    "constituency": "",
+    "constituency_id": 31,
+    "state": ""
+  },
+  "32": {
+    "candidate_id": 239,
+    "name": "Pradan Baruah",
+    "constituency": "",
+    "constituency_id": 32,
+    "state": ""
+  },
+  "33": {
+    "candidate_id": 259,
+    "name": "Sarbananda Sonowal",
+    "constituency": "",
+    "constituency_id": 33,
+    "state": ""
+  },
+  "34": {
+    "candidate_id": 260,
+    "name": "Gaurav Gogoi",
+    "constituency": "",
+    "constituency_id": 34,
+    "state": ""
+  },
+  "35": {
+    "candidate_id": 2753,
+    "name": "Dilip Saikia",
+    "constituency": "",
+    "constituency_id": 35,
+    "state": ""
+  },
+  "36": {
+    "candidate_id": 1924,
+    "name": "Amarsing Tisso",
+    "constituency": "",
+    "constituency_id": 36,
+    "state": ""
+  },
+  "37": {
+    "candidate_id": 2206,
+    "name": "Kripanath Mallah",
+    "constituency": "",
+    "constituency_id": 37,
+    "state": ""
+  },
+  "38": {
+    "candidate_id": 2210,
+    "name": "Parimal Suklabaidya",
+    "constituency": "",
+    "constituency_id": 38,
+    "state": ""
+  },
+  "39": {
+    "candidate_id": 2763,
+    "name": "Pradyut Bordoloi",
+    "constituency": "",
+    "constituency_id": 39,
+    "state": ""
+  },
+  "40": {
+    "candidate_id": 3672,
+    "name": "Joyanta Basumatary",
+    "constituency": "",
+    "constituency_id": 40,
+    "state": ""
+  },
+  "41": {
+    "candidate_id": 4100,
+    "name": "Rakibul Hussain",
+    "constituency": "",
+    "constituency_id": 41,
+    "state": ""
+  },
+  "42": {
+    "candidate_id": 4099,
+    "name": "Phani Bhusan Choudhury",
+    "constituency": "",
+    "constituency_id": 42,
+    "state": ""
+  },
+  "43": {
+    "candidate_id": 4548,
+    "name": "Bijuli Kalita Medhi",
+    "constituency": "",
+    "constituency_id": 43,
+    "state": ""
+  },
+  "44": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "45": {
+    "candidate_id": 1702,
+    "name": "Abhay Kumar Sinha",
+    "constituency": "",
+    "constituency_id": 45,
+    "state": ""
+  },
+  "46": {
+    "candidate_id": 1678,
+    "name": "Jitan Ram Manjhi",
+    "constituency": "",
+    "constituency_id": 46,
+    "state": ""
+  },
+  "47": {
+    "candidate_id": 1695,
+    "name": "Vivek Thakur",
+    "constituency": "",
+    "constituency_id": 47,
+    "state": ""
+  },
+  "48": {
+    "candidate_id": 1681,
+    "name": "Arun Bharti",
+    "constituency": "",
+    "constituency_id": 48,
+    "state": ""
+  },
+  "49": {
+    "candidate_id": 2240,
+    "name": "Mohammad Jawed",
+    "constituency": "",
+    "constituency_id": 49,
+    "state": ""
+  },
+  "50": {
+    "candidate_id": 2239,
+    "name": "Tariq Anwar",
+    "constituency": "",
+    "constituency_id": 50,
+    "state": ""
+  },
+  "51": {
+    "candidate_id": 2710,
+    "name": "Rajesh Ranjan Alias Pappu Yadav",
+    "constituency": "",
+    "constituency_id": 51,
+    "state": ""
+  },
+  "52": {
+    "candidate_id": 1930,
+    "name": "Ajay Kumar Mandal",
+    "constituency": "",
+    "constituency_id": 52,
+    "state": ""
+  },
+  "53": {
+    "candidate_id": 2229,
+    "name": "Giridhari Yadav",
+    "constituency": "",
+    "constituency_id": 53,
+    "state": ""
+  },
+  "54": {
+    "candidate_id": 3437,
+    "name": "Ramprit Mandal",
+    "constituency": "",
+    "constituency_id": 54,
+    "state": ""
+  },
+  "55": {
+    "candidate_id": 3589,
+    "name": "Dileshwar Kamait",
+    "constituency": "",
+    "constituency_id": 55,
+    "state": ""
+  },
+  "56": {
+    "candidate_id": 3627,
+    "name": "Pradeep Kumar Singh",
+    "constituency": "",
+    "constituency_id": 56,
+    "state": ""
+  },
+  "57": {
+    "candidate_id": 3423,
+    "name": "Dinesh Chandra Yadav",
+    "constituency": "",
+    "constituency_id": 57,
+    "state": ""
+  },
+  "58": {
+    "candidate_id": 3633,
+    "name": "Rajesh Verma",
+    "constituency": "",
+    "constituency_id": 58,
+    "state": ""
+  },
+  "59": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "60": {
+    "candidate_id": 5055,
+    "name": "Gopal Jee Thakur",
+    "constituency": "",
+    "constituency_id": 60,
+    "state": ""
+  },
+  "61": {
+    "candidate_id": 5152,
+    "name": "Nityanand Rai",
+    "constituency": "",
+    "constituency_id": 61,
+    "state": ""
+  },
+  "62": {
+    "candidate_id": 5057,
+    "name": "Shambhavi",
+    "constituency": "",
+    "constituency_id": 62,
+    "state": ""
+  },
+  "63": {
+    "candidate_id": 5058,
+    "name": "Giriraj Singh",
+    "constituency": "",
+    "constituency_id": 63,
+    "state": ""
+  },
+  "64": {
+    "candidate_id": 5060,
+    "name": "Rajiv Ranjan Singh Alias Lalan Singh",
+    "constituency": "",
+    "constituency_id": 64,
+    "state": ""
+  },
+  "65": {
+    "candidate_id": 7129,
+    "name": "Devesh Chandra Thakur",
+    "constituency": "",
+    "constituency_id": 65,
+    "state": ""
+  },
+  "66": {
+    "candidate_id": 7275,
+    "name": "Ashok Kumar Yadav",
+    "constituency": "",
+    "constituency_id": 66,
+    "state": ""
+  },
+  "67": {
+    "candidate_id": 7133,
+    "name": "Raj Bhushan Choudhary",
+    "constituency": "",
+    "constituency_id": 67,
+    "state": ""
+  },
+  "68": {
+    "candidate_id": 7279,
+    "name": "Rajiv Pratap Rudy",
+    "constituency": "",
+    "constituency_id": 68,
+    "state": ""
+  },
+  "69": {
+    "candidate_id": 7281,
+    "name": "Chirag Paswan",
+    "constituency": "",
+    "constituency_id": 69,
+    "state": ""
+  },
+  "70": {
+    "candidate_id": 7846,
+    "name": "Sunil Kumar",
+    "constituency": "",
+    "constituency_id": 70,
+    "state": ""
+  },
+  "71": {
+    "candidate_id": 7852,
+    "name": "Dr.Sanjay Jaiswal",
+    "constituency": "",
+    "constituency_id": 71,
+    "state": ""
+  },
+  "72": {
+    "candidate_id": 7856,
+    "name": "Radha Mohan Singh",
+    "constituency": "",
+    "constituency_id": 72,
+    "state": ""
+  },
+  "73": {
+    "candidate_id": 7890,
+    "name": "Lovely Anand",
+    "constituency": "",
+    "constituency_id": 73,
+    "state": ""
+  },
+  "74": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "75": {
+    "candidate_id": 8070,
+    "name": "Veena Devi",
+    "constituency": "",
+    "constituency_id": 75,
+    "state": ""
+  },
+  "76": {
+    "candidate_id": 8110,
+    "name": "Dr. Alok Kumar Suman",
+    "constituency": "",
+    "constituency_id": 76,
+    "state": ""
+  },
+  "77": {
+    "candidate_id": 8120,
+    "name": "Vijaylakshmi Devi",
+    "constituency": "",
+    "constituency_id": 77,
+    "state": ""
+  },
+  "78": {
+    "candidate_id": 8177,
+    "name": "Janardan Singh (Sigriwal)",
+    "constituency": "",
+    "constituency_id": 78,
+    "state": ""
+  },
+  "79": {
+    "candidate_id": 9494,
+    "name": "Kaushalendra Kumar",
+    "constituency": "",
+    "constituency_id": 79,
+    "state": ""
+  },
+  "80": {
+    "candidate_id": 9505,
+    "name": "Ravi Shankar Prasad",
+    "constituency": "",
+    "constituency_id": 80,
+    "state": ""
+  },
+  "81": {
+    "candidate_id": 9528,
+    "name": "Misha Bharti",
+    "constituency": "",
+    "constituency_id": 81,
+    "state": ""
+  },
+  "82": {
+    "candidate_id": 9539,
+    "name": "Sudama Prasad",
+    "constituency": "",
+    "constituency_id": 82,
+    "state": ""
+  },
+  "83": {
+    "candidate_id": 9560,
+    "name": "Sudhakar Singh",
+    "constituency": "",
+    "constituency_id": 83,
+    "state": ""
+  },
+  "84": {
+    "candidate_id": 9567,
+    "name": "Manoj Kumar",
+    "constituency": "",
+    "constituency_id": 84,
+    "state": ""
+  },
+  "85": {
+    "candidate_id": 9587,
+    "name": "Raja Ram Singh",
+    "constituency": "",
+    "constituency_id": 85,
+    "state": ""
+  },
+  "86": {
+    "candidate_id": 9601,
+    "name": "Surendra Prasad Yadav",
+    "constituency": "",
+    "constituency_id": 86,
+    "state": ""
+  },
+  "87": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "88": {
+    "candidate_id": 8819,
+    "name": "Manish Tewari",
+    "constituency": "",
+    "constituency_id": 88,
+    "state": ""
+  },
+  "89": {
+    "candidate_id": 268,
+    "name": "Mahesh Kashyap",
+    "constituency": "",
+    "constituency_id": 89,
+    "state": ""
+  },
+  "90": {
+    "candidate_id": 1936,
+    "name": "Santosh Pandey",
+    "constituency": "",
+    "constituency_id": 90,
+    "state": ""
+  },
+  "91": {
+    "candidate_id": 2129,
+    "name": "Roop Kumari Choudhary",
+    "constituency": "",
+    "constituency_id": 91,
+    "state": ""
+  },
+  "92": {
+    "candidate_id": 1932,
+    "name": "Bhojraj Nag",
+    "constituency": "",
+    "constituency_id": 92,
+    "state": ""
+  },
+  "93": {
+    "candidate_id": 3450,
+    "name": "Chintamani Maharaj",
+    "constituency": "",
+    "constituency_id": 93,
+    "state": ""
+  },
+  "94": {
+    "candidate_id": 3425,
+    "name": "Radheshyam Rathiya",
+    "constituency": "",
+    "constituency_id": 94,
+    "state": ""
+  },
+  "95": {
+    "candidate_id": 3677,
+    "name": "Kamlesh Jangde",
+    "constituency": "",
+    "constituency_id": 95,
+    "state": ""
+  },
+  "96": {
+    "candidate_id": 3647,
+    "name": "Jyotsna Charandas Mahant",
+    "constituency": "",
+    "constituency_id": 96,
+    "state": ""
+  },
+  "97": {
+    "candidate_id": 3590,
+    "name": "Tokhan Sahu",
+    "constituency": "",
+    "constituency_id": 97,
+    "state": ""
+  },
+  "98": {
+    "candidate_id": 3442,
+    "name": "Vijay Baghel",
+    "constituency": "",
+    "constituency_id": 98,
+    "state": ""
+  },
+  "99": {
+    "candidate_id": 3427,
+    "name": "Brijmohan Agrawal",
+    "constituency": "",
+    "constituency_id": 99,
+    "state": ""
+  },
+  "100": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "101": {
+    "candidate_id": 3667,
+    "name": "Patel Umeshbhai Babubhai",
+    "constituency": "",
+    "constituency_id": 101,
+    "state": ""
+  },
+  "102": {
+    "candidate_id": 3666,
+    "name": "Delkar Kalaben Mohanbhai",
+    "constituency": "",
+    "constituency_id": 102,
+    "state": ""
+  },
+  "103": {
+    "candidate_id": 7896,
+    "name": "Praveen Khandelwal",
+    "constituency": "",
+    "constituency_id": 103,
+    "state": ""
+  },
+  "104": {
+    "candidate_id": 7903,
+    "name": "Manoj Tiwari",
+    "constituency": "",
+    "constituency_id": 104,
+    "state": ""
+  },
+  "105": {
+    "candidate_id": 7899,
+    "name": "Harsh Malhotra",
+    "constituency": "",
+    "constituency_id": 105,
+    "state": ""
+  },
+  "106": {
+    "candidate_id": 7901,
+    "name": "Bansuri Swaraj",
+    "constituency": "",
+    "constituency_id": 106,
+    "state": ""
+  },
+  "107": {
+    "candidate_id": 7905,
+    "name": "Yogender Chandoliya",
+    "constituency": "",
+    "constituency_id": 107,
+    "state": ""
+  },
+  "108": {
+    "candidate_id": 7909,
+    "name": "Kamaljeet Sehrawat",
+    "constituency": "",
+    "constituency_id": 108,
+    "state": ""
+  },
+  "109": {
+    "candidate_id": 7907,
+    "name": "Ramvir Singh Bidhuri",
+    "constituency": "",
+    "constituency_id": 109,
+    "state": ""
+  },
+  "110": {
+    "candidate_id": 3668,
+    "name": "Shripad Yesso Naik",
+    "constituency": "",
+    "constituency_id": 110,
+    "state": ""
+  },
+  "111": {
+    "candidate_id": 3876,
+    "name": "Captain Viriato Fernandes",
+    "constituency": "",
+    "constituency_id": 111,
+    "state": ""
+  },
+  "112": {
+    "candidate_id": 3769,
+    "name": "Chavda Vinod Lakhamshi",
+    "constituency": "",
+    "constituency_id": 112,
+    "state": ""
+  },
+  "113": {
+    "candidate_id": 3453,
+    "name": "Geniben Nagaji Thakor",
+    "constituency": "",
+    "constituency_id": 113,
+    "state": ""
+  },
+  "114": {
+    "candidate_id": 3603,
+    "name": "Dabhi Bharatsinhji Shankarji",
+    "constituency": "",
+    "constituency_id": 114,
+    "state": ""
+  },
+  "115": {
+    "candidate_id": 3774,
+    "name": "Haribhai Patel",
+    "constituency": "",
+    "constituency_id": 115,
+    "state": ""
+  },
+  "116": {
+    "candidate_id": 3782,
+    "name": "Shobhanaben Mahendrasinh Baraiya",
+    "constituency": "",
+    "constituency_id": 116,
+    "state": ""
+  },
+  "117": {
+    "candidate_id": 4427,
+    "name": "Amit Shah",
+    "constituency": "",
+    "constituency_id": 117,
+    "state": ""
+  },
+  "118": {
+    "candidate_id": 3452,
+    "name": "Hasmukhbhai Patel (H.S.Patel)",
+    "constituency": "",
+    "constituency_id": 118,
+    "state": ""
+  },
+  "119": {
+    "candidate_id": 3735,
+    "name": "Dineshbhai Makwana (Advocate)",
+    "constituency": "",
+    "constituency_id": 119,
+    "state": ""
+  },
+  "120": {
+    "candidate_id": 3501,
+    "name": "Chandubhai Chhaganbhai Shihora",
+    "constituency": "",
+    "constituency_id": 120,
+    "state": ""
+  },
+  "121": {
+    "candidate_id": 3595,
+    "name": "Parshottambhai Rupala",
+    "constituency": "",
+    "constituency_id": 121,
+    "state": ""
+  },
+  "122": {
+    "candidate_id": 3459,
+    "name": "Dr. Mansukh Mandaviya",
+    "constituency": "",
+    "constituency_id": 122,
+    "state": ""
+  },
+  "123": {
+    "candidate_id": 5028,
+    "name": "Poonamben Hematbhai Maadam",
+    "constituency": "",
+    "constituency_id": 123,
+    "state": ""
+  },
+  "124": {
+    "candidate_id": 3766,
+    "name": "Chudasama Rajeshbhai Naranbhai",
+    "constituency": "",
+    "constituency_id": 124,
+    "state": ""
+  },
+  "125": {
+    "candidate_id": 4067,
+    "name": "Bharatbhai Manubhai Sutariya",
+    "constituency": "",
+    "constituency_id": 125,
+    "state": ""
+  },
+  "126": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "127": {
+    "candidate_id": 3743,
+    "name": "Nimuben Jayantibhai Bambhaniya (Nimuben Bambhaniya)",
+    "constituency": "",
+    "constituency_id": 127,
+    "state": ""
+  },
+  "128": {
+    "candidate_id": 3596,
+    "name": "Mitesh Patel (Bakabhai)",
+    "constituency": "",
+    "constituency_id": 128,
+    "state": ""
+  },
+  "129": {
+    "candidate_id": 3772,
+    "name": "Devusinh Chauhan",
+    "constituency": "",
+    "constituency_id": 129,
+    "state": ""
+  },
+  "130": {
+    "candidate_id": 3430,
+    "name": "Rajpalsinh Mahendrasinh Jadav",
+    "constituency": "",
+    "constituency_id": 130,
+    "state": ""
+  },
+  "131": {
+    "candidate_id": 3748,
+    "name": "Jaswantsinh Sumanbhai Bhabhor",
+    "constituency": "",
+    "constituency_id": 131,
+    "state": ""
+  },
+  "132": {
+    "candidate_id": 3606,
+    "name": "Dr. Hemang Joshi",
+    "constituency": "",
+    "constituency_id": 132,
+    "state": ""
+  },
+  "133": {
+    "candidate_id": 3744,
+    "name": "Jashubhai Bhilubhai Rathva",
+    "constituency": "",
+    "constituency_id": 133,
+    "state": ""
+  },
+  "134": {
+    "candidate_id": 3455,
+    "name": "Mansukhbhai Dhanjibhai Vasava",
+    "constituency": "",
+    "constituency_id": 134,
+    "state": ""
+  },
+  "135": {
+    "candidate_id": 3740,
+    "name": "Parbhubhai Nagarbhai Vasava",
+    "constituency": "",
+    "constituency_id": 135,
+    "state": ""
+  },
+  "136": {
+    "candidate_id": 3783,
+    "name": "Mukeshkumar Chandrakaant Dalal",
+    "constituency": "",
+    "constituency_id": 136,
+    "state": ""
+  },
+  "137": {
+    "candidate_id": 5139,
+    "name": "C R Patil",
+    "constituency": "",
+    "constituency_id": 137,
+    "state": ""
+  },
+  "138": {
+    "candidate_id": 3502,
+    "name": "Dhaval Laxmanbhai Patel",
+    "constituency": "",
+    "constituency_id": 138,
+    "state": ""
+  },
+  "139": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "140": {
+    "candidate_id": 8414,
+    "name": "Varun Chaudhry",
+    "constituency": "",
+    "constituency_id": 140,
+    "state": ""
+  },
+  "141": {
+    "candidate_id": 8542,
+    "name": "Naveen Jindal",
+    "constituency": "",
+    "constituency_id": 141,
+    "state": ""
+  },
+  "142": {
+    "candidate_id": 8546,
+    "name": "Selja",
+    "constituency": "",
+    "constituency_id": 142,
+    "state": ""
+  },
+  "143": {
+    "candidate_id": 8547,
+    "name": "Jai Parkash (J P) S/O Harikesh",
+    "constituency": "",
+    "constituency_id": 143,
+    "state": ""
+  },
+  "144": {
+    "candidate_id": 8552,
+    "name": "Manohar Lal",
+    "constituency": "",
+    "constituency_id": 144,
+    "state": ""
+  },
+  "145": {
+    "candidate_id": 8557,
+    "name": "Satpal Brahamchari",
+    "constituency": "",
+    "constituency_id": 145,
+    "state": ""
+  },
+  "146": {
+    "candidate_id": 8497,
+    "name": "Deepender Singh Hooda",
+    "constituency": "",
+    "constituency_id": 146,
+    "state": ""
+  },
+  "147": {
+    "candidate_id": 8558,
+    "name": "Dharambir Singh",
+    "constituency": "",
+    "constituency_id": 147,
+    "state": ""
+  },
+  "148": {
+    "candidate_id": 8448,
+    "name": "Rao Inderjit Singh",
+    "constituency": "",
+    "constituency_id": 148,
+    "state": ""
+  },
+  "149": {
+    "candidate_id": 8425,
+    "name": "Krishan Pal",
+    "constituency": "",
+    "constituency_id": 149,
+    "state": ""
+  },
+  "150": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "151": {
+    "candidate_id": 8762,
+    "name": "Dr Rajeev Bhardwaj",
+    "constituency": "",
+    "constituency_id": 151,
+    "state": ""
+  },
+  "152": {
+    "candidate_id": 8764,
+    "name": "Kangna Ranaut",
+    "constituency": "",
+    "constituency_id": 152,
+    "state": ""
+  },
+  "153": {
+    "candidate_id": 8760,
+    "name": "Anurag Singh Thakur",
+    "constituency": "",
+    "constituency_id": 153,
+    "state": ""
+  },
+  "154": {
+    "candidate_id": 8766,
+    "name": "Suresh Kumar Kashyap",
+    "constituency": "",
+    "constituency_id": 154,
+    "state": ""
+  },
+  "155": {
+    "candidate_id": 8,
+    "name": "Dr Jitendra Singh",
+    "constituency": "",
+    "constituency_id": 155,
+    "state": ""
+  },
+  "156": {
+    "candidate_id": 1712,
+    "name": "Jugal Kishore",
+    "constituency": "",
+    "constituency_id": 156,
+    "state": ""
+  },
+  "157": {
+    "candidate_id": 4199,
+    "name": "Mian Altaf Ahmad",
+    "constituency": "",
+    "constituency_id": 157,
+    "state": ""
+  },
+  "158": {
+    "candidate_id": 6318,
+    "name": "Aga Syed Ruhullah Mehdi",
+    "constituency": "",
+    "constituency_id": 158,
+    "state": ""
+  },
+  "159": {
+    "candidate_id": 7591,
+    "name": "Abdul Rashid Sheikh",
+    "constituency": "",
+    "constituency_id": 159,
+    "state": ""
+  },
+  "160": {
+    "candidate_id": 5157,
+    "name": "Joba Majhi",
+    "constituency": "",
+    "constituency_id": 160,
+    "state": ""
+  },
+  "161": {
+    "candidate_id": 5153,
+    "name": "Kali Charan Munda",
+    "constituency": "",
+    "constituency_id": 161,
+    "state": ""
+  },
+  "162": {
+    "candidate_id": 6277,
+    "name": "Sukhdeo Bhagat",
+    "constituency": "",
+    "constituency_id": 162,
+    "state": ""
+  },
+  "163": {
+    "candidate_id": 6264,
+    "name": "Vishnu Dayal Ram",
+    "constituency": "",
+    "constituency_id": 163,
+    "state": ""
+  },
+  "164": {
+    "candidate_id": 7142,
+    "name": "Kali Charan Singh",
+    "constituency": "",
+    "constituency_id": 164,
+    "state": ""
+  },
+  "165": {
+    "candidate_id": 7285,
+    "name": "Annpurna Devi",
+    "constituency": "",
+    "constituency_id": 165,
+    "state": ""
+  },
+  "166": {
+    "candidate_id": 7144,
+    "name": "Manish Jaiswal",
+    "constituency": "",
+    "constituency_id": 166,
+    "state": ""
+  },
+  "167": {
+    "candidate_id": 8523,
+    "name": "Chandra Prakash Choudhary",
+    "constituency": "",
+    "constituency_id": 167,
+    "state": ""
+  },
+  "168": {
+    "candidate_id": 8469,
+    "name": "Dulu Mahato",
+    "constituency": "",
+    "constituency_id": 168,
+    "state": ""
+  },
+  "169": {
+    "candidate_id": 8561,
+    "name": "Sanjay Seth",
+    "constituency": "",
+    "constituency_id": 169,
+    "state": ""
+  },
+  "170": {
+    "candidate_id": 8563,
+    "name": "Bidyut Baran Mahato",
+    "constituency": "",
+    "constituency_id": 170,
+    "state": ""
+  },
+  "171": {
+    "candidate_id": 9340,
+    "name": "Vijay Kumar Hansdak",
+    "constituency": "",
+    "constituency_id": 171,
+    "state": ""
+  },
+  "172": {
+    "candidate_id": 9321,
+    "name": "Nalin Soren",
+    "constituency": "",
+    "constituency_id": 172,
+    "state": ""
+  },
+  "173": {
+    "candidate_id": 8770,
+    "name": "Nishikant Dubey",
+    "constituency": "",
+    "constituency_id": 173,
+    "state": ""
+  },
+  "174": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "175": {
+    "candidate_id": 2323,
+    "name": "Kota Srinivas Poojary",
+    "constituency": "",
+    "constituency_id": 175,
+    "state": ""
+  },
+  "176": {
+    "candidate_id": 1890,
+    "name": "Shreyas. M. Patel",
+    "constituency": "",
+    "constituency_id": 176,
+    "state": ""
+  },
+  "177": {
+    "candidate_id": 1889,
+    "name": "Captain Brijesh Chowta",
+    "constituency": "",
+    "constituency_id": 177,
+    "state": ""
+  },
+  "178": {
+    "candidate_id": 1886,
+    "name": "Govind Makthappa Karjol",
+    "constituency": "",
+    "constituency_id": 178,
+    "state": ""
+  },
+  "179": {
+    "candidate_id": 1904,
+    "name": "V. Somanna",
+    "constituency": "",
+    "constituency_id": 179,
+    "state": ""
+  },
+  "180": {
+    "candidate_id": 2651,
+    "name": "H.D. Kumaraswamy",
+    "constituency": "",
+    "constituency_id": 180,
+    "state": ""
+  },
+  "181": {
+    "candidate_id": 1900,
+    "name": "Yaduveer Krishnadatta Chamaraja Wadiyar",
+    "constituency": "",
+    "constituency_id": 181,
+    "state": ""
+  },
+  "182": {
+    "candidate_id": 2193,
+    "name": "Sunil Bose",
+    "constituency": "",
+    "constituency_id": 182,
+    "state": ""
+  },
+  "183": {
+    "candidate_id": 2597,
+    "name": "Dr C N Manjunath",
+    "constituency": "",
+    "constituency_id": 183,
+    "state": ""
+  },
+  "184": {
+    "candidate_id": 2178,
+    "name": "Shobha Karandlaje",
+    "constituency": "",
+    "constituency_id": 184,
+    "state": ""
+  },
+  "185": {
+    "candidate_id": 1866,
+    "name": "P C Mohan",
+    "constituency": "",
+    "constituency_id": 185,
+    "state": ""
+  },
+  "186": {
+    "candidate_id": 2629,
+    "name": "Tejasvi Surya",
+    "constituency": "",
+    "constituency_id": 186,
+    "state": ""
+  },
+  "187": {
+    "candidate_id": 1881,
+    "name": "Dr.K.Sudhakar",
+    "constituency": "",
+    "constituency_id": 187,
+    "state": ""
+  },
+  "188": {
+    "candidate_id": 1894,
+    "name": "M. Mallesh Babu",
+    "constituency": "",
+    "constituency_id": 188,
+    "state": ""
+  },
+  "189": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "190": {
+    "candidate_id": 4024,
+    "name": "Priyanka Satish Jarkiholi",
+    "constituency": "",
+    "constituency_id": 190,
+    "state": ""
+  },
+  "191": {
+    "candidate_id": 3421,
+    "name": "Jagadish Shettar",
+    "constituency": "",
+    "constituency_id": 191,
+    "state": ""
+  },
+  "192": {
+    "candidate_id": 3930,
+    "name": "Gaddigoudar Parvatgouda Chandangouda",
+    "constituency": "",
+    "constituency_id": 192,
+    "state": ""
+  },
+  "193": {
+    "candidate_id": 3797,
+    "name": "Ramesh Jigajinagi",
+    "constituency": "",
+    "constituency_id": 193,
+    "state": ""
+  },
+  "194": {
+    "candidate_id": 3398,
+    "name": "Radhakrishna",
+    "constituency": "",
+    "constituency_id": 194,
+    "state": ""
+  },
+  "195": {
+    "candidate_id": 3585,
+    "name": "G. Kumar Naik",
+    "constituency": "",
+    "constituency_id": 195,
+    "state": ""
+  },
+  "196": {
+    "candidate_id": 3793,
+    "name": "Sagar Eshwar Khandre",
+    "constituency": "",
+    "constituency_id": 196,
+    "state": ""
+  },
+  "197": {
+    "candidate_id": 3400,
+    "name": "K. Rajashekar Basavaraj Hitnal",
+    "constituency": "",
+    "constituency_id": 197,
+    "state": ""
+  },
+  "198": {
+    "candidate_id": 3386,
+    "name": "E. Tukaram",
+    "constituency": "",
+    "constituency_id": 198,
+    "state": ""
+  },
+  "199": {
+    "candidate_id": 3579,
+    "name": "Basavaraj Bommai",
+    "constituency": "",
+    "constituency_id": 199,
+    "state": ""
+  },
+  "200": {
+    "candidate_id": 3567,
+    "name": "Pralhad Joshi",
+    "constituency": "",
+    "constituency_id": 200,
+    "state": ""
+  },
+  "201": {
+    "candidate_id": 3407,
+    "name": "Hegde Vishweshwar",
+    "constituency": "",
+    "constituency_id": 201,
+    "state": ""
+  },
+  "202": {
+    "candidate_id": 3393,
+    "name": "Dr. Prabha Mallikarjun",
+    "constituency": "",
+    "constituency_id": 202,
+    "state": ""
+  },
+  "203": {
+    "candidate_id": 4005,
+    "name": "B.Y.Raghavendra",
+    "constituency": "",
+    "constituency_id": 203,
+    "state": ""
+  },
+  "204": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "205": {
+    "candidate_id": 2287,
+    "name": "Rajmohan Unnithan",
+    "constituency": "",
+    "constituency_id": 205,
+    "state": ""
+  },
+  "206": {
+    "candidate_id": 2279,
+    "name": "K. Sudhakaran",
+    "constituency": "",
+    "constituency_id": 206,
+    "state": ""
+  },
+  "207": {
+    "candidate_id": 3121,
+    "name": "Shafi Parambil",
+    "constituency": "",
+    "constituency_id": 207,
+    "state": ""
+  },
+  "208": {
+    "candidate_id": 2195,
+    "name": "Rahul Gandhi",
+    "constituency": "",
+    "constituency_id": 208,
+    "state": ""
+  },
+  "209": {
+    "candidate_id": 1855,
+    "name": "M. K. Raghavan",
+    "constituency": "",
+    "constituency_id": 209,
+    "state": ""
+  },
+  "210": {
+    "candidate_id": 2303,
+    "name": "E.T. Mohammed Basheer",
+    "constituency": "",
+    "constituency_id": 210,
+    "state": ""
+  },
+  "211": {
+    "candidate_id": 2310,
+    "name": "Dr. M.P Abdussamad Samadani",
+    "constituency": "",
+    "constituency_id": 211,
+    "state": ""
+  },
+  "212": {
+    "candidate_id": 2305,
+    "name": "V K Sreekandan",
+    "constituency": "",
+    "constituency_id": 212,
+    "state": ""
+  },
+  "213": {
+    "candidate_id": 2268,
+    "name": "K.Radhakrishnan",
+    "constituency": "",
+    "constituency_id": 213,
+    "state": ""
+  },
+  "214": {
+    "candidate_id": 2125,
+    "name": "Suresh Gopi",
+    "constituency": "",
+    "constituency_id": 214,
+    "state": ""
+  },
+  "215": {
+    "candidate_id": 2272,
+    "name": "Benny Behanan",
+    "constituency": "",
+    "constituency_id": 215,
+    "state": ""
+  },
+  "216": {
+    "candidate_id": 3093,
+    "name": "Hibi Eden",
+    "constituency": "",
+    "constituency_id": 216,
+    "state": ""
+  },
+  "217": {
+    "candidate_id": 2275,
+    "name": "Adv. Dean Kuriakose",
+    "constituency": "",
+    "constituency_id": 217,
+    "state": ""
+  },
+  "218": {
+    "candidate_id": 3137,
+    "name": "Adv K Francis George",
+    "constituency": "",
+    "constituency_id": 218,
+    "state": ""
+  },
+  "219": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "220": {
+    "candidate_id": 3079,
+    "name": "K. C Venugopal",
+    "constituency": "",
+    "constituency_id": 220,
+    "state": ""
+  },
+  "221": {
+    "candidate_id": 3127,
+    "name": "Kodikunnil Suresh",
+    "constituency": "",
+    "constituency_id": 221,
+    "state": ""
+  },
+  "222": {
+    "candidate_id": 2309,
+    "name": "Anto Antony",
+    "constituency": "",
+    "constituency_id": 222,
+    "state": ""
+  },
+  "223": {
+    "candidate_id": 3132,
+    "name": "N K Premachandran",
+    "constituency": "",
+    "constituency_id": 223,
+    "state": ""
+  },
+  "224": {
+    "candidate_id": 3084,
+    "name": "Adv Adoor Prakash",
+    "constituency": "",
+    "constituency_id": 224,
+    "state": ""
+  },
+  "225": {
+    "candidate_id": 2313,
+    "name": "Shashi Tharoor",
+    "constituency": "",
+    "constituency_id": 225,
+    "state": ""
+  },
+  "226": {
+    "candidate_id": 7512,
+    "name": "Mohmad Haneefa",
+    "constituency": "",
+    "constituency_id": 226,
+    "state": ""
+  },
+  "227": {
+    "candidate_id": 764,
+    "name": "Muhammed Hamdullah Sayeed",
+    "constituency": "",
+    "constituency_id": 227,
+    "state": ""
+  },
+  "228": {
+    "candidate_id": 1,
+    "name": "Dr. Rajesh Mishra",
+    "constituency": "",
+    "constituency_id": 228,
+    "state": ""
+  },
+  "229": {
+    "candidate_id": 3,
+    "name": "Smt. Himadri Singh",
+    "constituency": "",
+    "constituency_id": 229,
+    "state": ""
+  },
+  "230": {
+    "candidate_id": 240,
+    "name": "Ashish Dubey",
+    "constituency": "",
+    "constituency_id": 230,
+    "state": ""
+  },
+  "231": {
+    "candidate_id": 7,
+    "name": "Faggan Singh Kulaste",
+    "constituency": "",
+    "constituency_id": 231,
+    "state": ""
+  },
+  "232": {
+    "candidate_id": 45,
+    "name": "Bharti Pardhi",
+    "constituency": "",
+    "constituency_id": 232,
+    "state": ""
+  },
+  "233": {
+    "candidate_id": 587,
+    "name": "Bunty Vivek Sahu",
+    "constituency": "",
+    "constituency_id": 233,
+    "state": ""
+  },
+  "234": {
+    "candidate_id": 2473,
+    "name": "Dr. Virendra Kumar",
+    "constituency": "",
+    "constituency_id": 234,
+    "state": ""
+  },
+  "235": {
+    "candidate_id": 1831,
+    "name": "Rahul Singh Lodhi",
+    "constituency": "",
+    "constituency_id": 235,
+    "state": ""
+  },
+  "236": {
+    "candidate_id": 2455,
+    "name": "Vishnu Datt Sharma (V.D.Sharma)",
+    "constituency": "",
+    "constituency_id": 236,
+    "state": ""
+  },
+  "237": {
+    "candidate_id": 1836,
+    "name": "Ganesh Singh",
+    "constituency": "",
+    "constituency_id": 237,
+    "state": ""
+  },
+  "238": {
+    "candidate_id": 2094,
+    "name": "Janardan Mishra S/O Ramdhar Prasad Mishra",
+    "constituency": "",
+    "constituency_id": 238,
+    "state": ""
+  },
+  "239": {
+    "candidate_id": 1833,
+    "name": "Darshan Singh Choudhary",
+    "constituency": "",
+    "constituency_id": 239,
+    "state": ""
+  },
+  "240": {
+    "candidate_id": 1830,
+    "name": "Durgadas (D. D.) Uikey",
+    "constituency": "",
+    "constituency_id": 240,
+    "state": ""
+  },
+  "241": {
+    "candidate_id": 3618,
+    "name": "Shivmangal Singh Tomar",
+    "constituency": "",
+    "constituency_id": 241,
+    "state": ""
+  },
+  "242": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "243": {
+    "candidate_id": 4175,
+    "name": "Sandhya Ray",
+    "constituency": "",
+    "constituency_id": 243,
+    "state": ""
+  },
+  "244": {
+    "candidate_id": 3554,
+    "name": "Bharat Singh Kushwah",
+    "constituency": "",
+    "constituency_id": 244,
+    "state": ""
+  },
+  "245": {
+    "candidate_id": 3613,
+    "name": "Jyotiraditya M. Scindia",
+    "constituency": "",
+    "constituency_id": 245,
+    "state": ""
+  },
+  "246": {
+    "candidate_id": 3547,
+    "name": "Dr. Lata Wankhede",
+    "constituency": "",
+    "constituency_id": 246,
+    "state": ""
+  },
+  "247": {
+    "candidate_id": 4448,
+    "name": "Shivraj Singh Chouhan",
+    "constituency": "",
+    "constituency_id": 247,
+    "state": ""
+  },
+  "248": {
+    "candidate_id": 3941,
+    "name": "Alok Sharma",
+    "constituency": "",
+    "constituency_id": 248,
+    "state": ""
+  },
+  "249": {
+    "candidate_id": 3553,
+    "name": "Rodmal Nagar",
+    "constituency": "",
+    "constituency_id": 249,
+    "state": ""
+  },
+  "250": {
+    "candidate_id": 5160,
+    "name": "Mahendra Singh Solanky",
+    "constituency": "",
+    "constituency_id": 250,
+    "state": ""
+  },
+  "251": {
+    "candidate_id": 5170,
+    "name": "Anil Firojiya",
+    "constituency": "",
+    "constituency_id": 251,
+    "state": ""
+  },
+  "252": {
+    "candidate_id": 5064,
+    "name": "Sudheer Gupta",
+    "constituency": "",
+    "constituency_id": 252,
+    "state": ""
+  },
+  "253": {
+    "candidate_id": 5066,
+    "name": "Anita Nagarsingh Chouhan",
+    "constituency": "",
+    "constituency_id": 253,
+    "state": ""
+  },
+  "254": {
+    "candidate_id": 5162,
+    "name": "Savitri Thakur",
+    "constituency": "",
+    "constituency_id": 254,
+    "state": ""
+  },
+  "255": {
+    "candidate_id": 5163,
+    "name": "Shankar Lalwani",
+    "constituency": "",
+    "constituency_id": 255,
+    "state": ""
+  },
+  "256": {
+    "candidate_id": 6416,
+    "name": "Gajendra Singh Patel",
+    "constituency": "",
+    "constituency_id": 256,
+    "state": ""
+  },
+  "257": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "258": {
+    "candidate_id": 5069,
+    "name": "Gyaneshwar Patil",
+    "constituency": "",
+    "constituency_id": 258,
+    "state": ""
+  },
+  "259": {
+    "candidate_id": 675,
+    "name": "Shyamkumar Daulat Barve",
+    "constituency": "",
+    "constituency_id": 259,
+    "state": ""
+  },
+  "260": {
+    "candidate_id": 329,
+    "name": "Nitin Jairam Gadkari",
+    "constituency": "",
+    "constituency_id": 260,
+    "state": ""
+  },
+  "261": {
+    "candidate_id": 313,
+    "name": "Dr. Prashant Yadaorao Padole",
+    "constituency": "",
+    "constituency_id": 261,
+    "state": ""
+  },
+  "262": {
+    "candidate_id": 317,
+    "name": "Dr. Kirsan Namdeo",
+    "constituency": "",
+    "constituency_id": 262,
+    "state": ""
+  },
+  "263": {
+    "candidate_id": 300,
+    "name": "Dhanorkar Pratibha Suresh Alias Balubhau",
+    "constituency": "",
+    "constituency_id": 263,
+    "state": ""
+  },
+  "264": {
+    "candidate_id": 1958,
+    "name": "Jadhav Prataprao Ganpatrao",
+    "constituency": "",
+    "constituency_id": 264,
+    "state": ""
+  },
+  "265": {
+    "candidate_id": 2367,
+    "name": "Anup Sanjay Dhotre",
+    "constituency": "",
+    "constituency_id": 265,
+    "state": ""
+  },
+  "266": {
+    "candidate_id": 1120,
+    "name": "Balwant Baswant Wankhade",
+    "constituency": "",
+    "constituency_id": 266,
+    "state": ""
+  },
+  "267": {
+    "candidate_id": 1969,
+    "name": "Amar Sharadrao Kale",
+    "constituency": "",
+    "constituency_id": 267,
+    "state": ""
+  },
+  "268": {
+    "candidate_id": 1978,
+    "name": "Sanjay Uttamrao Deshmukh",
+    "constituency": "",
+    "constituency_id": 268,
+    "state": ""
+  },
+  "269": {
+    "candidate_id": 2408,
+    "name": "Aashtikar Patil Nagesh Bapurao",
+    "constituency": "",
+    "constituency_id": 269,
+    "state": ""
+  },
+  "270": {
+    "candidate_id": 1782,
+    "name": "Vasantrao Balwantrao Chavan",
+    "constituency": "",
+    "constituency_id": 270,
+    "state": ""
+  },
+  "271": {
+    "candidate_id": 2435,
+    "name": "Jadhav Sanjay ( Bandu ) Haribhau",
+    "constituency": "",
+    "constituency_id": 271,
+    "state": ""
+  },
+  "272": {
+    "candidate_id": 4319,
+    "name": "Tatkare Sunil Dattatrey",
+    "constituency": "",
+    "constituency_id": 272,
+    "state": ""
+  },
+  "273": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "274": {
+    "candidate_id": 4316,
+    "name": "Supriya Sule",
+    "constituency": "",
+    "constituency_id": 274,
+    "state": ""
+  },
+  "275": {
+    "candidate_id": 3849,
+    "name": "Omprakash Bhupalsinh Alias Pavan Rajenimbalkar",
+    "constituency": "",
+    "constituency_id": 275,
+    "state": ""
+  },
+  "276": {
+    "candidate_id": 4318,
+    "name": "Dr. Kalge Shivaji Bandappa",
+    "constituency": "",
+    "constituency_id": 276,
+    "state": ""
+  },
+  "277": {
+    "candidate_id": 4321,
+    "name": "Praniti Sushilkumar Shinde",
+    "constituency": "",
+    "constituency_id": 277,
+    "state": ""
+  },
+  "278": {
+    "candidate_id": 4929,
+    "name": "Mohite-Patil Dhairyasheel Rajsinh",
+    "constituency": "",
+    "constituency_id": 278,
+    "state": ""
+  },
+  "279": {
+    "candidate_id": 3856,
+    "name": "Vishal (Dada) Prakashbapu Patil",
+    "constituency": "",
+    "constituency_id": 279,
+    "state": ""
+  },
+  "280": {
+    "candidate_id": 4320,
+    "name": "Shrimant Chh Udayanraje Pratapsinhamaharaj Bhonsle",
+    "constituency": "",
+    "constituency_id": 280,
+    "state": ""
+  },
+  "281": {
+    "candidate_id": 4619,
+    "name": "Narayan Tatu Rane",
+    "constituency": "",
+    "constituency_id": 281,
+    "state": ""
+  },
+  "282": {
+    "candidate_id": 3847,
+    "name": "Chhatrapati Shahu Shahaji",
+    "constituency": "",
+    "constituency_id": 282,
+    "state": ""
+  },
+  "283": {
+    "candidate_id": 3537,
+    "name": "Dhairyasheel Sambhajirao Mane",
+    "constituency": "",
+    "constituency_id": 283,
+    "state": ""
+  },
+  "284": {
+    "candidate_id": 6007,
+    "name": "Adv Gowaal Kagada Padavi",
+    "constituency": "",
+    "constituency_id": 284,
+    "state": ""
+  },
+  "285": {
+    "candidate_id": 5317,
+    "name": "Smita Uday Wagh",
+    "constituency": "",
+    "constituency_id": 285,
+    "state": ""
+  },
+  "286": {
+    "candidate_id": 6921,
+    "name": "Khadse Raksha Nikhil",
+    "constituency": "",
+    "constituency_id": 286,
+    "state": ""
+  },
+  "287": {
+    "candidate_id": 5320,
+    "name": "Kalyan Vaijinathrao Kale",
+    "constituency": "",
+    "constituency_id": 287,
+    "state": ""
+  },
+  "288": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "289": {
+    "candidate_id": 5323,
+    "name": "Bhumare Sandipanrao Asaram",
+    "constituency": "",
+    "constituency_id": 289,
+    "state": ""
+  },
+  "290": {
+    "candidate_id": 5325,
+    "name": "Shrirang Appa Chandu Barne",
+    "constituency": "",
+    "constituency_id": 290,
+    "state": ""
+  },
+  "291": {
+    "candidate_id": 6044,
+    "name": "Murlidhar Mohol",
+    "constituency": "",
+    "constituency_id": 291,
+    "state": ""
+  },
+  "292": {
+    "candidate_id": 5327,
+    "name": "Dr. Amol Ramsing Kolhe",
+    "constituency": "",
+    "constituency_id": 292,
+    "state": ""
+  },
+  "293": {
+    "candidate_id": 5328,
+    "name": "Nilesh Dnyandev Lanke",
+    "constituency": "",
+    "constituency_id": 293,
+    "state": ""
+  },
+  "294": {
+    "candidate_id": 5331,
+    "name": "Bhausaheb Rajaram Wakchaure",
+    "constituency": "",
+    "constituency_id": 294,
+    "state": ""
+  },
+  "295": {
+    "candidate_id": 5333,
+    "name": "Bajrang Manohar Sonwane",
+    "constituency": "",
+    "constituency_id": 295,
+    "state": ""
+  },
+  "296": {
+    "candidate_id": 7088,
+    "name": "Bachhav Shobha Dinesh",
+    "constituency": "",
+    "constituency_id": 296,
+    "state": ""
+  },
+  "297": {
+    "candidate_id": 7089,
+    "name": "Bhaskar Murlidhar Bhagare",
+    "constituency": "",
+    "constituency_id": 297,
+    "state": ""
+  },
+  "298": {
+    "candidate_id": 7124,
+    "name": "Rajabhau (Parag) Prakash Waje",
+    "constituency": "",
+    "constituency_id": 298,
+    "state": ""
+  },
+  "299": {
+    "candidate_id": 7349,
+    "name": "Dr. Hemant Vishnu Savara",
+    "constituency": "",
+    "constituency_id": 299,
+    "state": ""
+  },
+  "300": {
+    "candidate_id": 7090,
+    "name": "Suresh Gopinath Mhatre Alias Balya Mama",
+    "constituency": "",
+    "constituency_id": 300,
+    "state": ""
+  },
+  "301": {
+    "candidate_id": 7216,
+    "name": "Dr Shrikant Eknath Shinde",
+    "constituency": "",
+    "constituency_id": 301,
+    "state": ""
+  },
+  "302": {
+    "candidate_id": 7462,
+    "name": "Naresh Ganpat Mhaske",
+    "constituency": "",
+    "constituency_id": 302,
+    "state": ""
+  },
+  "303": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "304": {
+    "candidate_id": 7093,
+    "name": "Piyush Goyal",
+    "constituency": "",
+    "constituency_id": 304,
+    "state": ""
+  },
+  "305": {
+    "candidate_id": 7481,
+    "name": "Ravindra Dattaram Waikar",
+    "constituency": "",
+    "constituency_id": 305,
+    "state": ""
+  },
+  "306": {
+    "candidate_id": 7094,
+    "name": "Sanjay Dina Patil",
+    "constituency": "",
+    "constituency_id": 306,
+    "state": ""
+  },
+  "307": {
+    "candidate_id": 7096,
+    "name": "Gaikwad Varsha Eknath",
+    "constituency": "",
+    "constituency_id": 307,
+    "state": ""
+  },
+  "308": {
+    "candidate_id": 7098,
+    "name": "Anil Yeshwant Desai",
+    "constituency": "",
+    "constituency_id": 308,
+    "state": ""
+  },
+  "309": {
+    "candidate_id": 7097,
+    "name": "Arvind Ganpat Sawant",
+    "constituency": "",
+    "constituency_id": 309,
+    "state": ""
+  },
+  "310": {
+    "candidate_id": 337,
+    "name": "Angomcha Bimol Akoijam",
+    "constituency": "",
+    "constituency_id": 310,
+    "state": ""
+  },
+  "311": {
+    "candidate_id": 340,
+    "name": "Alfred Kanngam S Arthur",
+    "constituency": "",
+    "constituency_id": 311,
+    "state": ""
+  },
+  "312": {
+    "candidate_id": 344,
+    "name": "Dr. Ricky Andrew J. Syngkon",
+    "constituency": "",
+    "constituency_id": 312,
+    "state": ""
+  },
+  "313": {
+    "candidate_id": 350,
+    "name": "Saleng A Sangma",
+    "constituency": "",
+    "constituency_id": 313,
+    "state": ""
+  },
+  "314": {
+    "candidate_id": 60,
+    "name": "Richard Vanlalhmangaiha",
+    "constituency": "",
+    "constituency_id": 314,
+    "state": ""
+  },
+  "315": {
+    "candidate_id": 356,
+    "name": "S Supongmeren Jamir",
+    "constituency": "",
+    "constituency_id": 315,
+    "state": ""
+  },
+  "316": {
+    "candidate_id": 5174,
+    "name": "Malvika Devi",
+    "constituency": "",
+    "constituency_id": 316,
+    "state": ""
+  },
+  "317": {
+    "candidate_id": 6335,
+    "name": "Balabhadra Majhi",
+    "constituency": "",
+    "constituency_id": 317,
+    "state": ""
+  },
+  "318": {
+    "candidate_id": 5309,
+    "name": "Dr Pradeep Kumar Panigrahy",
+    "constituency": "",
+    "constituency_id": 318,
+    "state": ""
+  },
+  "319": {
+    "candidate_id": 5071,
+    "name": "Saptagiri Sankar Ulaka",
+    "constituency": "",
+    "constituency_id": 319,
+    "state": ""
+  },
+  "320": {
+    "candidate_id": 7148,
+    "name": "Pradeep Purohit",
+    "constituency": "",
+    "constituency_id": 320,
+    "state": ""
+  },
+  "321": {
+    "candidate_id": 7296,
+    "name": "Jual Oram",
+    "constituency": "",
+    "constituency_id": 321,
+    "state": ""
+  },
+  "322": {
+    "candidate_id": 7154,
+    "name": "Sangeeta Kumari Singh Deo",
+    "constituency": "",
+    "constituency_id": 322,
+    "state": ""
+  },
+  "323": {
+    "candidate_id": 7157,
+    "name": "Sukanta Kumar Panigrahi",
+    "constituency": "",
+    "constituency_id": 323,
+    "state": ""
+  },
+  "324": {
+    "candidate_id": 7158,
+    "name": "Anita Subhadarshini",
+    "constituency": "",
+    "constituency_id": 324,
+    "state": ""
+  },
+  "325": {
+    "candidate_id": 8053,
+    "name": "Dharmendra Pradhan",
+    "constituency": "",
+    "constituency_id": 325,
+    "state": ""
+  },
+  "326": {
+    "candidate_id": 8000,
+    "name": "Ananta Nayak",
+    "constituency": "",
+    "constituency_id": 326,
+    "state": ""
+  },
+  "327": {
+    "candidate_id": 8008,
+    "name": "Rudra Narayan Pany",
+    "constituency": "",
+    "constituency_id": 327,
+    "state": ""
+  },
+  "328": {
+    "candidate_id": 8022,
+    "name": "Bhartruhari Mahtab",
+    "constituency": "",
+    "constituency_id": 328,
+    "state": ""
+  },
+  "329": {
+    "candidate_id": 8026,
+    "name": "Sambit Patra",
+    "constituency": "",
+    "constituency_id": 329,
+    "state": ""
+  },
+  "330": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "331": {
+    "candidate_id": 8040,
+    "name": "Aparajita Sarangi",
+    "constituency": "",
+    "constituency_id": 331,
+    "state": ""
+  },
+  "332": {
+    "candidate_id": 9392,
+    "name": "Naba Charan Majhi",
+    "constituency": "",
+    "constituency_id": 332,
+    "state": ""
+  },
+  "333": {
+    "candidate_id": 9397,
+    "name": "Pratap Chandra Sarangi",
+    "constituency": "",
+    "constituency_id": 333,
+    "state": ""
+  },
+  "334": {
+    "candidate_id": 9413,
+    "name": "Avimanyu Sethi",
+    "constituency": "",
+    "constituency_id": 334,
+    "state": ""
+  },
+  "335": {
+    "candidate_id": 9604,
+    "name": "Rabindra Narayan Behera",
+    "constituency": "",
+    "constituency_id": 335,
+    "state": ""
+  },
+  "336": {
+    "candidate_id": 9427,
+    "name": "Baijayant Panda",
+    "constituency": "",
+    "constituency_id": 336,
+    "state": ""
+  },
+  "337": {
+    "candidate_id": 9616,
+    "name": "Bibhu Prasad Tarai",
+    "constituency": "",
+    "constituency_id": 337,
+    "state": ""
+  },
+  "338": {
+    "candidate_id": 531,
+    "name": "Ve Vaithilingam",
+    "constituency": "",
+    "constituency_id": 338,
+    "state": ""
+  },
+  "339": {
+    "candidate_id": 8728,
+    "name": "Sukhjinder Singh Randhawa",
+    "constituency": "",
+    "constituency_id": 339,
+    "state": ""
+  },
+  "340": {
+    "candidate_id": 8734,
+    "name": "Gurjeet Singh Aujla",
+    "constituency": "",
+    "constituency_id": 340,
+    "state": ""
+  },
+  "341": {
+    "candidate_id": 9665,
+    "name": "Amritpal Singh",
+    "constituency": "",
+    "constituency_id": 341,
+    "state": ""
+  },
+  "342": {
+    "candidate_id": 8738,
+    "name": "Charanjit Singh Channi",
+    "constituency": "",
+    "constituency_id": 342,
+    "state": ""
+  },
+  "343": {
+    "candidate_id": 8884,
+    "name": "Dr. Raj Kumar Chabbewal",
+    "constituency": "",
+    "constituency_id": 343,
+    "state": ""
+  },
+  "344": {
+    "candidate_id": 8744,
+    "name": "Malvinder Singh Kang",
+    "constituency": "",
+    "constituency_id": 344,
+    "state": ""
+  },
+  "345": {
+    "candidate_id": 8745,
+    "name": "Amrinder Singh Raja Warring",
+    "constituency": "",
+    "constituency_id": 345,
+    "state": ""
+  },
+  "346": {
+    "candidate_id": 8748,
+    "name": "Amar Singh",
+    "constituency": "",
+    "constituency_id": 346,
+    "state": ""
+  },
+  "347": {
+    "candidate_id": 9256,
+    "name": "Sarabjeet Singh Khalsa",
+    "constituency": "",
+    "constituency_id": 347,
+    "state": ""
+  },
+  "348": {
+    "candidate_id": 8940,
+    "name": "Sher Singh Ghubaya",
+    "constituency": "",
+    "constituency_id": 348,
+    "state": ""
+  },
+  "349": {
+    "candidate_id": 8951,
+    "name": "Harsimrat Kaur Badal",
+    "constituency": "",
+    "constituency_id": 349,
+    "state": ""
+  },
+  "350": {
+    "candidate_id": 8730,
+    "name": "Gurmeet Singh Hayer",
+    "constituency": "",
+    "constituency_id": 350,
+    "state": ""
+  },
+  "351": {
+    "candidate_id": 8759,
+    "name": "Dr Dharamvira Gandhi",
+    "constituency": "",
+    "constituency_id": 351,
+    "state": ""
+  },
+  "352": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "353": {
+    "candidate_id": 409,
+    "name": "Kuldeep Indora",
+    "constituency": "",
+    "constituency_id": 353,
+    "state": ""
+  },
+  "354": {
+    "candidate_id": 381,
+    "name": "Arjun Ram Meghwal",
+    "constituency": "",
+    "constituency_id": 354,
+    "state": ""
+  },
+  "355": {
+    "candidate_id": 395,
+    "name": "Rahul Kaswan",
+    "constituency": "",
+    "constituency_id": 355,
+    "state": ""
+  },
+  "356": {
+    "candidate_id": 444,
+    "name": "Brijendra Singh Ola",
+    "constituency": "",
+    "constituency_id": 356,
+    "state": ""
+  },
+  "357": {
+    "candidate_id": 476,
+    "name": "Amraram",
+    "constituency": "",
+    "constituency_id": 357,
+    "state": ""
+  },
+  "358": {
+    "candidate_id": 436,
+    "name": "Rao Rajendra Singh",
+    "constituency": "",
+    "constituency_id": 358,
+    "state": ""
+  },
+  "359": {
+    "candidate_id": 417,
+    "name": "Manju Sharma",
+    "constituency": "",
+    "constituency_id": 359,
+    "state": ""
+  },
+  "360": {
+    "candidate_id": 360,
+    "name": "Bhupender Yadav",
+    "constituency": "",
+    "constituency_id": 360,
+    "state": ""
+  },
+  "361": {
+    "candidate_id": 371,
+    "name": "Sanjna Jatav",
+    "constituency": "",
+    "constituency_id": 361,
+    "state": ""
+  },
+  "362": {
+    "candidate_id": 451,
+    "name": "Bhajan Lal Jatav",
+    "constituency": "",
+    "constituency_id": 362,
+    "state": ""
+  },
+  "363": {
+    "candidate_id": 401,
+    "name": "Murari Lal Meena",
+    "constituency": "",
+    "constituency_id": 363,
+    "state": ""
+  },
+  "364": {
+    "candidate_id": 454,
+    "name": "Hanuman Beniwal",
+    "constituency": "",
+    "constituency_id": 364,
+    "state": ""
+  },
+  "365": {
+    "candidate_id": 2583,
+    "name": "Harish Chandra Meena",
+    "constituency": "",
+    "constituency_id": 365,
+    "state": ""
+  },
+  "366": {
+    "candidate_id": 2038,
+    "name": "Bhagirath Choudhary",
+    "constituency": "",
+    "constituency_id": 366,
+    "state": ""
+  },
+  "367": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "368": {
+    "candidate_id": 2574,
+    "name": "P. P. Chaudhary",
+    "constituency": "",
+    "constituency_id": 368,
+    "state": ""
+  },
+  "369": {
+    "candidate_id": 1843,
+    "name": "Gajendra Singh Shekhawat",
+    "constituency": "",
+    "constituency_id": 369,
+    "state": ""
+  },
+  "370": {
+    "candidate_id": 2547,
+    "name": "Ummeda Ram Beniwal",
+    "constituency": "",
+    "constituency_id": 370,
+    "state": ""
+  },
+  "371": {
+    "candidate_id": 2557,
+    "name": "Lumbaram",
+    "constituency": "",
+    "constituency_id": 371,
+    "state": ""
+  },
+  "372": {
+    "candidate_id": 1854,
+    "name": "Manna Lal Rawat",
+    "constituency": "",
+    "constituency_id": 372,
+    "state": ""
+  },
+  "373": {
+    "candidate_id": 1771,
+    "name": "Raj Kumar Roat",
+    "constituency": "",
+    "constituency_id": 373,
+    "state": ""
+  },
+  "374": {
+    "candidate_id": 2025,
+    "name": "Chandra Prakash Joshi",
+    "constituency": "",
+    "constituency_id": 374,
+    "state": ""
+  },
+  "375": {
+    "candidate_id": 2577,
+    "name": "Mahima Kumari Mewar",
+    "constituency": "",
+    "constituency_id": 375,
+    "state": ""
+  },
+  "376": {
+    "candidate_id": 2743,
+    "name": "Damodar Agarwal",
+    "constituency": "",
+    "constituency_id": 376,
+    "state": ""
+  },
+  "377": {
+    "candidate_id": 2567,
+    "name": "Om Birla",
+    "constituency": "",
+    "constituency_id": 377,
+    "state": ""
+  },
+  "378": {
+    "candidate_id": 2013,
+    "name": "Dushyant Singh",
+    "constituency": "",
+    "constituency_id": 378,
+    "state": ""
+  },
+  "379": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "380": {
+    "candidate_id": 484,
+    "name": "Indra Hang Subba",
+    "constituency": "",
+    "constituency_id": 380,
+    "state": ""
+  },
+  "381": {
+    "candidate_id": 1464,
+    "name": "Sasikanth Senthil",
+    "constituency": "",
+    "constituency_id": 381,
+    "state": ""
+  },
+  "382": {
+    "candidate_id": 1081,
+    "name": "Dr.Kalanidhi Veeraswamy",
+    "constituency": "",
+    "constituency_id": 382,
+    "state": ""
+  },
+  "383": {
+    "candidate_id": 100,
+    "name": "Sumathy T",
+    "constituency": "",
+    "constituency_id": 383,
+    "state": ""
+  },
+  "384": {
+    "candidate_id": 1043,
+    "name": "Dayanidhi Maran",
+    "constituency": "",
+    "constituency_id": 384,
+    "state": ""
+  },
+  "385": {
+    "candidate_id": 184,
+    "name": "T R Baalu",
+    "constituency": "",
+    "constituency_id": 385,
+    "state": ""
+  },
+  "386": {
+    "candidate_id": 134,
+    "name": "Selvam. G",
+    "constituency": "",
+    "constituency_id": 386,
+    "state": ""
+  },
+  "387": {
+    "candidate_id": 533,
+    "name": "S Jagathratchakan",
+    "constituency": "",
+    "constituency_id": 387,
+    "state": ""
+  },
+  "388": {
+    "candidate_id": 216,
+    "name": "Dm Kathir Anand",
+    "constituency": "",
+    "constituency_id": 388,
+    "state": ""
+  },
+  "389": {
+    "candidate_id": 1531,
+    "name": "Gopinath K",
+    "constituency": "",
+    "constituency_id": 389,
+    "state": ""
+  },
+  "390": {
+    "candidate_id": 121,
+    "name": "Mani. A.",
+    "constituency": "",
+    "constituency_id": 390,
+    "state": ""
+  },
+  "391": {
+    "candidate_id": 1155,
+    "name": "C N Annadurai",
+    "constituency": "",
+    "constituency_id": 391,
+    "state": ""
+  },
+  "392": {
+    "candidate_id": 703,
+    "name": "Tharaniventhan M S",
+    "constituency": "",
+    "constituency_id": 392,
+    "state": ""
+  },
+  "393": {
+    "candidate_id": 221,
+    "name": "Ravikumar. D",
+    "constituency": "",
+    "constituency_id": 393,
+    "state": ""
+  },
+  "394": {
+    "candidate_id": 133,
+    "name": "Malaiyarasan D",
+    "constituency": "",
+    "constituency_id": 394,
+    "state": ""
+  },
+  "395": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "396": {
+    "candidate_id": 176,
+    "name": "Selvaganapathi T M",
+    "constituency": "",
+    "constituency_id": 396,
+    "state": ""
+  },
+  "397": {
+    "candidate_id": 164,
+    "name": "Matheswaran V S",
+    "constituency": "",
+    "constituency_id": 397,
+    "state": ""
+  },
+  "398": {
+    "candidate_id": 127,
+    "name": "K E Prakash",
+    "constituency": "",
+    "constituency_id": 398,
+    "state": ""
+  },
+  "399": {
+    "candidate_id": 204,
+    "name": "K Subbarayan",
+    "constituency": "",
+    "constituency_id": 399,
+    "state": ""
+  },
+  "400": {
+    "candidate_id": 1167,
+    "name": "Raja A",
+    "constituency": "",
+    "constituency_id": 400,
+    "state": ""
+  },
+  "401": {
+    "candidate_id": 1352,
+    "name": "Ganapathy Rajkumar P",
+    "constituency": "",
+    "constituency_id": 401,
+    "state": ""
+  },
+  "402": {
+    "candidate_id": 174,
+    "name": "Eswarasamy K",
+    "constituency": "",
+    "constituency_id": 402,
+    "state": ""
+  },
+  "403": {
+    "candidate_id": 834,
+    "name": "Sachithanantham R",
+    "constituency": "",
+    "constituency_id": 403,
+    "state": ""
+  },
+  "404": {
+    "candidate_id": 1264,
+    "name": "Jothimani. S",
+    "constituency": "",
+    "constituency_id": 404,
+    "state": ""
+  },
+  "405": {
+    "candidate_id": 196,
+    "name": "Durai Vaiko",
+    "constituency": "",
+    "constituency_id": 405,
+    "state": ""
+  },
+  "406": {
+    "candidate_id": 16,
+    "name": "Arun Nehru",
+    "constituency": "",
+    "constituency_id": 406,
+    "state": ""
+  },
+  "407": {
+    "candidate_id": 554,
+    "name": "M.K. Vishnuprasad",
+    "constituency": "",
+    "constituency_id": 407,
+    "state": ""
+  },
+  "408": {
+    "candidate_id": 816,
+    "name": "Thirumaavalavan Thol",
+    "constituency": "",
+    "constituency_id": 408,
+    "state": ""
+  },
+  "409": {
+    "candidate_id": 1575,
+    "name": "Sudha R",
+    "constituency": "",
+    "constituency_id": 409,
+    "state": ""
+  },
+  "410": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "411": {
+    "candidate_id": 161,
+    "name": "Selvaraj V",
+    "constituency": "",
+    "constituency_id": 411,
+    "state": ""
+  },
+  "412": {
+    "candidate_id": 1451,
+    "name": "Murasoli S",
+    "constituency": "",
+    "constituency_id": 412,
+    "state": ""
+  },
+  "413": {
+    "candidate_id": 181,
+    "name": "Karti P Chidambaram",
+    "constituency": "",
+    "constituency_id": 413,
+    "state": ""
+  },
+  "414": {
+    "candidate_id": 1568,
+    "name": "Venkatesan S",
+    "constituency": "",
+    "constituency_id": 414,
+    "state": ""
+  },
+  "415": {
+    "candidate_id": 1225,
+    "name": "Thanga Tamilselvan",
+    "constituency": "",
+    "constituency_id": 415,
+    "state": ""
+  },
+  "416": {
+    "candidate_id": 230,
+    "name": "Manickam Tagore B",
+    "constituency": "",
+    "constituency_id": 416,
+    "state": ""
+  },
+  "417": {
+    "candidate_id": 234,
+    "name": "K Navaskani",
+    "constituency": "",
+    "constituency_id": 417,
+    "state": ""
+  },
+  "418": {
+    "candidate_id": 566,
+    "name": "Kanimozhi Karunanidhi",
+    "constituency": "",
+    "constituency_id": 418,
+    "state": ""
+  },
+  "419": {
+    "candidate_id": 1440,
+    "name": "Dr Rani Sri Kumar",
+    "constituency": "",
+    "constituency_id": 419,
+    "state": ""
+  },
+  "420": {
+    "candidate_id": 1480,
+    "name": "Robert Bruce C",
+    "constituency": "",
+    "constituency_id": 420,
+    "state": ""
+  },
+  "421": {
+    "candidate_id": 940,
+    "name": "Vijayakumar Alias Vijay Vasanth",
+    "constituency": "",
+    "constituency_id": 421,
+    "state": ""
+  },
+  "422": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "423": {
+    "candidate_id": 5395,
+    "name": "Godam Nagesh",
+    "constituency": "",
+    "constituency_id": 423,
+    "state": ""
+  },
+  "424": {
+    "candidate_id": 5248,
+    "name": "Vamsi Krishna Gaddam",
+    "constituency": "",
+    "constituency_id": 424,
+    "state": ""
+  },
+  "425": {
+    "candidate_id": 5230,
+    "name": "Bandi Sanjay Kumar",
+    "constituency": "",
+    "constituency_id": 425,
+    "state": ""
+  },
+  "426": {
+    "candidate_id": 5246,
+    "name": "Arvind Dharmapuri",
+    "constituency": "",
+    "constituency_id": 426,
+    "state": ""
+  },
+  "427": {
+    "candidate_id": 5254,
+    "name": "Suresh Kumar Shetkar",
+    "constituency": "",
+    "constituency_id": 427,
+    "state": ""
+  },
+  "428": {
+    "candidate_id": 5239,
+    "name": "Madhavaneni Raghunandan Rao",
+    "constituency": "",
+    "constituency_id": 428,
+    "state": ""
+  },
+  "429": {
+    "candidate_id": 5238,
+    "name": "Eatala Rajender",
+    "constituency": "",
+    "constituency_id": 429,
+    "state": ""
+  },
+  "430": {
+    "candidate_id": 5251,
+    "name": "G. Kishan Reddy",
+    "constituency": "",
+    "constituency_id": 430,
+    "state": ""
+  },
+  "431": {
+    "candidate_id": 5228,
+    "name": "Asaduddin Owaisi",
+    "constituency": "",
+    "constituency_id": 431,
+    "state": ""
+  },
+  "432": {
+    "candidate_id": 5226,
+    "name": "Konda Vishweshwar Reddy",
+    "constituency": "",
+    "constituency_id": 432,
+    "state": ""
+  },
+  "433": {
+    "candidate_id": 5236,
+    "name": "Aruna. D. K",
+    "constituency": "",
+    "constituency_id": 433,
+    "state": ""
+  },
+  "434": {
+    "candidate_id": 5241,
+    "name": "Dr.Mallu Ravi",
+    "constituency": "",
+    "constituency_id": 434,
+    "state": ""
+  },
+  "435": {
+    "candidate_id": 5294,
+    "name": "Kunduru Raghuveer",
+    "constituency": "",
+    "constituency_id": 435,
+    "state": ""
+  },
+  "436": {
+    "candidate_id": 5299,
+    "name": "Chamala Kiran Kumar Reddy",
+    "constituency": "",
+    "constituency_id": 436,
+    "state": ""
+  },
+  "437": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "438": {
+    "candidate_id": 5252,
+    "name": "Kadiyam Kavya",
+    "constituency": "",
+    "constituency_id": 438,
+    "state": ""
+  },
+  "439": {
+    "candidate_id": 5297,
+    "name": "Balram Naik Porika",
+    "constituency": "",
+    "constituency_id": 439,
+    "state": ""
+  },
+  "440": {
+    "candidate_id": 5716,
+    "name": "Ramasahayam Raghuram Reddy",
+    "constituency": "",
+    "constituency_id": 440,
+    "state": ""
+  },
+  "441": {
+    "candidate_id": 1156,
+    "name": "Biplab Kumar Deb",
+    "constituency": "",
+    "constituency_id": 441,
+    "state": ""
+  },
+  "442": {
+    "candidate_id": 1765,
+    "name": "Kriti Devi Debbarman",
+    "constituency": "",
+    "constituency_id": 442,
+    "state": ""
+  },
+  "443": {
+    "candidate_id": 283,
+    "name": "Mala Rajya Lakshmi Shah",
+    "constituency": "",
+    "constituency_id": 443,
+    "state": ""
+  },
+  "444": {
+    "candidate_id": 273,
+    "name": "Anil Baluni",
+    "constituency": "",
+    "constituency_id": 444,
+    "state": ""
+  },
+  "445": {
+    "candidate_id": 20,
+    "name": "Ajay Tamta",
+    "constituency": "",
+    "constituency_id": 445,
+    "state": ""
+  },
+  "446": {
+    "candidate_id": 997,
+    "name": "Ajay Bhatt",
+    "constituency": "",
+    "constituency_id": 446,
+    "state": ""
+  },
+  "447": {
+    "candidate_id": 277,
+    "name": "Trivendra Singh Rawat",
+    "constituency": "",
+    "constituency_id": 447,
+    "state": ""
+  },
+  "448": {
+    "candidate_id": 298,
+    "name": "Imran Masood",
+    "constituency": "",
+    "constituency_id": 448,
+    "state": ""
+  },
+  "449": {
+    "candidate_id": 289,
+    "name": "Iqra Choudhary",
+    "constituency": "",
+    "constituency_id": 449,
+    "state": ""
+  },
+  "450": {
+    "candidate_id": 286,
+    "name": "Harendra Singh Malik",
+    "constituency": "",
+    "constituency_id": 450,
+    "state": ""
+  },
+  "451": {
+    "candidate_id": 869,
+    "name": "Chandan Chauhan",
+    "constituency": "",
+    "constituency_id": 451,
+    "state": ""
+  },
+  "452": {
+    "candidate_id": 39,
+    "name": "Chandrashekhar",
+    "constituency": "",
+    "constituency_id": 452,
+    "state": ""
+  },
+  "453": {
+    "candidate_id": 877,
+    "name": "Ruchi Vira",
+    "constituency": "",
+    "constituency_id": 453,
+    "state": ""
+  },
+  "454": {
+    "candidate_id": 902,
+    "name": "Mohibbullah",
+    "constituency": "",
+    "constituency_id": 454,
+    "state": ""
+  },
+  "455": {
+    "candidate_id": 899,
+    "name": "Jitin Prasada",
+    "constituency": "",
+    "constituency_id": 455,
+    "state": ""
+  },
+  "456": {
+    "candidate_id": 1807,
+    "name": "Kanwar Singh Tanwar",
+    "constituency": "",
+    "constituency_id": 456,
+    "state": ""
+  },
+  "457": {
+    "candidate_id": 1923,
+    "name": "Arun Govil",
+    "constituency": "",
+    "constituency_id": 457,
+    "state": ""
+  },
+  "458": {
+    "candidate_id": 1808,
+    "name": "Dr Rajkumar Sangwan",
+    "constituency": "",
+    "constituency_id": 458,
+    "state": ""
+  },
+  "459": {
+    "candidate_id": 2518,
+    "name": "Atul Garg",
+    "constituency": "",
+    "constituency_id": 459,
+    "state": ""
+  },
+  "460": {
+    "candidate_id": 2512,
+    "name": "Dr. Mahesh Sharma",
+    "constituency": "",
+    "constituency_id": 460,
+    "state": ""
+  },
+  "461": {
+    "candidate_id": 2502,
+    "name": "Dr Bhola Singh",
+    "constituency": "",
+    "constituency_id": 461,
+    "state": ""
+  },
+  "462": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "463": {
+    "candidate_id": 1806,
+    "name": "Satish Kumar Gautam",
+    "constituency": "",
+    "constituency_id": 463,
+    "state": ""
+  },
+  "464": {
+    "candidate_id": 2797,
+    "name": "Hemamalini Dharmendra Deol",
+    "constituency": "",
+    "constituency_id": 464,
+    "state": ""
+  },
+  "465": {
+    "candidate_id": 4084,
+    "name": "Zia Ur Rehman",
+    "constituency": "",
+    "constituency_id": 465,
+    "state": ""
+  },
+  "466": {
+    "candidate_id": 3697,
+    "name": "Anoop Pradhan Balmiki",
+    "constituency": "",
+    "constituency_id": 466,
+    "state": ""
+  },
+  "467": {
+    "candidate_id": 3493,
+    "name": "Prof S P Singh Baghel",
+    "constituency": "",
+    "constituency_id": 467,
+    "state": ""
+  },
+  "468": {
+    "candidate_id": 4223,
+    "name": "Rajkumar Chahar",
+    "constituency": "",
+    "constituency_id": 468,
+    "state": ""
+  },
+  "469": {
+    "candidate_id": 3481,
+    "name": "Akshaya Yadav",
+    "constituency": "",
+    "constituency_id": 469,
+    "state": ""
+  },
+  "470": {
+    "candidate_id": 3607,
+    "name": "Dimple Yadav",
+    "constituency": "",
+    "constituency_id": 470,
+    "state": ""
+  },
+  "471": {
+    "candidate_id": 3703,
+    "name": "Devesh Shakya",
+    "constituency": "",
+    "constituency_id": 471,
+    "state": ""
+  },
+  "472": {
+    "candidate_id": 3490,
+    "name": "Aditya Yadav",
+    "constituency": "",
+    "constituency_id": 472,
+    "state": ""
+  },
+  "473": {
+    "candidate_id": 3586,
+    "name": "Neeraj Maurya",
+    "constituency": "",
+    "constituency_id": 473,
+    "state": ""
+  },
+  "474": {
+    "candidate_id": 3486,
+    "name": "Chhatra Pal Singh Gangwar",
+    "constituency": "",
+    "constituency_id": 474,
+    "state": ""
+  },
+  "475": {
+    "candidate_id": 5206,
+    "name": "Arun Kumar Sagar",
+    "constituency": "",
+    "constituency_id": 475,
+    "state": ""
+  },
+  "476": {
+    "candidate_id": 5211,
+    "name": "Utkarsh Verma (Madhur)",
+    "constituency": "",
+    "constituency_id": 476,
+    "state": ""
+  },
+  "477": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "478": {
+    "candidate_id": 5215,
+    "name": "Anand Bhadauriya",
+    "constituency": "",
+    "constituency_id": 478,
+    "state": ""
+  },
+  "479": {
+    "candidate_id": 5381,
+    "name": "Rakesh Rathor",
+    "constituency": "",
+    "constituency_id": 479,
+    "state": ""
+  },
+  "480": {
+    "candidate_id": 5076,
+    "name": "Jai Prakash",
+    "constituency": "",
+    "constituency_id": 480,
+    "state": ""
+  },
+  "481": {
+    "candidate_id": 5077,
+    "name": "Ashok Kumar Rawat",
+    "constituency": "",
+    "constituency_id": 481,
+    "state": ""
+  },
+  "482": {
+    "candidate_id": 5376,
+    "name": "Swami Sachchidanand Hari Sakshi",
+    "constituency": "",
+    "constituency_id": 482,
+    "state": ""
+  },
+  "483": {
+    "candidate_id": 5214,
+    "name": "Mukesh Rajput",
+    "constituency": "",
+    "constituency_id": 483,
+    "state": ""
+  },
+  "484": {
+    "candidate_id": 5079,
+    "name": "Jitendra Kumar Dohare",
+    "constituency": "",
+    "constituency_id": 484,
+    "state": ""
+  },
+  "485": {
+    "candidate_id": 6236,
+    "name": "Akhilesh Yadav",
+    "constituency": "",
+    "constituency_id": 485,
+    "state": ""
+  },
+  "486": {
+    "candidate_id": 5080,
+    "name": "Ramesh Awasthi",
+    "constituency": "",
+    "constituency_id": 486,
+    "state": ""
+  },
+  "487": {
+    "candidate_id": 5083,
+    "name": "Devendra Singh Alias Bhole Singh",
+    "constituency": "",
+    "constituency_id": 487,
+    "state": ""
+  },
+  "488": {
+    "candidate_id": 5217,
+    "name": "Anand Kumar",
+    "constituency": "",
+    "constituency_id": 488,
+    "state": ""
+  },
+  "489": {
+    "candidate_id": 7161,
+    "name": "R.K. Chaudhary",
+    "constituency": "",
+    "constituency_id": 489,
+    "state": ""
+  },
+  "490": {
+    "candidate_id": 7169,
+    "name": "Raj Nath Singh",
+    "constituency": "",
+    "constituency_id": 490,
+    "state": ""
+  },
+  "491": {
+    "candidate_id": 7651,
+    "name": "Rahul Gandhi",
+    "constituency": "",
+    "constituency_id": 491,
+    "state": ""
+  },
+  "492": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "493": {
+    "candidate_id": 7521,
+    "name": "Kishori Lal",
+    "constituency": "",
+    "constituency_id": 493,
+    "state": ""
+  },
+  "494": {
+    "candidate_id": 7173,
+    "name": "Narayan Das Ahirwar",
+    "constituency": "",
+    "constituency_id": 494,
+    "state": ""
+  },
+  "495": {
+    "candidate_id": 7176,
+    "name": "Anurag Sharma",
+    "constituency": "",
+    "constituency_id": 495,
+    "state": ""
+  },
+  "496": {
+    "candidate_id": 7179,
+    "name": "Ajendra Singh Lodhi",
+    "constituency": "",
+    "constituency_id": 496,
+    "state": ""
+  },
+  "497": {
+    "candidate_id": 7448,
+    "name": "Krishna Devi Shivshanker Patel",
+    "constituency": "",
+    "constituency_id": 497,
+    "state": ""
+  },
+  "498": {
+    "candidate_id": 7595,
+    "name": "Naresh Chandra Uttam Patel",
+    "constituency": "",
+    "constituency_id": 498,
+    "state": ""
+  },
+  "499": {
+    "candidate_id": 7611,
+    "name": "Pushpendra Saroj",
+    "constituency": "",
+    "constituency_id": 499,
+    "state": ""
+  },
+  "500": {
+    "candidate_id": 7187,
+    "name": "Tanuj Punia",
+    "constituency": "",
+    "constituency_id": 500,
+    "state": ""
+  },
+  "501": {
+    "candidate_id": 7190,
+    "name": "Awadhesh Prasad",
+    "constituency": "",
+    "constituency_id": 501,
+    "state": ""
+  },
+  "502": {
+    "candidate_id": 7440,
+    "name": "Karan Bhushan Singh",
+    "constituency": "",
+    "constituency_id": 502,
+    "state": ""
+  },
+  "503": {
+    "candidate_id": 7194,
+    "name": "Kirtivardhan Singh",
+    "constituency": "",
+    "constituency_id": 503,
+    "state": ""
+  },
+  "504": {
+    "candidate_id": 8073,
+    "name": "Rambhual Nishad",
+    "constituency": "",
+    "constituency_id": 504,
+    "state": ""
+  },
+  "505": {
+    "candidate_id": 8331,
+    "name": "Shiv Pal Singh Patel (Dr. S P Singh)",
+    "constituency": "",
+    "constituency_id": 505,
+    "state": ""
+  },
+  "506": {
+    "candidate_id": 8358,
+    "name": "Praveen Patel",
+    "constituency": "",
+    "constituency_id": 506,
+    "state": ""
+  },
+  "507": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "508": {
+    "candidate_id": 8371,
+    "name": "Ujjwal Raman Singh",
+    "constituency": "",
+    "constituency_id": 508,
+    "state": ""
+  },
+  "509": {
+    "candidate_id": 8171,
+    "name": "Lalji Verma",
+    "constituency": "",
+    "constituency_id": 509,
+    "state": ""
+  },
+  "510": {
+    "candidate_id": 8159,
+    "name": "Ram Shiromani Verma",
+    "constituency": "",
+    "constituency_id": 510,
+    "state": ""
+  },
+  "511": {
+    "candidate_id": 8151,
+    "name": "Jagdambika Pal",
+    "constituency": "",
+    "constituency_id": 511,
+    "state": ""
+  },
+  "512": {
+    "candidate_id": 8150,
+    "name": "Ram Prasad Chaudhary",
+    "constituency": "",
+    "constituency_id": 512,
+    "state": ""
+  },
+  "513": {
+    "candidate_id": 8387,
+    "name": "Laxmikant Pappu Nishad",
+    "constituency": "",
+    "constituency_id": 513,
+    "state": ""
+  },
+  "514": {
+    "candidate_id": 8140,
+    "name": "Daroga Prasad Saroj",
+    "constituency": "",
+    "constituency_id": 514,
+    "state": ""
+  },
+  "515": {
+    "candidate_id": 8128,
+    "name": "Dharmendra Yadav",
+    "constituency": "",
+    "constituency_id": 515,
+    "state": ""
+  },
+  "516": {
+    "candidate_id": 8397,
+    "name": "Babu Singh Kushwaha",
+    "constituency": "",
+    "constituency_id": 516,
+    "state": ""
+  },
+  "517": {
+    "candidate_id": 8097,
+    "name": "Priya Saroj",
+    "constituency": "",
+    "constituency_id": 517,
+    "state": ""
+  },
+  "518": {
+    "candidate_id": 8081,
+    "name": "Dr. Vinod Kumar Bind",
+    "constituency": "",
+    "constituency_id": 518,
+    "state": ""
+  },
+  "519": {
+    "candidate_id": 8774,
+    "name": "Pankaj Chaudhary",
+    "constituency": "",
+    "constituency_id": 519,
+    "state": ""
+  },
+  "520": {
+    "candidate_id": 8791,
+    "name": "Ravindra Shukla Alias Ravi Kishan",
+    "constituency": "",
+    "constituency_id": 520,
+    "state": ""
+  },
+  "521": {
+    "candidate_id": 9114,
+    "name": "Vijay Kumar Dubay",
+    "constituency": "",
+    "constituency_id": 521,
+    "state": ""
+  },
+  "522": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "523": {
+    "candidate_id": 9465,
+    "name": "Shashank Mani",
+    "constituency": "",
+    "constituency_id": 523,
+    "state": ""
+  },
+  "524": {
+    "candidate_id": 8799,
+    "name": "Kamlesh Paswan",
+    "constituency": "",
+    "constituency_id": 524,
+    "state": ""
+  },
+  "525": {
+    "candidate_id": 9348,
+    "name": "Rajeev Rai",
+    "constituency": "",
+    "constituency_id": 525,
+    "state": ""
+  },
+  "526": {
+    "candidate_id": 9455,
+    "name": "Ramashankar Rajbhar",
+    "constituency": "",
+    "constituency_id": 526,
+    "state": ""
+  },
+  "527": {
+    "candidate_id": 9447,
+    "name": "Sanatan Pandey",
+    "constituency": "",
+    "constituency_id": 527,
+    "state": ""
+  },
+  "528": {
+    "candidate_id": 9428,
+    "name": "Afzal Ansari",
+    "constituency": "",
+    "constituency_id": 528,
+    "state": ""
+  },
+  "529": {
+    "candidate_id": 8803,
+    "name": "Birendra Singh",
+    "constituency": "",
+    "constituency_id": 529,
+    "state": ""
+  },
+  "530": {
+    "candidate_id": 8974,
+    "name": "Narendra Modi",
+    "constituency": "",
+    "constituency_id": 530,
+    "state": ""
+  },
+  "531": {
+    "candidate_id": 9380,
+    "name": "Anupriya Patel",
+    "constituency": "",
+    "constituency_id": 531,
+    "state": ""
+  },
+  "532": {
+    "candidate_id": 9098,
+    "name": "Chhotelal",
+    "constituency": "",
+    "constituency_id": 532,
+    "state": ""
+  },
+  "533": {
+    "candidate_id": null,
+    "error": "no_winner_found"
+  },
+  "534": {
+    "candidate_id": 957,
+    "name": "Jagadish Chandra Barma Basunia",
+    "constituency": "",
+    "constituency_id": 534,
+    "state": ""
+  },
+  "535": {
+    "candidate_id": 13,
+    "name": "Manoj Tigga",
+    "constituency": "",
+    "constituency_id": 535,
+    "state": ""
+  },
+  "536": {
+    "candidate_id": 970,
+    "name": "Dr Jayanta Kumar Roy",
+    "constituency": "",
+    "constituency_id": 536,
+    "state": ""
+  },
+  "537": {
+    "candidate_id": 2218,
+    "name": "Raju Bista",
+    "constituency": "",
+    "constituency_id": 537,
+    "state": ""
+  },
+  "538": {
+    "candidate_id": 1801,
+    "name": "Kartick Chandra Paul",
+    "constituency": "",
+    "constituency_id": 538,
+    "state": ""
+  },
+  "539": {
+    "candidate_id": 2211,
+    "name": "Sukanta Majumdar",
+    "constituency": "",
+    "constituency_id": 539,
+    "state": ""
+  },
+  "540": {
+    "candidate_id": 3375,
+    "name": "Khagen Murmu",
+    "constituency": "",
+    "constituency_id": 540,
+    "state": ""
+  },
+  "541": {
+    "candidate_id": 3465,
+    "name": "Isha Khan Choudhury",
+    "constituency": "",
+    "constituency_id": 541,
+    "state": ""
+  },
+  "542": {
+    "candidate_id": 3378,
+    "name": "Khalilur Rahaman",
+    "constituency": "",
+    "constituency_id": 542,
+    "state": ""
+  },
+  "543": {
+    "candidate_id": 3377,
+    "name": "Abu Taher Khan",
+    "constituency": "",
+    "constituency_id": 543,
+    "state": ""
+  }
+}
