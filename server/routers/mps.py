@@ -20,7 +20,7 @@ async def list_mps(
     state:   str | None = Query(None, max_length=100),
     party:   str | None = Query(None, max_length=100),
     q:       str | None = Query(None, min_length=2, max_length=100),
-    limit:   int        = Query(100, ge=1, le=200),
+    limit:   int        = Query(100, ge=1, le=600),
     offset:  int        = Query(0, ge=0),
     db:      Database   = Depends(get_db),
 ) -> list[MPSummary]:
