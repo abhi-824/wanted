@@ -72,6 +72,28 @@
   .loading-fill{height:100%;background:#c8a84b;animation:lp 1.2s ease-in-out infinite}
   @keyframes lp{0%{width:0%}60%{width:100%}100%{width:100%}}
   .error-state{font-family:'Share Tech Mono',monospace;font-size:12px;color:#e85050;letter-spacing:1.5px;text-align:center;padding:40px 20px;line-height:2}
+
+  /* ── IPC section pills (new) ───────────────────────────────────── */
+  .ipc-pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .ipc-pill{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;
+    color:#c8a84b;background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.4);
+    border-radius:3px;padding:3px 7px;cursor:pointer;transition:background 0.15s}
+  .ipc-pill:hover{background:rgba(200,168,75,0.18)}
+  .ipc-pill[aria-expanded="true"]{background:rgba(200,168,75,0.22)}
+  .ipc-desc{margin-top:6px;padding:8px 10px;border-left:2px solid rgba(200,168,75,0.4);
+    background:rgba(200,168,75,0.04);font-size:12px;color:#c0b8a8;line-height:1.5;border-radius:0 3px 3px 0}
+  .ipc-desc strong{color:#e8e0cc;font-size:12px;display:block;margin-bottom:2px}
+  .ipc-desc .ipc-chapter{font-family:'Share Tech Mono',monospace;font-size:9px;color:#6a6258;letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase}
+  .ipc-desc.not-found{color:#8a7a70;font-style:italic;border-left-color:rgba(200,168,75,0.2)}
+
+  /* ── Grouped-case badge (new) ──────────────────────────────────── */
+  .case-count-badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:#c8a84b;
+    background:rgba(200,168,75,0.10);border:1px solid rgba(200,168,75,0.4);border-radius:2px;
+    padding:2px 6px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+  .case-serials{font-family:'Share Tech Mono',monospace;font-size:10px;color:#7a7068;
+    letter-spacing:0.5px;margin-bottom:4px;line-height:1.6}
+  .ipc-pill-count{font-size:9px;color:#8a7a60;margin-left:3px}
+
   @media(max-width:480px){
     .hero{grid-template-columns:1fr}
     .portrait{width:100%;height:200px}
@@ -163,8 +185,192 @@ function inrToCr(inr) {
   return (inr / 1_00_00_000).toFixed(1);
 }
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+// ── IPC SECTION LOOKUP ────────────────────────────────────────────
+// Splits a criminal_case's raw "ipc_sections" string (e.g. "188, 171A")
+// into individual codes. Shared by the collector and the pill renderer
+// so both agree on what counts as one "section".
+function splitSectionCodes(raw) {
+  if (!raw) return [];
+  return raw.split(/[,/]| and /).map(s => s.trim()).filter(Boolean);
+}
+
+// Collects every distinct section code referenced across all of an MP's
+// cases, so we can resolve them in ONE batch API call instead of one
+// fetch per case (or per pill).
+function extractAllSectionCodes(cases) {
+  const codes = new Set();
+  cases.forEach(c => splitSectionCodes(c.ipc_sections).forEach(code => codes.add(code)));
+  return Array.from(codes);
+}
+
+// Counts how many cases (dossier-wide) reference each section code, e.g.
+// {"188": 5, "171F": 1, "153A": 1}. Used to show "×N" badges on pills so
+// a section charged 5 times doesn't read as 5 separate unrelated facts.
+function countSectionOccurrences(cases) {
+  const counts = {};
+  cases.forEach(c => {
+    splitSectionCodes(c.ipc_sections).forEach(code => {
+      const key = code.toUpperCase();
+      counts[key] = (counts[key] || 0) + 1;
+    });
+  });
+  return counts;
+}
+
+// Groups cases that share an identical IPC-section signature into one
+// entry. "188" + "188" collapse together; "171F, 153A, 505(I)(B)" stays
+// its own group since nothing else matches it exactly. Signature is
+// built from the normalized, sorted set of codes so order/whitespace
+// in the source string ("188, 171A" vs "171A,188") doesn't matter.
+function groupCasesBySection(cases) {
+  const groups = new Map();
+  cases.forEach((c, i) => {
+    const codes = splitSectionCodes(c.ipc_sections).map(s => s.toUpperCase());
+    const signature = codes.length ? [...new Set(codes)].sort().join('|') : `__none-${i}`;
+    if (!groups.has(signature)) groups.set(signature, []);
+    groups.get(signature).push(c);
+  });
+  return Array.from(groups.values());
+}
+
+async function fetchIpcDescriptions(codes) {
+  if (codes.length === 0) return { sections: {}, not_found: [] };
+  try {
+    const res = await fetch(`${API_BASE}/ipc?sections=${encodeURIComponent(codes.join(','))}`);
+    if (!res.ok) throw new Error(`IPC lookup failed: ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('IPC section lookup failed, showing cases without descriptions:', err);
+    return { sections: {}, not_found: codes };
+  }
+}
+
+// Tracks which section codes have already had their "×N" count badge
+// shown once on the page. Module-level so it persists across every
+// renderIpcPills() call for a single dossier render (reset per MP load).
+let shownCountBadges = new Set();
+
+// Renders one pill per section code on a case. Clicking a pill toggles
+// its plain-English description inline — no extra fetch, since `lookup`
+// already has everything for this dossier. If a section recurs across
+// multiple cases, the FIRST pill rendered for it page-wide gets a "×N"
+// badge (N = total cases citing that section); later occurrences of the
+// same code render without the badge to avoid repeating the same count.
+function renderIpcPills(rawSectionsString, lookup, sectionCounts) {
+  const codes = splitSectionCodes(rawSectionsString);
+  if (codes.length === 0) return '';
+
+  return `<div class="ipc-pill-row">
+    ${codes.map(code => {
+      const key = code.toUpperCase();
+      const entry = lookup[key];
+      const safeId = `ipc-desc-${code.replace(/[^a-zA-Z0-9]/g, '')}-${Math.random().toString(36).slice(2, 7)}`;
+      const count = sectionCounts[key] || 1;
+      let countBadge = '';
+      if (count > 1 && !shownCountBadges.has(key)) {
+        countBadge = `<span class="ipc-pill-count" title="§${escapeHtml(code)} appears in ${count} case${count > 1 ? 's' : ''} total across this dossier">×${count}</span>`;
+        shownCountBadges.add(key);
+      }
+      return `
+        <div class="ipc-pill-wrap">
+          <button type="button" class="ipc-pill" data-target="${safeId}" aria-expanded="false"
+            title="${entry ? escapeHtml(entry.section_title) : 'Description unavailable'}">
+            §${escapeHtml(code)}${countBadge}
+          </button>
+          <div class="ipc-desc ${entry ? '' : 'not-found'}" id="${safeId}" hidden>
+            ${entry
+              ? `${entry.chapter_title ? `<span class="ipc-chapter">${escapeHtml(entry.chapter_title)}</span>` : ''}<strong>${escapeHtml(entry.section_title)}</strong><span>${escapeHtml(entry.section_desc)}</span>`
+              : `No description on file for section ${escapeHtml(code)} yet.`}
+          </div>
+        </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function attachIpcPillToggles(container) {
+  container.querySelectorAll('.ipc-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const isHidden = target.hidden;
+      target.hidden = !isHidden;
+      btn.setAttribute('aria-expanded', String(isHidden));
+    });
+  });
+}
+
+// Builds the cases section HTML. Async because it resolves IPC section
+// descriptions for every case in one batch call before rendering pills.
+// Cases that share the exact same set of IPC sections (e.g. five separate
+// "188" cases) are grouped into one card — the pills/description only
+// need to be shown once per signature, and the individual serials/dates
+// are listed together rather than repeating an identical block 5 times.
+async function buildCasesHTML(cases) {
+  if (cases.length === 0) {
+    return `
+      <div class="cases-section animate-in stagger-4">
+        <div class="section-title">// criminal record</div>
+        <div class="clean-record">
+          <span style="color:#5ec97a">✓</span> No pending cases declared in 2024 ECI affidavit.
+        </div>
+      </div>`;
+  }
+
+  const allCodes = extractAllSectionCodes(cases);
+  const { sections: lookup } = await fetchIpcDescriptions(allCodes);
+  const sectionCounts = countSectionOccurrences(cases);
+  shownCountBadges = new Set(); // reset so badges show fresh for this render
+
+  const groups = groupCasesBySection(cases);
+
+  return `
+    <div class="cases-section animate-in stagger-4">
+      <div class="section-title">// pending cases</div>
+      ${groups.map((group) => {
+        const first = group[0];
+        const isGrouped = group.length > 1;
+
+        // Numbering: show every serial in the group ("#1, #2, #3...")
+        const numbers = group.map((c, i) => c.serial_no || (i + 1));
+        const numLabel = isGrouped
+          ? numbers.map(n => `#${n}`).join(', ')
+          : `#${numbers[0]}`;
+
+        // Courts/dates can differ within a group — list distinct courts,
+        // and the date range if grouped cases span multiple dates.
+        // Dates are arbitrary strings from the API (not guaranteed
+        // chronologically ordered), so just show "earliest seen – latest
+        // seen" by source order rather than implying a sorted range.
+        const courts = [...new Set(group.map(c => c.court).filter(Boolean))];
+        const dates = group.map(c => c.charge_date).filter(Boolean);
+        const anySerious = group.some(c => c.is_serious);
+
+        return `
+        <div class="case-item">
+          <span class="case-num">${isGrouped ? `×${group.length}` : numLabel}</span>
+          <div class="case-text">
+            ${isGrouped ? `<div class="case-serials">cases ${numbers.map(n => `#${n}`).join(', ')}</div>` : ''}
+            ${first.ipc_sections ? `<strong>IPC:</strong> ${escapeHtml(first.ipc_sections)}` : ''}
+            ${first.other_acts   ? ` &nbsp;|&nbsp; ${escapeHtml(first.other_acts)}` : ''}
+            ${courts.length ? `<br><span style="color:#6a6258;font-size:11px">${escapeHtml(courts.join(' · '))}</span>` : ''}
+            ${dates.length === 1 ? `<span style="color:#6a6258;font-size:11px"> · ${escapeHtml(dates[0])}</span>` : ''}
+            ${dates.length > 1  ? `<span style="color:#6a6258;font-size:11px"> · ${escapeHtml(dates[0])} – ${escapeHtml(dates[dates.length - 1])}</span>` : ''}
+            ${anySerious ? `<br><span style="color:#e85050;font-size:10px;font-family:'Share Tech Mono',monospace">⚠ SERIOUS</span>` : ''}
+            ${renderIpcPills(first.ipc_sections, lookup, sectionCounts)}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
 // ── RENDER ────────────────────────────────────────────────────────
-function renderCard(mp) {
+async function renderCard(mp) {
   // mp is the MPDetail response directly from the API
   const partyColor = PARTY_COLORS[mp.party] || '#c8a84b';
   const coalition  = mp.coalition || COALITIONS[mp.party] || null;
@@ -227,37 +433,13 @@ function renderCard(mp) {
     { name: mp.constituency,     rel: 'constituency'    },
   ];
 
-  // Cases HTML — API returns criminal_cases[], each case has ipc_sections + court
-  let casesHTML = '';
-  if (cases.length > 0) {
-    casesHTML = `
-      <div class="cases-section animate-in stagger-4">
-        <div class="section-title">// pending cases</div>
-        ${cases.map((c, i) => `
-          <div class="case-item">
-            <span class="case-num">#${c.serial_no || i + 1}</span>
-            <div class="case-text">
-              ${c.ipc_sections ? `<strong>IPC:</strong> ${c.ipc_sections}` : ''}
-              ${c.other_acts   ? ` &nbsp;|&nbsp; ${c.other_acts}` : ''}
-              ${c.court        ? `<br><span style="color:#6a6258;font-size:11px">${c.court}</span>` : ''}
-              ${c.charge_date  ? `<span style="color:#6a6258;font-size:11px"> · ${c.charge_date}</span>` : ''}
-              ${c.is_serious   ? `<br><span style="color:#e85050;font-size:10px;font-family:'Share Tech Mono',monospace">⚠ SERIOUS</span>` : ''}
-            </div>
-          </div>`).join('')}
-      </div>`;
-  } else {
-    casesHTML = `
-      <div class="cases-section animate-in stagger-4">
-        <div class="section-title">// criminal record</div>
-        <div class="clean-record">
-          <span style="color:#5ec97a">✓</span> No pending cases declared in 2024 ECI affidavit.
-        </div>
-      </div>`;
-  }
+  // Cases HTML — resolved async (batch IPC section lookup happens here)
+  const casesHTML = await buildCasesHTML(cases);
 
   // Render
   document.getElementById('stars').innerHTML = buildStars(wl);
-  document.getElementById('card-content').innerHTML = `
+  const cardContent = document.getElementById('card-content');
+  cardContent.innerHTML = `
     <div class="hero animate-in stagger-2">
       <div class="portrait-wrap">
         <div class="portrait">
@@ -333,6 +515,9 @@ function renderCard(mp) {
     </div>
   `;
 
+  // Wire up the IPC pill click-to-expand behavior now that they're in the DOM
+  attachIpcPillToggles(cardContent);
+
   setTimeout(() => {
     document.querySelectorAll('.bar-fill[data-pct]').forEach(el => {
       el.style.width = el.dataset.pct + '%';
@@ -372,7 +557,7 @@ async function init() {
 
     const mp = await res.json();
     document.title = `${mp.name} — Parliament Dossier`;
-    renderCard(mp);
+    await renderCard(mp);
 
   } catch (err) {
     console.error(err);

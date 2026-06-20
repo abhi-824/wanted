@@ -223,3 +223,64 @@ class CaseRepository:
         async with self._db.conn.execute(sql, [myneta_id]) as cursor:
             rows = await cursor.fetchall()
             return [dict(r) for r in rows]
+
+IPC_SECTIONS_SCHEMA = """
+CREATE TABLE IF NOT EXISTS ipc_sections (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    section       TEXT NOT NULL UNIQUE,   -- e.g. "171F", "302", "420"
+    chapter       INTEGER,
+    chapter_title TEXT,
+    section_title TEXT NOT NULL,
+    section_desc  TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ipc_sections_section ON ipc_sections(section);
+"""
+
+
+class IpcSectionRepository:
+    """Read-only lookup repository for IPC/BNS section descriptions.
+    Mirrors MpRepository/CaseRepository: takes the shared Database
+    instance and goes through self._db.conn, not a raw connection
+    passed in directly."""
+
+    def __init__(self, db: Database) -> None:
+        self._db = db
+
+    async def get_by_section(self, section: str) -> DBRow | None:
+        """Fetch a single section by its code. Case/whitespace tolerant —
+        e.g. ' 171f ' and '171F' both resolve."""
+        normalized = section.strip().upper()
+        sql = (
+            "SELECT section, chapter, chapter_title, section_title, section_desc "
+            "FROM ipc_sections WHERE UPPER(section) = ?"
+        )
+        async with self._db.conn.execute(sql, [normalized]) as cursor:
+            row = await cursor.fetchone()
+            return dict(row) if row else None
+
+    async def get_many(self, sections: list[str]) -> list[DBRow]:
+        """Batch fetch — used so the frontend can resolve every section in
+        a case's `ipc_sections` string with a single round trip instead of
+        N calls per case."""
+        normalized = [s.strip().upper() for s in sections if s.strip()]
+        if not normalized:
+            return []
+        placeholders = ",".join("?" for _ in normalized)
+        sql = (
+            f"SELECT section, chapter, chapter_title, section_title, section_desc "
+            f"FROM ipc_sections WHERE UPPER(section) IN ({placeholders})"
+        )
+        async with self._db.conn.execute(sql, normalized) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+
+# ── Helper for parsing the free-text ipc_sections column ────────────────
+def parse_ipc_sections_string(raw: str | None) -> list[str]:
+    """criminal_cases.ipc_sections is a raw comma/space-separated string
+    like "188, 171A" or "302 307". Split it into individual codes the
+    same way for both backend batch lookups and any server-side rendering."""
+    if not raw:
+        return []
+    import re
+    return [s.strip() for s in re.split(r"[,/]| and ", raw) if s.strip()]
