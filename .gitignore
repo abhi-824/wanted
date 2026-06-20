@@ -1,0 +1,20 @@
+# Python
+venv/
+server/venv/
+__pycache__/
+*.pyc
+
+# Data & scratch
+data/
+scraps/
+server/netacheck.db
+*.db
+
+# JSON data files
+*.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
