@@ -234,12 +234,12 @@ function showTooltip(el, cx, cy) {
 // ── MAP HIGHLIGHT ─────────────────────────────────────────────────
 function setSelectedConstituency(name) {
   if (selectedName) {
-    const prev = constituencyByName.get(selectedName);
+    const prev = constituencyByName.get(normConstName(selectedName));
     if (prev) prev.classList.remove('active');
   }
   selectedName = name || '';
   if (selectedName) {
-    const cur = constituencyByName.get(selectedName);
+    const cur = constituencyByName.get(normConstName(selectedName));
     if (cur) {
       cur.classList.add('active');
       cur.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -328,7 +328,7 @@ function wireMap() {
   const constituencies = document.querySelectorAll('.constituency');
   constituencyByName.clear();
   constituencies.forEach(el => {
-    if (el.dataset.name) constituencyByName.set(el.dataset.name, el);
+    if (el.dataset.name) constituencyByName.set(normConstName(el.dataset.name), el);
   });
   constituencies.forEach(el => {
     el.addEventListener('mouseenter', e => {
