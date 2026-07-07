@@ -1,0 +1,246 @@
+<h2 class="sr-only">Pick a scenario and generate a random outfit from your wardrobe, with separate reroll controls for the top and bottom.</h2>
+<div id="app" style="font-family: var(--font-sans);">
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem;">
+    <button class="scn" data-scn="train"><i class="ti ti-run" aria-hidden="true" style="margin-right:6px;"></i>Training</button>
+    <button class="scn" data-scn="casual"><i class="ti ti-coffee" aria-hidden="true" style="margin-right:6px;"></i>Casual</button>
+    <button class="scn" data-scn="formal"><i class="ti ti-briefcase" aria-hidden="true" style="margin-right:6px;"></i>Formal</button>
+    <button class="scn" data-scn="ethnic"><i class="ti ti-flower" aria-hidden="true" style="margin-right:6px;"></i>Ethnic</button>
+    <button class="scn" data-scn="lounge"><i class="ti ti-moon" aria-hidden="true" style="margin-right:6px;"></i>Lounge</button>
+  </div>
+
+  <div id="empty" style="padding:2rem 0; color:var(--color-text-secondary); font-size:14px;">
+    Pick a scenario above to pull a random outfit from your wardrobe.
+  </div>
+
+  <div id="rail" style="display:none;">
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <div id="slot-upper" style="flex:1; min-width:200px;"></div>
+      <div id="slot-lower" style="flex:1; min-width:200px;"></div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:1.25rem;">
+      <button id="reroll-both"><i class="ti ti-refresh" aria-hidden="true" style="margin-right:6px;"></i>New outfit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+var COLORS = {
+  black:'#262422', camel:'#B5895B', blue:'#2D5F8A', skin:'#D9AE82', beige:'#C9B58C',
+  lightblue:'#A9CCE3', lightgray:'#B7B5AC', green:'#4A6B3E', gray:'#8C8A82', darkblue:'#1F3A5F',
+  rust:'#A8552E', bone:'#D9CDB0', purple:'#5E4A78', red:'#9E342B', maroon:'#5E2230',
+  brown:'#5A3F28', pink:'#C98AA6', yellow:'#C99A2E', lightgreen:'#7A9E63', white:'#E9E4D6',
+  grey:'#9B968C', darkgreen:'#3C5A33'
+};
+function isDark(hex){
+  var c = hex.replace('#','');
+  var r=parseInt(c.substr(0,2),16), g=parseInt(c.substr(2,2),16), b=parseInt(c.substr(4,2),16);
+  var l = (0.299*r+0.587*g+0.114*b);
+  return l < 150;
+}
+
+var items = [];
+var _id = 0;
+function add(name, slot, shape, colorKey, tags){
+  var hex = COLORS[colorKey];
+  items.push({id:_id++, name:name, slot:slot, shape:shape, color:hex, dark:isDark(hex), tags:tags});
+}
+
+add('Black pant','lower','pant','black',['formal','casual']);
+add('Camel pant','lower','pant','camel',['formal','casual']);
+add('Blue pant','lower','pant','blue',['formal','casual']);
+add('Skin cargos','lower','pant','skin',['casual']);
+add('Beige pant','lower','pant','beige',['casual','formal']);
+add('Light blue jeans','lower','pant','lightblue',['casual']);
+add('Light gray pant','lower','pant','lightgray',['formal','casual']);
+add('Green cargos','lower','pant','darkgreen',['casual']);
+add('Black jeans','lower','pant','black',['casual']);
+add('Gray pant','lower','pant','gray',['formal','casual']);
+add('Dark blue jeans','lower','pant','darkblue',['casual']);
+
+add('Black shorts (striped)','lower','short','black',['lounge','train']);
+add('Grey pajama (older)','lower','pant','grey',['lounge']);
+add('Green pajama','lower','pant','green',['lounge']);
+add('Grey shorts','lower','short','lightgray',['train','lounge']);
+add('White pajama (kurta only)','lower','pant','white',['ethnic']);
+add('Grey pajama (newer)','lower','pant','grey',['lounge']);
+add('Black pajama','lower','pant','black',['lounge']);
+add('Black shorts','lower','short','black',['lounge','train']);
+add('Sports pajama, black','lower','pant','black',['train']);
+add('Grey pajama (very old)','lower','pant','grey',['lounge']);
+
+for(var i=1;i<=5;i++) add('Black t-shirt #'+i,'upper','tee','black',['casual','lounge']);
+for(var i=1;i<=4;i++) add('Blue t-shirt #'+i,'upper','tee','blue',['casual']);
+for(var i=1;i<=3;i++) add('Light blue t-shirt #'+i,'upper','tee','lightblue',['casual']);
+add('Red t-shirt','upper','tee','red',['casual']);
+add('Rust t-shirt','upper','tee','rust',['casual']);
+add('Bone t-shirt','upper','tee','bone',['casual']);
+add('Purple t-shirt','upper','tee','purple',['casual']);
+for(var i=1;i<=2;i++) add('Green t-shirt #'+i,'upper','tee','green',['casual']);
+for(var i=1;i<=2;i++) add('White t-shirt #'+i+' (old)','upper','tee','white',['casual','lounge']);
+
+add('Black sweatshirt','upper','hoodie','black',['casual']);
+add('Light blue sweatshirt','upper','hoodie','lightblue',['casual']);
+add('Dark blue sweatshirt','upper','hoodie','darkblue',['casual']);
+add('Brown sweatshirt','upper','hoodie','brown',['casual']);
+add('Green sweatshirt','upper','hoodie','green',['casual']);
+add('Green sweatshirt (collar)','upper','hoodie','darkgreen',['casual']);
+add('Maroon sweatshirt (collar)','upper','hoodie','maroon',['casual']);
+add('Blue Jack & Jones hoodie','upper','hoodie','darkblue',['casual']);
+add('Black hoodie (winter)','upper','hoodie','black',['casual','lounge']);
+add('Oversized grey hoodie','upper','hoodie','grey',['casual','lounge']);
+add('White hoodie','upper','hoodie','white',['casual','lounge']);
+
+add('Blue polo','upper','polo','blue',['casual']);
+add('Red polo','upper','polo','red',['casual']);
+add('Yellow polo','upper','polo','yellow',['casual']);
+add('Green polo','upper','polo','green',['casual']);
+add('Light green polo','upper','polo','lightgreen',['casual']);
+add('Grey polo','upper','polo','grey',['casual']);
+
+add('Green kurta (stylish)','full','kurta','darkgreen',['ethnic']);
+add('White kurta (stylish)','full','kurta','white',['ethnic']);
+add('White kurta (stylish) 2','full','kurta','white',['ethnic']);
+add('Pink kurta','full','kurta','pink',['ethnic']);
+add('Full-length green kurta','full','kurta','green',['ethnic']);
+add('Full-length maroon kurta','full','kurta','maroon',['ethnic']);
+
+var sportColors=['black','blue','grey','darkblue','red','green','lightgray','black'];
+for(var i=0;i<8;i++) add('Sport t-shirt #'+(i+1),'upper','tee',sportColors[i],['train']);
+add('Sport vest','upper','vest','grey',['train']);
+add('Sport vest 2','upper','vest','black',['train']);
+
+add('Black formal shirt','upper','shirt','black',['formal']);
+add('Green check informal shirt','upper','shirt','darkgreen',['casual']);
+add('Brown check informal shirt','upper','shirt','brown',['casual']);
+add('Blue check informal shirt','upper','shirt','blue',['casual']);
+add('Black Adidas track jacket','upper','jacket','black',['casual','train']);
+add('Black windcheater','upper','jacket','black',['casual']);
+add('Blue denim shirt','upper','shirt','darkblue',['casual']);
+add('White knitted shirt','upper','shirt','white',['casual']);
+add('White formal shirt (Peter England)','upper','shirt','white',['formal']);
+add('Green formal shirt','upper','shirt','darkgreen',['formal']);
+add('Blue formal shirt','upper','shirt','blue',['formal']);
+add('Brown Jack & Jones denim jacket','upper','jacket','brown',['casual']);
+add('Black casual shirt','upper','shirt','black',['casual']);
+add('Red check formal shirt','upper','shirt','red',['formal']);
+add('Green jacket','upper','jacket','darkgreen',['casual']);
+add('Beige jacket','upper','jacket','beige',['casual']);
+
+var current = {scenario:null, upper:null, lower:null};
+
+function pool(slot, scenario){
+  return items.filter(function(it){ return it.slot===slot && it.tags.indexOf(scenario)>=0; });
+}
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function chooseOutfit(scenario){
+  if(scenario==='ethnic'){
+    var fulls = pool('full','ethnic');
+    var k = pick(fulls);
+    current.upper = k;
+    current.lower = null;
+    return;
+  }
+  var ups = pool('upper', scenario);
+  var lows = pool('lower', scenario);
+  var u = pick(ups);
+  var preferred = lows.filter(function(l){ return l.dark !== u.dark; });
+  var l = preferred.length ? pick(preferred) : pick(lows);
+  current.upper = u;
+  current.lower = l;
+}
+
+function rerollSlot(which){
+  var scenario = current.scenario;
+  if(which==='upper'){
+    var ups = pool('upper', scenario);
+    var other = current.lower;
+    var preferred = other ? ups.filter(function(x){return x.dark!==other.dark;}) : ups;
+    current.upper = pick(preferred.length?preferred:ups);
+  } else {
+    var lows = pool('lower', scenario);
+    var other = current.upper;
+    var preferred = other ? lows.filter(function(x){return x.dark!==other.dark;}) : lows;
+    current.lower = pick(preferred.length?preferred:lows);
+  }
+  render();
+}
+
+function garmentSVG(shape, color){
+  var stroke = isDark(color) ? '#00000055' : '#00000033';
+  var body = '';
+  if(shape==='tee'){
+    body = '<path d="M30 20 L45 10 L60 18 L65 10 L80 20 L75 38 L65 33 L65 90 L35 90 L35 33 L25 38 Z" fill="'+color+'" stroke="'+stroke+'"/>';
+  } else if(shape==='vest'){
+    body = '<path d="M35 15 L45 12 L55 18 L65 12 L75 15 L70 38 L62 32 L62 90 L38 90 L38 32 L30 38 Z" fill="'+color+'" stroke="'+stroke+'"/>';
+  } else if(shape==='polo'){
+    body = '<path d="M30 20 L45 10 L52 16 L58 16 L65 10 L80 20 L75 38 L65 33 L65 90 L35 90 L35 33 L25 38 Z" fill="'+color+'" stroke="'+stroke+'"/><line x1="52" y1="16" x2="52" y2="28" stroke="'+stroke+'"/>';
+  } else if(shape==='shirt'){
+    body = '<path d="M28 22 L45 8 L50 16 L55 16 L60 8 L77 22 L82 40 L70 35 L70 92 L35 92 L35 35 L23 40 Z" fill="'+color+'" stroke="'+stroke+'"/><line x1="52" y1="16" x2="52" y2="92" stroke="'+stroke+'" stroke-width="0.5"/>';
+  } else if(shape==='hoodie'){
+    body = '<path d="M30 28 Q52 4 75 28 L82 42 L70 37 L70 92 L35 92 L35 37 L23 42 Z" fill="'+color+'" stroke="'+stroke+'"/><circle cx="52" cy="22" r="9" fill="none" stroke="'+stroke+'"/>';
+  } else if(shape==='jacket'){
+    body = '<path d="M28 22 L45 8 L52 22 L58 14 L60 8 L77 22 L82 40 L70 35 L70 92 L35 92 L35 35 L23 40 Z" fill="'+color+'" stroke="'+stroke+'"/><line x1="52" y1="22" x2="46" y2="92" stroke="'+stroke+'" stroke-width="0.5"/>';
+  } else if(shape==='kurta'){
+    body = '<path d="M32 18 L45 6 L60 6 L73 18 L80 36 L68 31 L68 70 L78 110 L27 110 L37 70 L37 31 L25 36 Z" fill="'+color+'" stroke="'+stroke+'"/>';
+  } else if(shape==='pant'){
+    body = '<path d="M38 10 L67 10 L67 55 L78 108 L60 108 L52 60 L45 108 L27 108 L38 55 Z" fill="'+color+'" stroke="'+stroke+'"/>';
+  } else if(shape==='short'){
+    body = '<path d="M38 10 L67 10 L67 45 L75 70 L58 70 L52 50 L46 70 L29 70 L38 45 Z" fill="'+color+'" stroke="'+stroke+'"/>';
+  }
+  var vb = (shape==='kurta') ? '0 0 105 115' : (shape==='pant'||shape==='short') ? '0 0 105 115' : '0 0 105 100';
+  return '<svg viewBox="'+vb+'" style="width:100%; height:140px;">'+body+'</svg>';
+}
+
+function card(slot, item){
+  if(!item) return '';
+  var label = slot==='upper' ? 'Top' : (slot==='lower' ? 'Bottom' : 'Outfit');
+  var showReroll = slot!=='full';
+  var html = '<div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem; background:var(--color-background-primary); display:flex; flex-direction:column; align-items:center; gap:8px;">';
+  html += '<div style="font-size:12px; color:var(--color-text-secondary); align-self:flex-start;">'+label+'</div>';
+  html += garmentSVG(item.shape, item.color);
+  html += '<div style="font-size:13px; font-weight:500; text-align:center;">'+item.name+'</div>';
+  if(showReroll){
+    html += '<button class="reroll" data-slot="'+slot+'" style="font-size:12px; padding:6px 10px;"><i class="ti ti-refresh" aria-hidden="true" style="margin-right:4px;"></i>Rotate</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function render(){
+  var u = document.getElementById('slot-upper');
+  var l = document.getElementById('slot-lower');
+  if(current.scenario==='ethnic'){
+    u.innerHTML = card('full', current.upper);
+    l.innerHTML = '';
+  } else {
+    u.innerHTML = card('upper', current.upper);
+    l.innerHTML = card('lower', current.lower);
+  }
+  document.querySelectorAll('.reroll').forEach(function(btn){
+    btn.onclick = function(){ rerollSlot(this.getAttribute('data-slot')); };
+  });
+}
+
+document.querySelectorAll('.scn').forEach(function(btn){
+  btn.onclick = function(){
+    document.querySelectorAll('.scn').forEach(function(b){ b.style.borderColor=''; b.style.background=''; });
+    this.style.borderColor = 'var(--color-border-info)';
+    this.style.background = 'var(--color-background-info)';
+    current.scenario = this.getAttribute('data-scn');
+    chooseOutfit(current.scenario);
+    document.getElementById('empty').style.display='none';
+    document.getElementById('rail').style.display='block';
+    render();
+  };
+});
+
+document.getElementById('reroll-both').onclick = function(){
+  if(current.scenario) { chooseOutfit(current.scenario); render(); }
+};
+
+})();
+</script>
