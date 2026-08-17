@@ -7,6 +7,7 @@ class Settings(BaseSettings):
 
     # Database
     db_path: str = "./netacheck.db"
+    cron_secret: str
 
     # CORS — comma-separated origins in .env, parsed into a list here
     allowed_origins: str = "http://localhost:5500"

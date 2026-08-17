@@ -23,7 +23,7 @@ class MPSummary(BaseModel):
     age: int | None = None
     total_cases: int = 0
     serious_cases: int = 0
-
+    severity_percentile: int | None = None
 
 class MPDetail(BaseModel):
     """
@@ -54,7 +54,8 @@ class MPDetail(BaseModel):
     voter_constituency: str | None = None
     election: str | None = None
     scraped_at: str | None = None
-
+    severity_percentile: int | None = None
+    severity_raw_score: float | None = None
     # Nested cases — empty list if clean record
     criminal_cases: list[CriminalCase] = []
 

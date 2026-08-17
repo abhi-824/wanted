@@ -12,7 +12,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from config import get_settings
 from db import startup, shutdown
 from middleware.rate_limit import limiter, rate_limit_handler
-from routers import mps, stats, ipc
+from routers import mps, stats, ipc, severity
 
 
 # ── LIFESPAN ──────────────────────────────────────────────────────────────────
@@ -76,6 +76,7 @@ def create_app() -> FastAPI:
     app.include_router(mps.router)
     app.include_router(stats.router)
     app.include_router(ipc.router)
+    app.include_router(severity.router)
 
     # ── HEALTH CHECK ──────────────────────────────────────────────────────────
     @app.get("/health", include_in_schema=False)
