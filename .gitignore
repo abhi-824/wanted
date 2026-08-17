@@ -3,6 +3,7 @@ venv/
 server/venv/
 __pycache__/
 *.pyc
+node_modules
 
 # Data & scratch
 data/
