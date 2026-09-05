@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neta Check — Know Your Parliament</title>
+<meta name="description" content="Explore India's 18th Lok Sabha with constituency maps, MP dossiers, and parliamentary insights.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Neta Check — Know Your Parliament">
+<meta property="og:description" content="Explore India's 18th Lok Sabha with constituency maps, MP dossiers, and parliamentary insights.">
+<meta property="og:image" content="meta.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Neta Check — Know Your Parliament">
+<meta name="twitter:description" content="Explore India's 18th Lok Sabha with constituency maps, MP dossiers, and parliamentary insights.">
+<meta name="twitter:image" content="meta.png">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#05080f;
+  --bg2:#080d18;
+  --bg3:#0b1220;
+  --border:#0f2035;
+  --border2:#162840;
+  --gold:#c8a84b;
+  --gold-dim:rgba(200,168,75,0.15);
+  --red:#e85050;
+  --blue:#1a7fe0;
+  --green:#5ec97a;
+  --text:#c8dff0;
+  --text2:#4a7fa8;
+  --text3:#1e3a58;
+  --mono:'Share Tech Mono',monospace;
+  --sans:'Rajdhani',sans-serif;
+}
+
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  overflow:hidden;
+}
+
+/* ── SCANLINES OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:100;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 3px,
+    rgba(0,0,0,0.055) 3px,rgba(0,0,0,0.055) 4px
+  );
+}
+
+/* ── GRID BACKGROUND ── */
+.grid-bg{
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(26,127,224,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,127,224,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+
+/* ── CORNER DECORATIONS ── */
+.corner{position:fixed;width:60px;height:60px;border-color:var(--border2);border-style:solid;}
+.corner.tl{top:16px;left:16px;border-width:1px 0 0 1px}
+.corner.tr{top:16px;right:16px;border-width:1px 1px 0 0}
+.corner.bl{bottom:16px;left:16px;border-width:0 0 1px 1px}
+.corner.br{bottom:16px;right:16px;border-width:0 1px 1px 0}
+
+/* ── LAYOUT ── */
+.page{
+  width:100vw;height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr;
+  position:relative;
+  z-index:1;
+}
+
+/* ── LEFT PANEL ── */
+.left{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:48px 40px 48px 72px;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+
+.sys-label{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--text3);
+  letter-spacing:.14em;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:8px;
+}
+.sys-label::before{
+  content:'';width:24px;height:1px;background:var(--border2);
+}
+
+.brand{
+  font-size:58px;
+  font-weight:700;
+  color:#f0e8cc;
+  line-height:.95;
+  letter-spacing:-1px;
+  margin-bottom:10px;
+}
+.brand span{
+  color:var(--gold);
+  display:block;
+}
+
+.tagline{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--text2);
+  letter-spacing:.06em;
+  margin-bottom:36px;
+  line-height:1.7;
+  max-width:380px;
+}
+.tagline strong{color:var(--text);font-family:var(--sans);font-weight:600}
+
+.stats-strip{
+  display:flex;gap:20px;
+  margin-bottom:40px;
+}
+.stat-chip{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:4px;
+  padding:8px 14px;
+  text-align:center;
+}
+.stat-chip .n{font-size:22px;font-weight:700;color:#f0e8cc;line-height:1}
+.stat-chip .l{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.08em;margin-top:3px;text-transform:uppercase}
+.stat-chip .n.red{color:var(--red)}
+.stat-chip .n.gold{color:var(--gold)}
+.stat-chip .n.blue{color:var(--blue)}
+
+.cta-row{display:flex;gap:12px;align-items:center}
+
+.btn-enter{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:var(--gold);
+  color:#0a0800;
+  border:none;
+  border-radius:3px;
+  padding:14px 28px;
+  font-family:var(--sans);
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.06em;
+  cursor:pointer;
+  text-decoration:none;
+  transition:background .2s,transform .1s;
+  position:relative;
+  overflow:hidden;
+}
+.btn-enter:hover{background:#e8c050;}
+.btn-enter:active{transform:scale(.98)}
+.btn-enter .arrow{font-size:18px;transition:transform .2s}
+.btn-enter:hover .arrow{transform:translateX(4px)}
+
+/* scan animation on button */
+.btn-enter::after{
+  content:'';
+  position:absolute;
+  top:-100%;left:-60%;
+  width:40%;height:300%;
+  background:rgba(255,255,255,0.12);
+  transform:skewX(-20deg);
+  animation:btnShine 3s ease-in-out infinite;
+}
+@keyframes btnShine{0%,70%{left:-60%}85%{left:130%}100%{left:130%}}
+
+.btn-source{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:transparent;
+  color:var(--text2);
+  border:1px solid var(--border2);
+  border-radius:3px;
+  padding:13px 20px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  cursor:pointer;
+  text-decoration:none;
+  transition:border-color .2s,color .2s;
+}
+.btn-source:hover{border-color:var(--text2);color:var(--text)}
+
+.disclaimer{
+  margin-top:28px;
+  font-family:var(--mono);
+  font-size:9px;
+  color:var(--text3);
+  line-height:1.6;
+  max-width:380px;
+}
+
+/* ── RIGHT PANEL — GUIDE ── */
+.right{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:48px 72px 48px 48px;
+  overflow:hidden;
+}
+
+.guide-header{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:.14em;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:8px;
+}
+.guide-header::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.2)}
+
+.guide-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.guide-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:16px;
+  position:relative;
+  transition:border-color .2s;
+}
+.guide-card:hover{border-color:var(--border2)}
+
+.gc-icon{
+  font-size:22px;
+  margin-bottom:10px;
+  display:block;
+  line-height:1;
+}
+.gc-title{
+  font-size:14px;
+  font-weight:600;
+  color:#e8e0cc;
+  margin-bottom:6px;
+  line-height:1.2;
+}
+.gc-body{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--text2);
+  line-height:1.65;
+}
+.gc-body b{color:var(--text);font-family:var(--sans);font-weight:600}
+
+/* accent left stripe per card */
+.guide-card::before{
+  content:'';
+  position:absolute;
+  top:16px;bottom:16px;left:0;
+  width:2px;
+  border-radius:0 2px 2px 0;
+}
+.gc-dot::before{background:var(--blue)}
+.gc-ring::before{background:var(--gold)}
+.gc-hover::before{background:#5ec97a}
+.gc-click::before{background:var(--red)}
+.gc-side::before{background:#8b5cf6}
+.gc-esc::before{background:var(--text3)}
+
+/* mini parliament diagram */
+.mini-parl{
+  margin-top:18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 16px;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:6px;
+}
+.mini-parl svg{flex-shrink:0}
+.mini-legend{display:flex;flex-direction:column;gap:5px}
+.ml-row{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9px;color:var(--text2)}
+.ml-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ml-ring{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,220,80,0.7);background:#e8630a;flex-shrink:0}
+
+/* ── BOTTOM STATUS BAR ── */
+.status-bar{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:28px;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 72px;
+  gap:24px;
+  z-index:10;
+}
+.sb-item{
+  font-family:var(--mono);
+  font-size:9px;
+  color:var(--text3);
+  display:flex;align-items:center;gap:5px;
+  letter-spacing:.06em;
+}
+.sb-dot{width:5px;height:5px;border-radius:50%}
+.sb-live{background:#5ec97a;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .page{grid-template-columns:1fr;grid-template-rows:auto auto}
+  html,body{overflow:auto}
+  .left{padding:40px 28px;border-right:none;border-bottom:1px solid var(--border)}
+  .right{padding:28px 28px 60px}
+  .brand{font-size:42px}
+  .corner{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<div class="page">
+
+  <!-- ── LEFT: HERO ── -->
+  <div class="left">
+    <div class="sys-label">CROREPATI SEVAK // v1.0 // 18TH LOK SABHA</div>
+
+    <div class="brand">
+      NETA<span>CHECK</span>
+    </div>
+
+    <p class="tagline">
+      India's parliament, mapped like a war room.<br>
+      <strong>543 MPs. Real criminal records. Real assets.</strong><br>
+      All sourced from ECI affidavits via ADR — public data, made visible.
+    </p>
+
+    <div class="stats-strip">
+      <div class="stat-chip">
+        <div class="n blue">543</div>
+        <div class="l">MPs mapped</div>
+      </div>
+      <div class="stat-chip">
+        <div class="n red">251</div>
+        <div class="l">With cases</div>
+      </div>
+      <div class="stat-chip">
+        <div class="n gold">₹46 Cr</div>
+        <div class="l">Avg assets</div>
+      </div>
+      <div class="stat-chip">
+        <div class="n red">46%</div>
+        <div class="l">Crorepatis</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-enter" href="india-map.html">
+        ENTER THE CHAMBER
+        <span class="arrow">→</span>
+      </a>
+      <a class="btn-source" href="https://www.myneta.info/" target="_blank">
+        ↗ DATA SOURCE
+      </a>
+    </div>
+
+    <p class="disclaimer">
+      All data sourced from self-declared ECI affidavits (2024 General Election)<br>
+      via myneta.info / ADR. Information is public domain. Cases are pending<br>
+      unless marked convicted. This tool does not claim legal accuracy.
+    </p>
+  </div>
+
+  <!-- ── RIGHT: HOW TO USE ── -->
+  <div class="right">
+    <div class="guide-header">// HOW TO USE THE CHAMBER</div>
+
+    <div class="guide-grid">
+
+      <div class="guide-card gc-dot">
+        <span class="gc-icon">🟠</span>
+        <div class="gc-title">Each dot = one MP</div>
+        <div class="gc-body">
+          The chamber shows <b>543 seats</b> arranged in 6 blocks of 11 rows — exactly as the real Lok Sabha. Each coloured dot is one elected MP, coloured by their party.
+        </div>
+      </div>
+
+      <div class="guide-card gc-ring">
+        <span class="gc-icon">⭕</span>
+        <div class="gc-title">Gold ring = Cabinet minister</div>
+        <div class="gc-body">
+          Ministers have a <b>gold outer ring</b> around their seat dot. PM Modi, Amit Shah, Rajnath Singh and other cabinet members are on the <b>right side</b>, front rows.
+        </div>
+      </div>
+
+      <div class="guide-card gc-hover">
+        <span class="gc-icon">👆</span>
+        <div class="gc-title">Hover to identify</div>
+        <div class="gc-body">
+          Move your cursor over any dot to see the <b>MP's name, party, constituency</b> and case count instantly. MPs with criminal cases show a red badge.
+        </div>
+      </div>
+
+      <div class="guide-card gc-click">
+        <span class="gc-icon">🗂</span>
+        <div class="gc-title">Click to open dossier</div>
+        <div class="gc-body">
+          Click any seat to open the <b>GTA-style dossier card</b> — real IPC sections, asset declarations, wanted-level stars, and party info from ADR affidavit data.
+        </div>
+      </div>
+
+      <div class="guide-card gc-side">
+        <span class="gc-icon">⬅ ➡</span>
+        <div class="gc-title">Left vs right side</div>
+        <div class="gc-body">
+          <b>Right side</b> of the Speaker = ruling NDA coalition. <b>Left side</b> = INDIA opposition. Front rows = senior leaders. This mirrors the actual chamber.
+        </div>
+      </div>
+
+      <div class="guide-card gc-esc">
+        <span class="gc-icon">✕</span>
+        <div class="gc-title">Close & navigate</div>
+        <div class="gc-body">
+          Press <b>Esc</b> or click ✕ to close the dossier panel. The chamber rescales automatically. Works on any screen size — try resizing the window.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mini-parl">
+      <svg width="120" height="72" viewBox="0 0 120 72">
+        <!-- arc tracks -->
+        <path d="M60 70 m-18 0 a18 18 0 0 1 36 0" fill="none" stroke="#0d1e30" stroke-width="10"/>
+        <path d="M60 70 m-30 0 a30 30 0 0 1 60 0" fill="none" stroke="#0d1e30" stroke-width="10"/>
+        <path d="M60 70 m-44 0 a44 44 0 0 1 88 0" fill="none" stroke="#0d1e30" stroke-width="10"/>
+        <path d="M60 70 m-58 0 a58 58 0 0 1 116 0" fill="none" stroke="#0d1e30" stroke-width="10"/>
+        <!-- NDA seats - orange right side -->
+        <circle cx="60" cy="52" r="3.5" fill="#e8630a"/>
+        <circle cx="51" cy="54" r="3.5" fill="#e8630a"/>
+        <circle cx="43" cy="58" r="3.5" fill="#e8630a"/>
+        <circle cx="35" cy="65" r="3.5" fill="#e8630a"/>
+        <!-- INDIA seats - blue left side -->
+        <circle cx="69" cy="54" r="3.5" fill="#1a7fe0"/>
+        <circle cx="77" cy="58" r="3.5" fill="#1a7fe0"/>
+        <circle cx="85" cy="65" r="3.5" fill="#1a7fe0"/>
+        <!-- TMC - purple -->
+        <circle cx="93" cy="40" r="3" fill="#8b5cf6"/>
+        <!-- DMK - red -->
+        <circle cx="29" cy="40" r="3" fill="#e53e3e"/>
+        <!-- minister ring -->
+        <circle cx="43" cy="58" r="6.5" fill="none" stroke="rgba(255,220,80,0.6)" stroke-width="1.2"/>
+        <!-- Speaker -->
+        <circle cx="60" cy="66" r="4.5" fill="#d4a400"/>
+        <!-- labels -->
+        <text x="28" y="72" font-family="Share Tech Mono,monospace" font-size="6" fill="#1e3a58">← INDIA</text>
+        <text x="76" y="72" font-family="Share Tech Mono,monospace" font-size="6" fill="#1e3a58">NDA →</text>
+      </svg>
+      <div class="mini-legend">
+        <div class="ml-row"><div class="ml-dot" style="background:#e8630a"></div>NDA / BJP seats (right of Speaker)</div>
+        <div class="ml-row"><div class="ml-dot" style="background:#1a7fe0"></div>INDIA bloc (left of Speaker)</div>
+        <div class="ml-row"><div class="ml-ring"></div>Gold ring = Cabinet minister</div>
+        <div class="ml-row"><div class="ml-dot" style="background:#d4a400"></div>Gold dot = Speaker (Om Birla)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── STATUS BAR ── -->
+<div class="status-bar">
+  <div class="sb-item"><div class="sb-dot sb-live"></div>DATA LIVE — 18TH LOK SABHA 2024</div>
+  <div class="sb-item">SOURCE: ECI AFFIDAVITS VIA ADR / MYNETA.INFO</div>
+  <div class="sb-item">543 SEATS · 41 PARTIES · 6 COALITIONS</div>
+  <div class="sb-item" style="margin-left:auto">CROREPATI SEVAK // NETA CHECK v1.0</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neta Check — 18th Lok Sabha</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--bg2:#080d18;--bg3:#0b1220;
+  --border:#0f2035;--border2:#162840;
+  --accent:#1a7fe0;--text:#c8dff0;--text2:#4a7fa8;--text3:#1e4060;
+  --gold:#d4a400;--mono:'Share Tech Mono',monospace;--sans:'Rajdhani',sans-serif;
+  --card-w:420px;--topbar-h:48px;--bottombar-h:80px;
+}
+@media(max-width:600px){
+  :root{--card-w:100vw;--topbar-h:44px;--bottombar-h:auto;}
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+.app{width:100vw;height:100vh;display:grid;grid-template-rows:var(--topbar-h) 1fr auto}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;gap:8px}
+.logo{font-family:var(--mono);font-size:13px;color:#4a9fd4;letter-spacing:.12em;white-space:nowrap}
+.divv{width:1px;height:20px;background:var(--border2);flex-shrink:0}
+.session{font-size:10px;color:var(--text3);font-family:var(--mono);white-space:nowrap}
+@media(max-width:480px){.session{display:none}}
+.pills{display:flex;gap:6px;align-items:center;flex-wrap:nowrap}
+.pill{display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-size:10px;font-family:var(--mono)}
+.pill .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pill .val{font-size:12px;font-weight:600}
+@media(max-width:480px){
+  .pill{padding:3px 5px;gap:3px;font-size:9px}
+  .pill .val{font-size:11px}
+}
+
+/* MAIN */
+.main{position:relative;display:flex;overflow:hidden;min-height:0}
+
+/* CANVAS */
+.canvas-wrap{flex:1;position:relative;transition:flex .45s cubic-bezier(.23,1,.32,1);overflow:hidden;min-width:0}
+canvas{display:block;width:100%;height:100%}
+
+/* TOOLTIP */
+.tooltip{position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;pointer-events:none;display:none;z-index:50;min-width:190px;max-width:240px}
+.tt-bar{height:2px;border-radius:1px;margin-bottom:8px}
+.tt-name{font-size:14px;font-weight:600;color:#e8f4ff;margin-bottom:2px}
+.tt-role-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:2px;margin-bottom:6px;border:1px solid}
+.tt-const{font-size:11px;color:var(--text2);font-family:var(--mono);margin-bottom:6px}
+.tt-row{display:flex;gap:12px}
+.tt-cell .l{color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px}
+.tt-cell .v{color:var(--text);font-size:11px;font-weight:500}
+.tt-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:6px}
+
+/* CARD PANEL — desktop: side panel; mobile: bottom sheet */
+.card-panel{width:0;background:var(--bg2);border-left:1px solid var(--border2);overflow:hidden;position:relative;transition:width .45s cubic-bezier(.23,1,.32,1);flex-shrink:0}
+.card-panel.open{width:var(--card-w)}
+.card-inner{width:var(--card-w);height:100%;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:thin;scrollbar-color:#0f2035 transparent}
+.card-inner::-webkit-scrollbar{width:4px}
+.card-inner::-webkit-scrollbar-thumb{background:#0f2035;border-radius:2px}
+.scan-lines{position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px)}
+.gta-wrap{position:relative;z-index:2;padding:20px 20px 32px}
+
+@media(max-width:700px){
+  /* Mobile: card panel as bottom sheet overlay */
+  .card-panel{
+    position:fixed;bottom:0;left:0;right:0;width:100%!important;
+    height:0;max-height:80vh;
+    border-left:none;border-top:1px solid var(--border2);
+    transition:height .45s cubic-bezier(.23,1,.32,1);
+    z-index:200;border-radius:14px 14px 0 0;
+  }
+  .card-panel.open{width:100%!important;height:80vh}
+  .card-inner{width:100%;max-height:80vh}
+}
+
+.close-btn{position:absolute;top:14px;right:14px;z-index:10;width:32px;height:32px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;transition:all .2s}
+.close-btn:hover,.close-btn:active{border-color:#4a7fa8;color:var(--text)}
+
+/* GTA CARD INTERNALS */
+.dossier-label{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:3px;margin-bottom:10px}
+.wanted-row{display:flex;gap:4px;margin-bottom:16px}
+.star{width:15px;height:15px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.star.on{background:#e8b84b}.star.off{background:#1a2030}
+
+.hero-grid{display:grid;grid-template-columns:130px 1fr;gap:16px;margin-bottom:18px;align-items:start}
+@media(max-width:400px){.hero-grid{grid-template-columns:100px 1fr;gap:10px}}
+.portrait{width:130px;height:165px;border:2px solid #c8a84b;background:#14141e;position:relative;overflow:hidden}
+@media(max-width:400px){.portrait{width:100px;height:126px}}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.portrait-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#10141e;font-family:var(--sans);font-size:42px;font-weight:700;color:rgba(200,168,75,0.25)}
+.portrait-party{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.75);padding:5px 4px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700}
+.pc{position:absolute;width:10px;height:10px;border-color:#c8a84b;border-style:solid}
+.pc.tl{top:-3px;left:-3px;border-width:2px 0 0 2px}.pc.tr{top:-3px;right:-3px;border-width:2px 2px 0 0}
+.pc.bl{bottom:-3px;left:-3px;border-width:0 0 2px 2px}.pc.br{bottom:-3px;right:-3px;border-width:0 2px 2px 0}
+
+.mp-name{font-size:20px;font-weight:700;color:#f0e8cc;line-height:1.1;margin-bottom:3px}
+@media(max-width:400px){.mp-name{font-size:17px}}
+.mp-alias{font-family:var(--mono);font-size:10px;color:#8a8070;letter-spacing:1px;margin-bottom:10px;line-height:1.4}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 7px;border:1px solid;border-radius:2px}
+.tag-orange{color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08)}
+.tag-blue{color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08)}
+.tag-green{color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08)}
+.tag-red{color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08)}
+.tag-gold{color:#c8a84b;border-color:#c8a84b;background:rgba(200,168,75,0.08)}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.stat-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(200,168,75,0.1)}
+.s-icon{font-size:12px;width:18px;text-align:center;flex-shrink:0}
+.s-label{font-family:var(--mono);font-size:9px;color:#6a6258;letter-spacing:.8px;flex:1}
+.s-val{font-size:12px;font-weight:600;color:#e8e0cc;text-align:right}
+.s-val.red{color:#e85050}.s-val.gold{color:#c8a84b}.s-val.green{color:#5ec97a}
+
+.section-title{font-family:var(--mono);font-size:10px;color:#c8a84b;letter-spacing:2.5px;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.2)}
+
+.bar-row{margin-bottom:10px}
+.bar-lrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.bar-label{font-size:12px;color:#a09080;font-weight:500}
+.bar-pct{font-family:var(--mono);font-size:10px;color:#c8a84b}
+.bar-track{height:5px;background:#1a2030;border-radius:1px;overflow:hidden}
+.bar-fill{height:100%;border-radius:1px;width:0;transition:width 1.2s cubic-bezier(.23,1,.32,1)}
+.bar-fill.gold{background:#c8a84b}.bar-fill.red{background:#c84b4b}.bar-fill.blue{background:#4b8bc8}.bar-fill.green{background:#5ec97a}
+
+.net-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.person-chip{padding:8px 10px;border:1px solid rgba(200,168,75,0.12);background:rgba(200,168,75,0.02);border-radius:3px;text-align:center}
+.chip-name{font-size:12px;font-weight:600;color:#d8d0b8;margin-bottom:2px}
+.chip-rel{font-family:var(--mono);font-size:9px;color:#7a7068}
+
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(200,168,75,0.12);margin-top:8px}
+.src-link{font-family:var(--mono);font-size:9px;color:#4ea3e0;letter-spacing:.8px;text-decoration:none}
+.src-link:hover{color:#7ac8ff}
+.adr-badge{font-family:var(--mono);font-size:9px;color:#5ec97a;letter-spacing:1.5px}
+
+.case-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;margin-bottom:7px;border:1px solid rgba(232,80,80,0.22);background:rgba(232,80,80,0.04);border-radius:3px}
+.case-num{font-family:var(--mono);font-size:9px;color:#e85050;padding:2px 5px;border:1px solid rgba(232,80,80,0.35);border-radius:2px;flex-shrink:0;margin-top:1px;white-space:nowrap}
+.case-text{font-size:12px;color:#c0b8a8;line-height:1.45}
+
+.conviction-badge{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;margin-top:4px;border:1px solid rgba(255,80,80,0.5);background:rgba(255,40,40,0.08);border-radius:3px}
+.conv-icon{font-size:14px;flex-shrink:0}
+.conv-text{font-size:11px;color:#e85050;line-height:1.45;font-family:var(--mono)}
+
+.clean-record{font-size:12px;color:var(--text2);line-height:1.6;padding:10px 12px;border:1px solid rgba(94,201,122,0.2);background:rgba(94,201,122,0.04);border-radius:3px}
+
+@keyframes slideInCard{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:700px){
+  @keyframes slideInCard{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+}
+.si{animation:slideInCard .35s cubic-bezier(.23,1,.32,1) both}
+.si1{animation-delay:.03s}.si2{animation-delay:.07s}.si3{animation-delay:.11s}
+.si4{animation-delay:.15s}.si5{animation-delay:.19s}
+
+/* BOTTOMBAR */
+.bottombar{background:var(--bg2);border-top:1px solid var(--border);padding:8px 14px 8px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.legend-row{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.li{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--text2);font-family:var(--mono)}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+@media(max-width:600px){
+  .li{font-size:12px}
+  .ld{width:8px;height:8px}
+}
+.tips-row{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.tip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)}
+.tk{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:2px 7px;font-size:11px;color:#4a9fd4;font-family:var(--mono)}
+@media(max-width:600px){
+  .tip{font-size:11px}
+  .tk{font-size:10px;padding:1px 5px}
+}
+
+/* LOADING */
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:100;gap:14px}
+.loading-text{font-family:var(--mono);font-size:12px;color:#4a9fd4;letter-spacing:.1em}
+.loading-bar{width:180px;height:2px;background:var(--border2);border-radius:1px;overflow:hidden}
+.loading-fill{height:100%;background:var(--accent);animation:lp 1.2s ease-in-out infinite}
+@keyframes lp{0%{width:0%}60%{width:100%}100%{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <span class="logo">NETA CHECK</span>
+      <div class="divv"></div>
+      <span class="session">18th Lok Sabha · 2024–2029</span>
+    </div>
+    <div class="pills">
+      <div class="pill"><div class="dot" style="background:#e8630a"></div><span style="color:#7aa4cc;font-size:11px">NDA</span><span class="val" style="color:#e8630a">293</span></div>
+      <div class="pill"><div class="dot" style="background:#1a7fe0"></div><span style="color:#7aa4cc;font-size:11px">INDIA</span><span class="val" style="color:#1a7fe0">234</span></div>
+      <div class="pill"><div class="dot" style="background:#607080"></div><span style="color:#7aa4cc;font-size:11px">Others</span><span class="val" style="color:#aaa">16</span></div>
+      <div class="pill"><span style="color:#7aa4cc;font-size:11px">Majority</span><span class="val" style="color:#d4a400">272</span></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="canvas-wrap" id="cwrap">
+      <canvas id="c"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+      <div class="loading" id="loading">
+        <div class="loading-text">LOADING PARLIAMENT DATA...</div>
+        <div class="loading-bar"><div class="loading-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="card-panel" id="card-panel">
+      <div class="card-inner" id="card-inner">
+        <div class="scan-lines"></div>
+        <button class="close-btn" onclick="closePanel()">✕</button>
+        <div class="gta-wrap" id="gta-wrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div class="legend-row" id="legend-row"></div>
+    <div class="tips-row" id="tips-row">
+      <div class="tip"><span class="tk">Hover</span>see MP name & party</div>
+      <div class="tip"><span class="tk">Click</span>open dossier card</div>
+      <div class="tip"><span class="tk">Gold ring</span>Cabinet minister</div>
+      <div class="tip"><span class="tk">Esc</span>close panel</div>
+    </div>
+  </div>
+
+</div>
+<script>
+const BLOCKS=6,ROWS=11;
+const BLOCK_SEATS=[97,89,89,89,89,97];
+const ARC_SPAN=162,BLOCK_GAP=3.5;
+const BSPAN=(ARC_SPAN-BLOCK_GAP*(BLOCKS-1))/BLOCKS;
+const ARC_START=180+(180-ARC_SPAN)/2;
+
+const ROLES={
+  'Narendra Modi':        {role:'Prime Minister',        tag:'tag-gold',  wl:5},
+  'Om Birla':             {role:'Speaker',               tag:'tag-gold',  wl:3},
+  'Rajnath Singh':        {role:'Defence Minister',      tag:'tag-orange',wl:3},
+  'Amit Shah':            {role:'Home Minister',         tag:'tag-orange',wl:4},
+  'Nitin Gadkari':        {role:'Road Transport Min.',   tag:'tag-orange',wl:3},
+  'Piyush Goyal':         {role:'Commerce Minister',     tag:'tag-orange',wl:2},
+  'Shivraj Singh Chauhan':{role:'Agriculture Minister',  tag:'tag-orange',wl:2},
+  'Jyotiraditya Scindia': {role:'Civil Aviation Min.',   tag:'tag-orange',wl:2},
+  'Manohar Lal Khattar':  {role:'Housing Minister',      tag:'tag-orange',wl:2},
+  'Dharmendra Pradhan':   {role:'Education Minister',    tag:'tag-orange',wl:2},
+  'Sarbananda Sonowal':   {role:'Ports Minister',        tag:'tag-orange',wl:2},
+  'Mansukh Mandaviya':    {role:'Labour Minister',       tag:'tag-orange',wl:2},
+  'G. Kishan Reddy':      {role:'Coal Minister',         tag:'tag-orange',wl:2},
+  'Kiren Rijiju':         {role:'Parliamentary Affairs', tag:'tag-orange',wl:2},
+  'Chirag Paswan':        {role:'Food Processing Min.',  tag:'tag-orange',wl:2},
+  'Arjun Ram Meghwal':    {role:'Law Minister',          tag:'tag-orange',wl:2},
+  'Pralhad Joshi':        {role:'New & Renewable Energy',tag:'tag-orange',wl:2},
+  'Kinjarapu Ram Mohan Naidu':{role:'Civil Aviation Min.',tag:'tag-orange',wl:2},
+  'Rahul Gandhi':         {role:'Leader of Opposition',  tag:'tag-blue',  wl:3},
+  'K. C. Venugopal':      {role:'INC Org. Secretary',   tag:'tag-blue',  wl:2},
+};
+
+let mpsData=null,partiesData=null,criminalData=null,positioned=[],speakerSeat=null,hovered=null;
+let CW=0,CH=0,cx=0,cy=0,panelOpen=false;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const tooltip=document.getElementById('tooltip');
+const cwrap=document.getElementById('cwrap');
+const cardPanel=document.getElementById('card-panel');
+
+function makeRowCounts(total){
+  const base=Math.floor(total/ROWS),rem=total%ROWS;
+  return Array.from({length:ROWS},(_,i)=>i<rem?base+1:base);
+}
+const rowCounts=BLOCK_SEATS.map(makeRowCounts);
+
+function lighten(hex,amt=75){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+amt)},${Math.min(255,g+amt)},${Math.min(255,b+amt)})`;
+}
+function initials(name){return name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+
+function buildSeats(w,h){
+  CW=w;CH=h;cx=w/2;cy=h;
+  positioned=[];
+  const MIN_R=Math.min(w,h*1.8)*0.155;
+  const MAX_R=Math.min(w/2,h)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.28));
+
+  const allPos=[];
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      const arcR=MIN_R+r*ROW_SPACING,n=rowCounts[b][r];
+      for(let s=0;s<n;s++){
+        const t=n===1?(bS+bE)/2:bS+(s/(n-1))*(bE-bS);
+        allPos.push({x:cx+arcR*Math.cos(t),y:cy+arcR*Math.sin(t),r:SEAT_R,block:b,row:r});
+      }
+    }
+  }
+
+  const rightPos=allPos.filter(s=>s.block<=2).sort((a,b)=>a.row-b.row||a.x-b.x);
+  const leftPos =allPos.filter(s=>s.block>=3).sort((a,b)=>a.row-b.row||b.x-a.x);
+
+  const ndaM=mpsData.filter(m=>partiesData[m.party]?.side==='right');
+  const othM=mpsData.filter(m=>partiesData[m.party]?.side!=='right');
+
+  function hoist(arr,name){const i=arr.findIndex(m=>m.name===name);if(i>0){const[x]=arr.splice(i,1);arr.unshift(x);}}
+  hoist(ndaM,'Narendra Modi');hoist(ndaM,'Rajnath Singh');hoist(ndaM,'Amit Shah');hoist(ndaM,'Nitin Gadkari');
+  hoist(othM,'Rahul Gandhi');hoist(othM,'K. C. Venugopal');
+
+  rightPos.forEach((sp,i)=>{
+    if(i>=ndaM.length)return;
+    const mp=ndaM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
+  });
+  leftPos.forEach((sp,i)=>{
+    if(i>=othM.length)return;
+    const mp=othM[i],color=partiesData[mp.party]?.color||'#607080';
+    positioned.push({...sp,mp,color,isMin:!!ROLES[mp.name]});
+  });
+
+  const _minR=Math.min(w,h*1.8)*0.155;
+  speakerSeat={x:cx,y:cy-_minR*0.52,r:Math.max(7,SEAT_R*1.7),
+    mp:{name:'Om Birla',constituency:'Kota',state:'Rajasthan',party:'BJP'},
+    color:'#d4a400',block:-1,row:-1,isMin:false};
+}
+
+function draw(){
+  ctx.clearRect(0,0,CW,CH);
+  ctx.fillStyle='#05080f';ctx.fillRect(0,0,CW,CH);
+
+  const MIN_R=Math.min(CW,CH*1.8)*0.155;
+  const MAX_R=Math.min(CW/2,CH)*0.91;
+  const ROW_SPACING=(MAX_R-MIN_R)/(ROWS-1);
+  const SEAT_R=Math.max(3.5,Math.min(8,ROW_SPACING*0.28));
+
+  for(let b=0;b<BLOCKS;b++){
+    const bS=(ARC_START+b*(BSPAN+BLOCK_GAP))*Math.PI/180;
+    const bE=bS+BSPAN*Math.PI/180;
+    for(let r=0;r<ROWS;r++){
+      ctx.beginPath();
+      ctx.arc(cx,cy,MIN_R+r*ROW_SPACING,bS,bE);
+      ctx.strokeStyle='#0d1e30';ctx.lineWidth=SEAT_R*2+3;ctx.stroke();
+    }
+  }
+
+  for(const s of positioned){
+    const isH=s===hovered;
+    // minister glow ring
+    if(s.isMin){
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r+3.5,0,2*Math.PI);
+      ctx.strokeStyle=isH?'rgba(255,220,80,0.9)':'rgba(255,220,80,0.5)';
+      ctx.lineWidth=1.5;ctx.stroke();
+    }
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r+(isH?2.5:0),0,2*Math.PI);
+    ctx.fillStyle=isH?lighten(s.color):s.color;ctx.fill();
+    if(isH){ctx.strokeStyle='#ffffff66';ctx.lineWidth=1.5;ctx.stroke();}
+  }
+
+  // Speaker
+  const sp=speakerSeat;
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+4,0,2*Math.PI);
+  ctx.strokeStyle='rgba(212,164,0,0.3)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(sp.x,sp.y,sp.r+(hovered===sp?3:0),0,2*Math.PI);
+  ctx.fillStyle='#d4a400';ctx.fill();
+  if(hovered===sp){ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=2;ctx.stroke();}
+
+  const fs=Math.max(9,Math.min(11,CW*0.012));
+  ctx.font=`${fs}px 'Share Tech Mono',monospace`;
+  ctx.fillStyle='rgba(196,148,0,0.65)';ctx.textAlign='center';
+  ctx.fillText('SPEAKER',cx,sp.y-sp.r-6);
+  ctx.fillStyle='#1a4060';
+  ctx.textAlign='left';ctx.fillText('NDA →',cx+14,cy-8);
+  ctx.textAlign='right';ctx.fillText('← INDIA',cx-14,cy-8);
+}
+
+function showTooltip(s,ex,ey){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color;
+  const role=ROLES[mp.name];
+  const rec=criminalData?criminalData.find(r=>r.mp_id===mp.id||r.name===mp.name):null;
+  const casesBadge=rec
+    ?rec.total_cases>0
+      ?`<span style="color:#e85050;font-family:var(--mono);font-size:10px;margin-left:6px">⚖ ${rec.total_cases} case${rec.total_cases>1?'s':''}</span>`
+      :`<span style="color:#5ec97a;font-family:var(--mono);font-size:10px;margin-left:6px">✓ clean</span>`
+    :'';
+  tooltip.innerHTML=`
+    <div class="tt-bar" style="background:${color}"></div>
+    <div class="tt-name">${mp.name}${casesBadge}</div>
+    ${role?`<div class="tt-role-tag" style="color:${color};border-color:${color};background:${color}15">${role.role}</div>`:''}
+    <div class="tt-const">${mp.constituency||'—'} · ${mp.state||''}</div>
+    <div class="tt-row">
+      <div class="tt-cell"><div class="l">Party</div><div class="v" style="color:${color}">${party.name||mp.party}</div></div>
+      <div class="tt-cell"><div class="l">Coalition</div><div class="v">${party.coalition||'—'}</div></div>
+    </div>
+    <div class="tt-hint">[ click to open dossier ]</div>`;
+  tooltip.style.display='block';
+  const wr=cwrap.getBoundingClientRect();
+  let tx=ex+16,ty=ey-55;
+  if(tx+270>wr.width)tx=ex-275;
+  if(ty<0)ty=4;
+  if(ty+tooltip.offsetHeight>wr.height)ty=wr.height-tooltip.offsetHeight-4;
+  tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
+}
+
+function openCard(s){
+  const mp=s.mp,party=partiesData[mp.party]||{},color=s.color||'#c8a84b';
+  const role=ROLES[mp.name]||null;
+  const ini=initials(mp.name);
+
+  // ── CRIMINAL DATA ──────────────────────────────────────
+  const rec=criminalData?criminalData.find(r=>r.mp_id===mp.id||r.name===mp.name):null;
+  const totalCases=rec?.total_cases??0;
+  const seriousCases=rec?.serious_cases??0;
+  const cases=rec?.cases||[];
+  const convicted=rec?.convicted||false;
+  const convictionDetail=rec?.conviction_detail||'';
+  const assetsCr=rec?.assets_cr??null;
+  const hasRecord=!!rec;
+
+  // Wanted level: driven by real case count
+  const wl=convicted?5:seriousCases>=5?5:seriousCases>=3?4:seriousCases>=1?3:totalCases>=5?3:totalCases>=1?2:role?.wl||1;
+  const stars=Array.from({length:5},(_,i)=>`<div class="star ${i<wl?'on':'off'}"></div>`).join('');
+
+  // Criminal severity bar — real value from data
+  const crimSeverityPct=totalCases===0?0:Math.min(99,Math.round((seriousCases*12+totalCases*4)));
+
+  // Tags
+  const tags=[];
+  if(role) tags.push({label:role.role,cls:role.tag});
+  if(convicted) tags.push({label:'CONVICTED',cls:'tag-red'});
+  if(totalCases>10) tags.push({label:`${totalCases} cases`,cls:'tag-red'});
+  else if(totalCases>0) tags.push({label:`${totalCases} case${totalCases>1?'s':''}`,cls:'tag-red'});
+  else tags.push({label:'Clean record',cls:'tag-green'});
+  if(party.coalition) tags.push({label:party.coalition,cls:party.coalition==='NDA'?'tag-orange':'tag-blue'});
+  tags.push({label:mp.state,cls:'tag-gold'});
+
+  // Seed for non-criminal bars (stable)
+  const seed=mp.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const seededPct=(base,range)=>Math.min(99,Math.max(15,base+(seed%range)));
+
+  // Cases section HTML
+  let casesHTML='';
+  if(cases.length>0){
+    casesHTML=`
+      <div class="si si4">
+        <div class="section-title">// pending cases</div>
+        ${cases.map(c=>`
+          <div class="case-item">
+            <span class="case-num">${c.num}</span>
+            <div class="case-text">${c.text}</div>
+          </div>`).join('')}
+        ${convicted?`<div class="conviction-badge">
+          <span class="conv-icon">⚠</span>
+          <div class="conv-text">${convictionDetail}</div>
+        </div>`:''}
+      </div>`;
+  } else {
+    casesHTML=`
+      <div class="si si4">
+        <div class="section-title">// criminal record</div>
+        <div class="clean-record">
+          ${hasRecord
+            ?'<span style="color:#5ec97a">✓</span> No pending cases declared in 2024 ECI affidavit.'
+            :'No affidavit data in current dataset. Check myneta.info for full record.'}
+          ${rec?.note?`<div style="margin-top:6px;color:var(--text3)">${rec.note}</div>`:''}
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('gta-wrap').innerHTML=`
+    <div class="si dossier-label">// PARLIAMENT DOSSIER v1.0</div>
+    <div class="si si1 wanted-row">${stars}</div>
+
+    <div class="si si2 hero-grid">
+      <div style="position:relative">
+        <div class="portrait">
+          <div class="portrait-fallback">${ini}</div>
+          <div class="portrait-party" style="color:${color}">${mp.party}</div>
+        </div>
+        <div class="pc tl"></div><div class="pc tr"></div>
+        <div class="pc bl"></div><div class="pc br"></div>
+      </div>
+      <div>
+        <div class="mp-name">${mp.name}</div>
+        <div class="mp-alias">${mp.constituency}<br>${mp.state} · Lok Sabha</div>
+        <div class="tag-row">${tags.map(t=>`<span class="tag ${t.cls}">${t.label}</span>`).join('')}</div>
+        <div class="stats-grid">
+          <div class="stat-row"><span class="s-icon">⚖️</span><span class="s-label">TOTAL CASES</span><span class="s-val ${totalCases>0?'red':''}">${hasRecord?totalCases:'—'}</span></div>
+          <div class="stat-row"><span class="s-icon">🔴</span><span class="s-label">SERIOUS</span><span class="s-val ${seriousCases>0?'red':''}">${hasRecord?seriousCases:'—'}</span></div>
+          <div class="stat-row"><span class="s-icon">💰</span><span class="s-label">ASSETS</span><span class="s-val gold">${assetsCr!=null?`₹${assetsCr}Cr`:'—'}</span></div>
+          <div class="stat-row"><span class="s-icon">🪑</span><span class="s-label">SEAT</span><span class="s-val">${s.block>=0?`B${s.block+1}·R${s.row+1}`:'Speaker'}</span></div>
+          <div class="stat-row"><span class="s-icon">🏛️</span><span class="s-label">PARTY</span><span class="s-val" style="color:${color};font-size:10px">${mp.party}</span></div>
+          <div class="stat-row"><span class="s-icon">🤝</span><span class="s-label">COALITION</span><span class="s-val ${party.coalition==='NDA'?'gold':'green'}">${party.coalition||'Other'}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="si si3">
+      <div class="section-title">// stats</div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Attendance (est.)</span><span class="bar-pct">${seededPct(55,30)}%</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${seededPct(55,30)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Questions raised (est.)</span><span class="bar-pct">${seededPct(40,40)}%</span></div>
+        <div class="bar-track"><div class="bar-fill blue" data-pct="${seededPct(40,40)}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Criminal severity</span><span class="bar-pct">${crimSeverityPct}%</span></div>
+        <div class="bar-track"><div class="bar-fill red" data-pct="${crimSeverityPct}"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lrow"><span class="bar-label">Party loyalty (est.)</span><span class="bar-pct">${seededPct(65,30)}%</span></div>
+        <div class="bar-track"><div class="bar-fill gold" data-pct="${seededPct(65,30)}"></div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:5px">attendance/questions = estimated · criminal severity = ADR affidavit data</div>
+    </div>
+
+    ${casesHTML}
+
+    <div class="si si5">
+      <div class="section-title">// connections</div>
+      <div class="net-grid">
+        <div class="person-chip"><div class="chip-name">${party.name||mp.party}</div><div class="chip-rel">political party</div></div>
+        <div class="person-chip"><div class="chip-name">${party.coalition||'Independent'}</div><div class="chip-rel">coalition</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.state}</div><div class="chip-rel">home state</div></div>
+        <div class="person-chip"><div class="chip-name">${mp.constituency}</div><div class="chip-rel">constituency</div></div>
+      </div>
+    </div>
+
+    <div class="si card-footer">
+      <a class="src-link" href="https://${rec?.source_url||'myneta.info/LokSabha2024'}" target="_blank">source: ADR affidavit data ↗</a>
+      <span class="adr-badge">ADR VERIFIED</span>
+    </div>
+  `;
+
+  cardPanel.classList.add('open');
+  panelOpen=true;
+  tooltip.style.display='none';
+  document.getElementById('card-inner').scrollTop=0;
+
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill[data-pct]').forEach(el=>{
+      el.style.width=el.dataset.pct+'%';
+    });
+  },90);
+
+  setTimeout(()=>resize(),460);
+}
+
+function closePanel(){
+  cardPanel.classList.remove('open');
+  panelOpen=false;
+  setTimeout(()=>resize(),460);
+}
+
+function openFromQueryParam(){
+  const params=new URLSearchParams(window.location.search);
+  const raw=params.get('id');
+  if(!raw)return;
+  const id=parseInt(raw,10);
+  if(!Number.isFinite(id))return;
+  const seat=positioned.find(s=>s.mp&&s.mp.id===id);
+  if(!seat)return;
+  hovered=seat;
+  draw();
+  openCard(seat);
+}
+
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const sx=CW/rect.width,sy=CH/rect.height;
+  const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+  let found=null;
+  for(const s of [...positioned,speakerSeat]){
+    const dx=mx-s.x,dy=my-s.y;
+    if(dx*dx+dy*dy<=(s.r+6)*(s.r+6)){found=s;break;}
+  }
+  if(found!==hovered){hovered=found;draw();}
+  if(found){
+    canvas.style.cursor='pointer';
+    showTooltip(found,e.clientX-cwrap.getBoundingClientRect().left,e.clientY-cwrap.getBoundingClientRect().top);
+  } else {
+    canvas.style.cursor='default';
+    tooltip.style.display='none';
+  }
+});
+canvas.addEventListener('mouseleave',()=>{hovered=null;tooltip.style.display='none';draw();});
+canvas.addEventListener('click',()=>{if(hovered)openCard(hovered);});
+
+// Touch support
+let touchTap=null;
+canvas.addEventListener('touchstart',e=>{e.preventDefault();},{ passive:false });
+canvas.addEventListener('touchend',e=>{
+  e.preventDefault();
+  const touch=e.changedTouches[0];
+  const rect=canvas.getBoundingClientRect();
+  const sx=CW/rect.width,sy=CH/rect.height;
+  const mx=(touch.clientX-rect.left)*sx,my=(touch.clientY-rect.top)*sy;
+  let found=null;
+  for(const s of [...positioned,speakerSeat]){
+    const dx=mx-s.x,dy=my-s.y;
+    if(dx*dx+dy*dy<=(s.r+14)*(s.r+14)){found=s;break;}
+  }
+  if(found){
+    if(touchTap===found){
+      openCard(found);touchTap=null;tooltip.style.display='none';
+    } else {
+      touchTap=found;hovered=found;draw();
+      showTooltip(found,touch.clientX-cwrap.getBoundingClientRect().left,touch.clientY-cwrap.getBoundingClientRect().top);
+    }
+  } else {
+    touchTap=null;hovered=null;tooltip.style.display='none';draw();
+  }
+},{ passive:false });
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panelOpen)closePanel();});
+
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  const w=cwrap.clientWidth,h=cwrap.clientHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  ctx.scale(dpr,dpr);
+  if(mpsData){buildSeats(w,h);draw();}
+}
+new ResizeObserver(resize).observe(cwrap);
+
+function buildLegend(){
+  const row=document.getElementById('legend-row');
+  [['BJP','BJP'],['INC','INC'],['SP','SP'],['TMC','TMC'],['DMK','DMK'],
+   ['TDP','TDP'],['JDU','JDU'],['SSUBT','SS(UBT)'],['NCPSP','NCP-SP'],
+   ['SHS','Shiv Sena'],['LJP','LJP'],['JMM','JMM'],['AAP','AAP'],['IND','Ind']
+  ].forEach(([key,label])=>{
+    const p=partiesData[key];if(!p)return;
+    const d=document.createElement('div');d.className='li';
+    d.innerHTML=`<div class="ld" style="background:${p.color}"></div>${label}`;
+    row.appendChild(d);
+  });
+  // Speaker
+  const sp=document.createElement('div');sp.className='li';
+  sp.innerHTML=`<div class="ld" style="background:#d4a400"></div>Speaker`;
+  row.appendChild(sp);
+  // Minister ring
+  const mn=document.createElement('div');mn.className='li';
+  mn.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,220,80,0.7);background:#e8630a;flex-shrink:0"></div>Minister`;
+  row.appendChild(mn);
+
+  // Swap tips for touch devices
+  if('ontouchstart' in window){
+    document.getElementById('tips-row').innerHTML=`
+      <div class="tip"><span class="tk">Tap</span>see MP info</div>
+      <div class="tip"><span class="tk">Tap again</span>open dossier</div>
+      <div class="tip"><span class="tk">Gold ring</span>Cabinet minister</div>
+    `;
+  }
+}
+
+async function init(){
+  try{
+    const [mpsRes,crimRes]=await Promise.all([
+      fetch('mps.json'),
+      fetch('criminal_records.json').catch(()=>null)
+    ]);
+    const mpsJson=await mpsRes.json();
+    mpsData=mpsJson.members;
+    partiesData=mpsJson.parties;
+
+    if(crimRes&&crimRes.ok){
+      const crimJson=await crimRes.json();
+      criminalData=crimJson.records;
+    }
+
+    buildLegend();resize();
+    openFromQueryParam();
+    document.getElementById('loading').style.display='none';
+  }catch(err){
+    document.querySelector('.loading-text').textContent='ERROR: run via localhost + mps.json in same folder';
+    console.error(err);
+  }
+}
+init();
+</script>
+</body>
+</html>

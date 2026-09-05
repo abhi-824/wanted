@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -83,6 +84,11 @@ def create_app() -> FastAPI:
     async def health():
         """Used by load balancer / uptime monitor. Not rate limited."""
         return {"status": "ok", "version": "1.0.0"}
+
+    # ── STATIC FRONTEND ───────────────────────────────────────────────────────
+    # Serves index.html at "/" and any other files (dossier.html, .svg, .js, etc.)
+    # from the "static" folder. Mounted LAST so it never shadows API routes above.
+    app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
     return app
 

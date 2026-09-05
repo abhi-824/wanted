@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parliament Dossier</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0a0a0f;min-height:100vh;font-family:'Rajdhani',sans-serif;color:#e8e0cc}
+  .gta-root{background:#0a0a0f;min-height:100vh;padding:0;position:relative;overflow:hidden}
+  .scan-lines{position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px)}
+  .card-wrap{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:24px 20px 40px}
+  .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .top-bar-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;text-transform:uppercase}
+  .wanted-row{display:flex;gap:5px;align-items:center}
+  .star{width:18px;height:18px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+  .star.on{background:#e8b84b}.star.off{background:#2a2a35}
+  .hero{display:grid;grid-template-columns:160px 1fr;gap:24px;margin-bottom:24px;align-items:start}
+  .portrait-wrap{position:relative}
+  .portrait{width:160px;height:200px;border:2px solid #c8a84b;display:block;background:#1a1a24;position:relative;overflow:hidden}
+  .portrait-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#14141e;font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:rgba(200,168,75,0.3)}
+  .portrait-corner{position:absolute;width:12px;height:12px;border-color:#c8a84b;border-style:solid}
+  .portrait-corner.tl{top:-4px;left:-4px;border-width:2px 0 0 2px}
+  .portrait-corner.tr{top:-4px;right:-4px;border-width:2px 2px 0 0}
+  .portrait-corner.bl{bottom:-4px;left:-4px;border-width:0 0 2px 2px}
+  .portrait-corner.br{bottom:-4px;right:-4px;border-width:0 2px 2px 0}
+  .mp-name{font-size:32px;font-weight:700;line-height:1;color:#f0e8cc;letter-spacing:1px;margin-bottom:4px}
+  .mp-sub{font-family:'Share Tech Mono',monospace;font-size:12px;color:#8a8070;letter-spacing:2px;margin-bottom:16px}
+  .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .tag{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;padding:3px 8px;border:1px solid;border-radius:2px}
+  .tag-orange{color:#e87c3e;border-color:#e87c3e;background:rgba(232,124,62,0.08)}
+  .tag-blue{color:#4ea3e0;border-color:#4ea3e0;background:rgba(78,163,224,0.08)}
+  .tag-green{color:#5ec97a;border-color:#5ec97a;background:rgba(94,201,122,0.08)}
+  .tag-red{color:#e85050;border-color:#e85050;background:rgba(232,80,80,0.08)}
+  .tag-gold{color:#c8a84b;border-color:#c8a84b;background:rgba(200,168,75,0.08)}
+  .stats-block{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  .stat-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(200,168,75,0.12)}
+  .stat-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+  .stat-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:#6a6258;letter-spacing:1px;flex:1}
+  .stat-val{font-size:15px;font-weight:600;color:#e8e0cc;text-align:right}
+  .stat-val.red{color:#e85050}.stat-val.gold{color:#c8a84b}.stat-val.green{color:#5ec97a}
+  .bar-section{margin-bottom:24px}
+  .bar-row{margin-bottom:12px}
+  .bar-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+  .bar-label{font-size:13px;color:#a09080;font-weight:500;letter-spacing:0.5px}
+  .bar-pct{font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b}
+  .bar-track{height:6px;background:#1e1e2a;border-radius:1px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:1px;width:0;transition:width 1.2s cubic-bezier(0.23,1,0.32,1)}
+  .bar-fill.gold{background:#c8a84b}.bar-fill.red{background:#c84b4b}.bar-fill.blue{background:#4b8bc8}.bar-fill.green{background:#5ec97a}
+  .section-title{font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8a84b;letter-spacing:3px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .section-title::after{content:'';flex:1;height:1px;background:rgba(200,168,75,0.25)}
+  .cases-section{margin-bottom:24px}
+  .case-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(232,80,80,0.2);background:rgba(232,80,80,0.04);border-radius:3px}
+  .case-num{font-family:'Share Tech Mono',monospace;font-size:10px;color:#e85050;padding:2px 6px;border:1px solid rgba(232,80,80,0.4);border-radius:2px;flex-shrink:0;margin-top:2px;white-space:nowrap}
+  .case-text{font-size:13px;color:#c0b8a8;line-height:1.4}
+  .clean-record{font-size:13px;color:#6a7a6a;line-height:1.6;padding:12px 14px;border:1px solid rgba(94,201,122,0.2);background:rgba(94,201,122,0.04);border-radius:3px}
+  .network-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+  .person-chip{padding:10px;border:1px solid rgba(200,168,75,0.15);background:rgba(200,168,75,0.03);border-radius:3px;text-align:center}
+  .person-chip-name{font-size:13px;font-weight:600;color:#d8d0b8;margin-bottom:2px}
+  .person-chip-rel{font-family:'Share Tech Mono',monospace;font-size:10px;color:#7a7068}
+  .bottom-bar{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(200,168,75,0.15)}
+  .src-link{font-family:'Share Tech Mono',monospace;font-size:10px;color:#4ea3e0;letter-spacing:1px;text-decoration:none;border-bottom:1px solid rgba(78,163,224,0.3)}
+  .adr-badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:#5ec97a;letter-spacing:2px}
+  .portrait-party{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.75);padding:6px 4px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px}
+  .animate-in{animation:slideUp 0.5s cubic-bezier(0.23,1,0.32,1) both}
+  @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .stagger-1{animation-delay:0.05s}.stagger-2{animation-delay:0.1s}.stagger-3{animation-delay:0.15s}.stagger-4{animation-delay:0.2s}.stagger-5{animation-delay:0.25s}
+  .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:14px}
+  .loading-text{font-family:'Share Tech Mono',monospace;font-size:13px;color:#c8a84b;letter-spacing:3px}
+  .loading-bar{width:200px;height:2px;background:#1e1e2a;border-radius:1px;overflow:hidden}
+  .loading-fill{height:100%;background:#c8a84b;animation:lp 1.2s ease-in-out infinite}
+  @keyframes lp{0%{width:0%}60%{width:100%}100%{width:100%}}
+  .error-state{font-family:'Share Tech Mono',monospace;font-size:12px;color:#e85050;letter-spacing:1.5px;text-align:center;padding:40px 20px;line-height:2}
+
+  /* ── IPC section pills (new) ───────────────────────────────────── */
+  .ipc-pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .ipc-pill{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;
+    color:#c8a84b;background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.4);
+    border-radius:3px;padding:3px 7px;cursor:pointer;transition:background 0.15s}
+  .ipc-pill:hover{background:rgba(200,168,75,0.18)}
+  .ipc-pill[aria-expanded="true"]{background:rgba(200,168,75,0.22)}
+  .ipc-desc{margin-top:6px;padding:8px 10px;border-left:2px solid rgba(200,168,75,0.4);
+    background:rgba(200,168,75,0.04);font-size:12px;color:#c0b8a8;line-height:1.5;border-radius:0 3px 3px 0}
+  .ipc-desc strong{color:#e8e0cc;font-size:12px;display:block;margin-bottom:2px}
+  .ipc-desc .ipc-chapter{font-family:'Share Tech Mono',monospace;font-size:9px;color:#6a6258;letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase}
+  .ipc-desc.not-found{color:#8a7a70;font-style:italic;border-left-color:rgba(200,168,75,0.2)}
+
+  /* ── Grouped-case badge (new) ──────────────────────────────────── */
+  .case-count-badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:#c8a84b;
+    background:rgba(200,168,75,0.10);border:1px solid rgba(200,168,75,0.4);border-radius:2px;
+    padding:2px 6px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+  .case-serials{font-family:'Share Tech Mono',monospace;font-size:10px;color:#7a7068;
+    letter-spacing:0.5px;margin-bottom:4px;line-height:1.6}
+  .ipc-pill-count{font-size:9px;color:#8a7a60;margin-left:3px}
+
+  @media(max-width:480px){
+    .hero{grid-template-columns:1fr}
+    .portrait{width:100%;height:200px}
+    .portrait-wrap{width:100%}
+    .stats-block{grid-template-columns:1fr}
+    .network-grid{grid-template-columns:repeat(2,1fr)}
+    .mp-name{font-size:24px}
+  }
+</style>
+</head>
+<body>
+<div class="gta-root">
+  <div class="scan-lines"></div>
+  <div class="card-wrap">
+    <div class="top-bar animate-in">
+      <span class="top-bar-label">// parliament dossier v1.0</span>
+    </div>
+    <div id="card-content">
+      <div class="loading-state">
+        <div class="loading-text">LOADING DOSSIER...</div>
+        <div class="loading-bar"><div class="loading-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────
+const API_BASE = '/api/v1';
+
+// ── PARTY COLOURS (kept client-side — purely cosmetic, not data) ──
+const PARTY_COLORS = {
+  BJP:'#e8630a',INC:'#1a7fe0',SP:'#e01a1a',TMC:'#1a9fe0',DMK:'#e01a80',
+  TDP:'#e0c01a',JDU:'#1ae08a',SSUBT:'#e05a1a',NCPSP:'#1a5ae0',SHS:'#e07a1a',
+  LJP:'#5ae01a',JMM:'#1ae0c0',AAP:'#1a40e0',YSRCP:'#1ae040',BJD:'#e0801a',
+  SAD:'#e0e01a',NCP:'#801ae0',RJD:'#e0401a',CPI:'#e01a1a',CPIM:'#c01a1a',
+  BSP:'#401ae0',IND:'#607080',
+};
+
+const COALITIONS = {
+  BJP:'NDA',TDP:'NDA',JDU:'NDA',LJP:'NDA',SHS:'NDA',
+  INC:'INDIA',SP:'INDIA',TMC:'INDIA',DMK:'INDIA',SSUBT:'INDIA',NCPSP:'INDIA',JMM:'INDIA',AAP:'INDIA',
+};
+
+// ── KNOWN ROLES ───────────────────────────────────────────────────
+const ROLES = {
+  'Narendra Modi':             { role:'Prime Minister',          tag:'tag-gold',   wl:5 },
+  'Om Birla':                  { role:'Speaker',                 tag:'tag-gold',   wl:3 },
+  'Rajnath Singh':             { role:'Defence Minister',        tag:'tag-orange', wl:3 },
+  'Amit Shah':                 { role:'Home Minister',           tag:'tag-orange', wl:4 },
+  'Nitin Gadkari':             { role:'Road Transport Min.',     tag:'tag-orange', wl:3 },
+  'Piyush Goyal':              { role:'Commerce Minister',       tag:'tag-orange', wl:2 },
+  'Shivraj Singh Chauhan':     { role:'Agriculture Minister',    tag:'tag-orange', wl:2 },
+  'Jyotiraditya Scindia':      { role:'Civil Aviation Min.',     tag:'tag-orange', wl:2 },
+  'Manohar Lal Khattar':       { role:'Housing Minister',        tag:'tag-orange', wl:2 },
+  'Dharmendra Pradhan':        { role:'Education Minister',      tag:'tag-orange', wl:2 },
+  'Sarbananda Sonowal':        { role:'Ports Minister',          tag:'tag-orange', wl:2 },
+  'Mansukh Mandaviya':         { role:'Labour Minister',         tag:'tag-orange', wl:2 },
+  'G. Kishan Reddy':           { role:'Coal Minister',           tag:'tag-orange', wl:2 },
+  'Kiren Rijiju':              { role:'Parliamentary Affairs',   tag:'tag-orange', wl:2 },
+  'Chirag Paswan':             { role:'Food Processing Min.',    tag:'tag-orange', wl:2 },
+  'Arjun Ram Meghwal':         { role:'Law Minister',            tag:'tag-orange', wl:2 },
+  'Pralhad Joshi':             { role:'New & Renewable Energy',  tag:'tag-orange', wl:2 },
+  'Kinjarapu Ram Mohan Naidu': { role:'Civil Aviation Min.',     tag:'tag-orange', wl:2 },
+  'Rahul Gandhi':              { role:'Leader of Opposition',    tag:'tag-blue',   wl:3 },
+  'K. C. Venugopal':           { role:'INC Org. Secretary',     tag:'tag-blue',   wl:2 },
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────
+function initials(name) {
+  return name.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function seededPct(name, base, range) {
+  const seed = name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  return Math.min(99, Math.max(15, base + (seed % range)));
+}
+
+// Convert raw INR → crores string e.g. 46000000 → "4.6"
+function inrToCr(inr) {
+  if (inr == null) return null;
+  return (inr / 1_00_00_000).toFixed(1);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+// ── IPC SECTION LOOKUP ────────────────────────────────────────────
+// Splits a criminal_case's raw "ipc_sections" string (e.g. "188, 171A")
+// into individual codes. Shared by the collector and the pill renderer
+// so both agree on what counts as one "section".
+function splitSectionCodes(raw) {
+  if (!raw) return [];
+  return raw.split(/[,/]| and /).map(s => s.trim()).filter(Boolean);
+}
+
+// Collects every distinct section code referenced across all of an MP's
+// cases, so we can resolve them in ONE batch API call instead of one
+// fetch per case (or per pill).
+function extractAllSectionCodes(cases) {
+  const codes = new Set();
+  cases.forEach(c => splitSectionCodes(c.ipc_sections).forEach(code => codes.add(code)));
+  return Array.from(codes);
+}
+
+// Counts how many cases (dossier-wide) reference each section code, e.g.
+// {"188": 5, "171F": 1, "153A": 1}. Used to show "×N" badges on pills so
+// a section charged 5 times doesn't read as 5 separate unrelated facts.
+function countSectionOccurrences(cases) {
+  const counts = {};
+  cases.forEach(c => {
+    splitSectionCodes(c.ipc_sections).forEach(code => {
+      const key = code.toUpperCase();
+      counts[key] = (counts[key] || 0) + 1;
+    });
+  });
+  return counts;
+}
+
+// Groups cases that share an identical IPC-section signature into one
+// entry. "188" + "188" collapse together; "171F, 153A, 505(I)(B)" stays
+// its own group since nothing else matches it exactly. Signature is
+// built from the normalized, sorted set of codes so order/whitespace
+// in the source string ("188, 171A" vs "171A,188") doesn't matter.
+function groupCasesBySection(cases) {
+  const groups = new Map();
+  cases.forEach((c, i) => {
+    const codes = splitSectionCodes(c.ipc_sections).map(s => s.toUpperCase());
+    const signature = codes.length ? [...new Set(codes)].sort().join('|') : `__none-${i}`;
+    if (!groups.has(signature)) groups.set(signature, []);
+    groups.get(signature).push(c);
+  });
+  return Array.from(groups.values());
+}
+
+async function fetchIpcDescriptions(codes) {
+  if (codes.length === 0) return { sections: {}, not_found: [] };
+  try {
+    const res = await fetch(`${API_BASE}/ipc?sections=${encodeURIComponent(codes.join(','))}`);
+    if (!res.ok) throw new Error(`IPC lookup failed: ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('IPC section lookup failed, showing cases without descriptions:', err);
+    return { sections: {}, not_found: codes };
+  }
+}
+
+// Tracks which section codes have already had their "×N" count badge
+// shown once on the page. Module-level so it persists across every
+// renderIpcPills() call for a single dossier render (reset per MP load).
+let shownCountBadges = new Set();
+
+// Renders one pill per section code on a case. Clicking a pill toggles
+// its plain-English description inline — no extra fetch, since `lookup`
+// already has everything for this dossier. If a section recurs across
+// multiple cases, the FIRST pill rendered for it page-wide gets a "×N"
+// badge (N = total cases citing that section); later occurrences of the
+// same code render without the badge to avoid repeating the same count.
+function renderIpcPills(rawSectionsString, lookup, sectionCounts) {
+  const codes = splitSectionCodes(rawSectionsString);
+  if (codes.length === 0) return '';
+
+  return `<div class="ipc-pill-row">
+    ${codes.map(code => {
+      const key = code.toUpperCase();
+      const entry = lookup[key];
+      const safeId = `ipc-desc-${code.replace(/[^a-zA-Z0-9]/g, '')}-${Math.random().toString(36).slice(2, 7)}`;
+      const count = sectionCounts[key] || 1;
+      let countBadge = '';
+      if (count > 1 && !shownCountBadges.has(key)) {
+        countBadge = `<span class="ipc-pill-count" title="§${escapeHtml(code)} appears in ${count} case${count > 1 ? 's' : ''} total across this dossier">×${count}</span>`;
+        shownCountBadges.add(key);
+      }
+      return `
+        <div class="ipc-pill-wrap">
+          <button type="button" class="ipc-pill" data-target="${safeId}" aria-expanded="false"
+            title="${entry ? escapeHtml(entry.section_title) : 'Description unavailable'}">
+            §${escapeHtml(code)}${countBadge}
+          </button>
+          <div class="ipc-desc ${entry ? '' : 'not-found'}" id="${safeId}" hidden>
+            ${entry
+              ? `${entry.chapter_title ? `<span class="ipc-chapter">${escapeHtml(entry.chapter_title)}</span>` : ''}<strong>${escapeHtml(entry.section_title)}</strong><span>${escapeHtml(entry.section_desc)}</span>`
+              : `No description on file for section ${escapeHtml(code)} yet.`}
+          </div>
+        </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function attachIpcPillToggles(container) {
+  container.querySelectorAll('.ipc-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const isHidden = target.hidden;
+      target.hidden = !isHidden;
+      btn.setAttribute('aria-expanded', String(isHidden));
+    });
+  });
+}
+
+// Builds the cases section HTML. Async because it resolves IPC section
+// descriptions for every case in one batch call before rendering pills.
+// Cases that share the exact same set of IPC sections (e.g. five separate
+// "188" cases) are grouped into one card — the pills/description only
+// need to be shown once per signature, and the individual serials/dates
+// are listed together rather than repeating an identical block 5 times.
+async function buildCasesHTML(cases) {
+  if (cases.length === 0) {
+    return `
+      <div class="cases-section animate-in stagger-4">
+        <div class="section-title">// criminal record</div>
+        <div class="clean-record">
+          <span style="color:#5ec97a">✓</span> No pending cases declared in 2024 ECI affidavit.
+        </div>
+      </div>`;
+  }
+
+  const allCodes = extractAllSectionCodes(cases);
+  const { sections: lookup } = await fetchIpcDescriptions(allCodes);
+  const sectionCounts = countSectionOccurrences(cases);
+  shownCountBadges = new Set(); // reset so badges show fresh for this render
+
+  const groups = groupCasesBySection(cases);
+
+  return `
+    <div class="cases-section animate-in stagger-4">
+      <div class="section-title">// pending cases</div>
+      ${groups.map((group) => {
+        const first = group[0];
+        const isGrouped = group.length > 1;
+
+        // Numbering: show every serial in the group ("#1, #2, #3...")
+        const numbers = group.map((c, i) => c.serial_no || (i + 1));
+        const numLabel = isGrouped
+          ? numbers.map(n => `#${n}`).join(', ')
+          : `#${numbers[0]}`;
+
+        // Courts/dates can differ within a group — list distinct courts,
+        // and the date range if grouped cases span multiple dates.
+        // Dates are arbitrary strings from the API (not guaranteed
+        // chronologically ordered), so just show "earliest seen – latest
+        // seen" by source order rather than implying a sorted range.
+        const courts = [...new Set(group.map(c => c.court).filter(Boolean))];
+        const dates = group.map(c => c.charge_date).filter(Boolean);
+        const anySerious = group.some(c => c.is_serious);
+
+        return `
+        <div class="case-item">
+          <span class="case-num">${isGrouped ? `×${group.length}` : numLabel}</span>
+          <div class="case-text">
+            ${isGrouped ? `<div class="case-serials">cases ${numbers.map(n => `#${n}`).join(', ')}</div>` : ''}
+            ${first.ipc_sections ? `<strong>IPC:</strong> ${escapeHtml(first.ipc_sections)}` : ''}
+            ${first.other_acts   ? ` &nbsp;|&nbsp; ${escapeHtml(first.other_acts)}` : ''}
+            ${courts.length ? `<br><span style="color:#6a6258;font-size:11px">${escapeHtml(courts.join(' · '))}</span>` : ''}
+            ${dates.length === 1 ? `<span style="color:#6a6258;font-size:11px"> · ${escapeHtml(dates[0])}</span>` : ''}
+            ${dates.length > 1  ? `<span style="color:#6a6258;font-size:11px"> · ${escapeHtml(dates[0])} – ${escapeHtml(dates[dates.length - 1])}</span>` : ''}
+            ${anySerious ? `<br><span style="color:#e85050;font-size:10px;font-family:'Share Tech Mono',monospace">⚠ SERIOUS</span>` : ''}
+            ${renderIpcPills(first.ipc_sections, lookup, sectionCounts)}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+function ordinalSuffix(n) {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
+// ── RENDER ────────────────────────────────────────────────────────
+async function renderCard(mp) {
+  // mp is the MPDetail response directly from the API
+  const partyColor = PARTY_COLORS[mp.party] || '#c8a84b';
+  const coalition  = mp.coalition || COALITIONS[mp.party] || null;
+  const role       = ROLES[mp.name] || null;
+
+  const totalCases   = mp.total_cases   ?? 0;
+  const seriousCases = mp.serious_cases ?? 0;
+  const cases        = mp.criminal_cases || [];
+  const assetsCr     = inrToCr(mp.assets_inr);
+
+  const severityPercentile = mp.severity_percentile;
+  // Tags
+  const tags = [];
+  if (role)            tags.push({ label: role.role, cls: role.tag });
+  if (totalCases > 10) tags.push({ label: `${totalCases} cases`, cls: 'tag-red' });
+  else if (totalCases > 0) tags.push({ label: `${totalCases} case${totalCases > 1 ? 's' : ''}`, cls: 'tag-red' });
+  else                 tags.push({ label: 'Clean record', cls: 'tag-green' });
+  if (coalition) tags.push({
+    label: coalition,
+    cls: coalition === 'NDA' ? 'tag-orange' : coalition === 'INDIA' ? 'tag-blue' : 'tag-gold'
+  });
+  tags.push({ label: mp.state, cls: 'tag-gold' });
+
+  // Stats
+  const stats = [
+    { icon: '⚖️', label: 'CRIMINAL CASES',  val: String(totalCases),   cls: totalCases > 0 ? 'red' : '' },
+    { icon: '🔴', label: 'SERIOUS CASES',   val: String(seriousCases), cls: seriousCases > 0 ? 'red' : '' },
+    { icon: '💰', label: 'DECLARED ASSETS', val: assetsCr != null ? `₹${assetsCr} Cr` : '—', cls: 'gold' },
+    { icon: '🗳️', label: 'PARTY',           val: mp.party, cls: '', style: `color:${partyColor}` },
+    { icon: '🏛️', label: 'COALITION',       val: coalition || 'Other', cls: coalition === 'NDA' ? 'gold' : 'green' },
+    { icon: '📍', label: 'STATE',           val: mp.state, cls: '' },
+  ];
+
+  // Bars
+  const attPct   = seededPct(mp.name, 55, 30);
+  const qPct     = seededPct(mp.name, 40, 40);
+  const loyalPct = seededPct(mp.name, 65, 30);
+  const bars = [
+    { label: 'Attendance (est.)',       pct: attPct,          cls: 'blue' },
+    { label: 'Questions raised (est.)', pct: qPct,            cls: 'blue' },
+    ...(severityPercentile !== null ? [{
+    label: 'Severity percentile',
+    pct: severityPercentile,
+    cls: 'red',
+    suffix: 'th percentile',   // see below
+  }] : []),
+    { label: 'Party loyalty (est.)',    pct: loyalPct,        cls: 'gold' },
+  ];
+
+  // Network chips
+  const network = [
+    { name: mp.party,            rel: 'political party' },
+    { name: coalition || '—',    rel: 'coalition'       },
+    { name: mp.state,            rel: 'home state'      },
+    { name: mp.constituency,     rel: 'constituency'    },
+  ];
+
+  // Cases HTML — resolved async (batch IPC section lookup happens here)
+  const casesHTML = await buildCasesHTML(cases);
+
+  // Render
+  const cardContent = document.getElementById('card-content');
+  cardContent.innerHTML = `
+    <div class="hero animate-in stagger-2">
+      <div class="portrait-wrap">
+        <div class="portrait">
+          ${mp.photo_url
+            ? `<img src="${mp.photo_url}" alt="${mp.name}" style="width:100%;height:100%;object-fit:cover"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+            : ''}
+          <div class="portrait-fallback" ${mp.photo_url ? 'style="display:none"' : ''}>${initials(mp.name)}</div>
+          <div class="portrait-party" style="color:${partyColor}">${mp.party}</div>
+        </div>
+        <div class="portrait-corner tl"></div>
+        <div class="portrait-corner tr"></div>
+        <div class="portrait-corner bl"></div>
+        <div class="portrait-corner br"></div>
+      </div>
+      <div>
+        <div class="mp-name">${mp.name}</div>
+        <div class="mp-sub">${mp.constituency} // ${mp.state} · Lok Sabha</div>
+        <div class="tag-row">
+          ${tags.map(t => `<span class="tag ${t.cls}">${t.label}</span>`).join('')}
+        </div>
+        <div class="stats-block">
+          ${stats.map(s => `
+            <div class="stat-row">
+              <span class="stat-icon">${s.icon}</span>
+              <span class="stat-label">${s.label}</span>
+              <span class="stat-val ${s.cls}" ${s.style ? `style="${s.style}"` : ''}>${s.val}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="bar-section animate-in stagger-3">
+      <div class="section-title">// performance stats</div>
+      ${bars.map(b => `
+  <div class="bar-row">
+    <div class="bar-label-row">
+      <span class="bar-label">${b.label}</span>
+      <span class="bar-pct" title="${b.suffix ? 'Ranked among MPs with pending criminal cases — not an absolute score.' : ''}">
+        ${b.suffix ? `${b.pct}${ordinalSuffix(b.pct)}` : `${b.pct}%`}
+      </span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill ${b.cls}" data-pct="${b.pct}"></div>
+    </div>
+  </div>`).join('')}
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#3a3530;margin-top:6px">
+        attendance/questions = estimated · severity percentile = ranked among MPs with pending cases, based on charge severity (ADR data)
+      </div>
+    </div>
+
+    ${casesHTML}
+
+    <div class="animate-in stagger-5">
+      <div class="section-title">// connections & influence network</div>
+      <div class="network-grid">
+        ${network.map(p => `
+          <div class="person-chip">
+            <div class="person-chip-name">${p.name}</div>
+            <div class="person-chip-rel">${p.rel}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="bottom-bar animate-in stagger-5">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <a class="src-link" href="parliament.html?id=${encodeURIComponent(mp.myneta_id)}">
+          view in lok sabha ↗
+        </a>
+        <a class="src-link" href="https://myneta.info/LokSabha2024" target="_blank">
+          source: myneta.info + sansad.in + ADR affidavit ↗
+        </a>
+      </div>
+      <span class="adr-badge">data: ADR verified</span>
+    </div>
+  `;
+
+  // Wire up the IPC pill click-to-expand behavior now that they're in the DOM
+  attachIpcPillToggles(cardContent);
+
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill[data-pct]').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 80);
+}
+
+// ── MAIN ──────────────────────────────────────────────────────────
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const rawId  = params.get('id');
+  const mpId   = rawId ? parseInt(rawId, 10) : null;
+
+  if (mpId === null || isNaN(mpId)) {
+    document.getElementById('card-content').innerHTML = `
+      <div class="error-state">
+        NO MP ID PROVIDED<br>
+        <span style="color:#4a4040">Usage: dossier.html?id=&lt;myneta_id&gt;</span>
+      </div>`;
+    return;
+  }
+
+  try {
+    // Single API call — returns full profile + criminal_cases[] in one shot
+    const res = await fetch(`${API_BASE}/mps/${mpId}`);
+
+    if (res.status === 404) {
+      document.getElementById('card-content').innerHTML = `
+        <div class="error-state">
+          MP NOT FOUND<br>
+          <span style="color:#4a4040">No member with id=${mpId}</span>
+        </div>`;
+      return;
+    }
+
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+
+    const mp = await res.json();
+    document.title = `${mp.name} — Parliament Dossier`;
+    await renderCard(mp);
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('card-content').innerHTML = `
+      <div class="error-state">
+        LOAD ERROR<br>
+        <span style="color:#4a4040">${err.message}</span><br>
+        <span style="color:#4a4040;font-size:10px">Make sure the API is running on localhost:8000</span>
+      </div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
