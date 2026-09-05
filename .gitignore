@@ -8,7 +8,6 @@ node_modules
 # Data & scratch
 data/
 scraps/
-server/netacheck.db
 *.db
 
 # JSON data files
