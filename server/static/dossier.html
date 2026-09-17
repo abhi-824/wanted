@@ -401,20 +401,14 @@ async function renderCard(mp) {
     { icon: '📍', label: 'STATE',           val: mp.state, cls: '' },
   ];
 
-  // Bars
-  const attPct   = seededPct(mp.name, 55, 30);
-  const qPct     = seededPct(mp.name, 40, 40);
-  const loyalPct = seededPct(mp.name, 65, 30);
+  // Bars — attendance, questions raised, party loyalty disabled for now
   const bars = [
-    { label: 'Attendance (est.)',       pct: attPct,          cls: 'blue' },
-    { label: 'Questions raised (est.)', pct: qPct,            cls: 'blue' },
     ...(severityPercentile !== null ? [{
-    label: 'Severity percentile',
-    pct: severityPercentile,
-    cls: 'red',
-    suffix: 'th percentile',   // see below
-  }] : []),
-    { label: 'Party loyalty (est.)',    pct: loyalPct,        cls: 'gold' },
+      label: 'Severity percentile',
+      pct: severityPercentile,
+      cls: 'red',
+      suffix: 'th percentile',
+    }] : []),
   ];
 
   // Network chips
@@ -463,6 +457,7 @@ async function renderCard(mp) {
       </div>
     </div>
 
+    ${bars.length ? `
     <div class="bar-section animate-in stagger-3">
       <div class="section-title">// performance stats</div>
       ${bars.map(b => `
@@ -477,10 +472,10 @@ async function renderCard(mp) {
       <div class="bar-fill ${b.cls}" data-pct="${b.pct}"></div>
     </div>
   </div>`).join('')}
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#3a3530;margin-top:6px">
-        attendance/questions = estimated · severity percentile = ranked among MPs with pending cases, based on charge severity (ADR data)
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#a09080;margin-top:6px">
+        severity percentile = ranked among MPs with pending cases, based on charge severity (ADR data)
       </div>
-    </div>
+    </div>` : ''}
 
     ${casesHTML}
 
@@ -497,9 +492,6 @@ async function renderCard(mp) {
 
     <div class="bottom-bar animate-in stagger-5">
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-        <a class="src-link" href="parliament.html?id=${encodeURIComponent(mp.myneta_id)}">
-          view in lok sabha ↗
-        </a>
         <a class="src-link" href="https://myneta.info/LokSabha2024" target="_blank">
           source: myneta.info + sansad.in + ADR affidavit ↗
         </a>
