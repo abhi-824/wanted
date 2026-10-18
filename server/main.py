@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
+from pathlib import Path
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -14,6 +16,9 @@ from config import get_settings
 from db import startup, shutdown
 from middleware.rate_limit import limiter, rate_limit_handler
 from routers import mps, stats, ipc, severity
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+INDEX_HTML = STATIC_DIR / "index.html"
 
 
 # ── LIFESPAN ──────────────────────────────────────────────────────────────────
@@ -68,8 +73,9 @@ def create_app() -> FastAPI:
         response.headers["X-Content-Type-Options"]  = "nosniff"
         response.headers["X-Frame-Options"]         = "DENY"
         response.headers["Referrer-Policy"]         = "strict-origin-when-cross-origin"
-        # Cache-Control: routers can override per endpoint if needed
-        if "Cache-Control" not in response.headers:
+        if request.url.path.startswith("/assets/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        elif "Cache-Control" not in response.headers:
             response.headers["Cache-Control"] = "public, max-age=300"  # 5 min default
         return response
 
@@ -85,10 +91,32 @@ def create_app() -> FastAPI:
         """Used by load balancer / uptime monitor. Not rate limited."""
         return {"status": "ok", "version": "1.0.0"}
 
-    # ── STATIC FRONTEND ───────────────────────────────────────────────────────
-    # Serves index.html at "/" and any other files (dossier.html, .svg, .js, etc.)
-    # from the "static" folder. Mounted LAST so it never shadows API routes above.
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    # ── STATIC FRONTEND (Vite build → server/static) ──────────────────────────
+    app.mount(
+        "/assets",
+        StaticFiles(directory=STATIC_DIR / "assets", check_dir=False),
+        name="assets",
+    )
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def spa_fallback(full_path: str):
+        if full_path.startswith("api/"):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
+
+        if full_path:
+            static_root = STATIC_DIR.resolve()
+            candidate = (STATIC_DIR / full_path).resolve()
+            if candidate.is_relative_to(static_root) and candidate.is_file():
+                return FileResponse(candidate)
+
+        if not INDEX_HTML.is_file():
+            return HTMLResponse("Frontend not built", status_code=503)
+
+        return FileResponse(
+            INDEX_HTML,
+            media_type="text/html",
+            headers={"Cache-Control": "no-cache"},
+        )
 
     return app
 

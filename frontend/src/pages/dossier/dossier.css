@@ -1,0 +1,703 @@
+.dossier-page {
+  background: #0a0a0f;
+  min-height: 100vh;
+  font-family: 'Rajdhani', sans-serif;
+  color: #e8e0cc;
+  position: relative;
+  overflow: hidden;
+}
+
+.dossier-page .scan-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+
+.dossier-page .card-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.dossier-page .top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dossier-page .top-bar-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #c8a84b;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.dossier-page .wanted-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dossier-page .star {
+  width: 18px;
+  height: 18px;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.dossier-page .star.on {
+  background: #e8b84b;
+}
+
+.dossier-page .star.off {
+  background: #2a2a35;
+}
+
+.dossier-page .hero {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  align-items: start;
+}
+
+.dossier-page .portrait-wrap {
+  position: relative;
+}
+
+.dossier-page .portrait {
+  width: 160px;
+  height: 200px;
+  border: 2px solid #c8a84b;
+  display: block;
+  background: #1a1a24;
+  position: relative;
+  overflow: hidden;
+}
+
+.dossier-page .portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dossier-page .portrait-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #14141e;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: rgba(200, 168, 75, 0.3);
+}
+
+.dossier-page .portrait-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: #c8a84b;
+  border-style: solid;
+}
+
+.dossier-page .portrait-corner.tl {
+  top: -4px;
+  left: -4px;
+  border-width: 2px 0 0 2px;
+}
+
+.dossier-page .portrait-corner.tr {
+  top: -4px;
+  right: -4px;
+  border-width: 2px 2px 0 0;
+}
+
+.dossier-page .portrait-corner.bl {
+  bottom: -4px;
+  left: -4px;
+  border-width: 0 0 2px 2px;
+}
+
+.dossier-page .portrait-corner.br {
+  bottom: -4px;
+  right: -4px;
+  border-width: 0 2px 2px 0;
+}
+
+.dossier-page .mp-name {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: #f0e8cc;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.dossier-page .mp-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #8a8070;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.dossier-page .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dossier-page .tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  padding: 3px 8px;
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+.dossier-page .tag-orange {
+  color: #e87c3e;
+  border-color: #e87c3e;
+  background: rgba(232, 124, 62, 0.08);
+}
+
+.dossier-page .tag-blue {
+  color: #4ea3e0;
+  border-color: #4ea3e0;
+  background: rgba(78, 163, 224, 0.08);
+}
+
+.dossier-page .tag-green {
+  color: #5ec97a;
+  border-color: #5ec97a;
+  background: rgba(94, 201, 122, 0.08);
+}
+
+.dossier-page .tag-red {
+  color: #e85050;
+  border-color: #e85050;
+  background: rgba(232, 80, 80, 0.08);
+}
+
+.dossier-page .tag-gold {
+  color: #c8a84b;
+  border-color: #c8a84b;
+  background: rgba(200, 168, 75, 0.08);
+}
+
+.dossier-page .stats-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dossier-page .stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(200, 168, 75, 0.12);
+}
+
+.dossier-page .stat-icon {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.dossier-page .stat-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #6a6258;
+  letter-spacing: 1px;
+  flex: 1;
+}
+
+.dossier-page .stat-val {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e8e0cc;
+  text-align: right;
+}
+
+.dossier-page .stat-val.red {
+  color: #e85050;
+}
+
+.dossier-page .stat-val.gold {
+  color: #c8a84b;
+}
+
+.dossier-page .stat-val.green {
+  color: #5ec97a;
+}
+
+.dossier-page .bar-section {
+  margin-bottom: 24px;
+}
+
+.dossier-page .bar-row {
+  margin-bottom: 12px;
+}
+
+.dossier-page .bar-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+.dossier-page .bar-label {
+  font-size: 13px;
+  color: #a09080;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.dossier-page .bar-pct {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #c8a84b;
+}
+
+.dossier-page .bar-track {
+  position: relative;
+  height: 6px;
+}
+
+.dossier-page .bar-track-inner {
+  height: 100%;
+  background: #1e1e2a;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.dossier-page .bar-avg {
+  position: absolute;
+  top: -2px;
+  width: 1px;
+  height: 10px;
+  background: rgba(200, 168, 75, 0.55);
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dossier-page .bar-val-muted {
+  color: #6a6258;
+  cursor: help;
+}
+
+.dossier-page .bar-fill {
+  height: 100%;
+  border-radius: 1px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dossier-page .bar-fill.gold {
+  background: #c8a84b;
+}
+
+.dossier-page .bar-fill.red {
+  background: #c84b4b;
+}
+
+.dossier-page .bar-fill.blue {
+  background: #4b8bc8;
+}
+
+.dossier-page .bar-fill.green {
+  background: #5ec97a;
+}
+
+.dossier-page .section-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #c8a84b;
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dossier-page .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(200, 168, 75, 0.25);
+}
+
+.dossier-page .cases-section {
+  margin-bottom: 24px;
+}
+
+.dossier-page .case-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(232, 80, 80, 0.2);
+  background: rgba(232, 80, 80, 0.04);
+  border-radius: 3px;
+}
+
+.dossier-page .case-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #e85050;
+  padding: 2px 6px;
+  border: 1px solid rgba(232, 80, 80, 0.4);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.dossier-page .case-text {
+  font-size: 13px;
+  color: #c0b8a8;
+  line-height: 1.4;
+}
+
+.dossier-page .clean-record {
+  font-size: 13px;
+  color: #6a7a6a;
+  line-height: 1.6;
+  padding: 12px 14px;
+  border: 1px solid rgba(94, 201, 122, 0.2);
+  background: rgba(94, 201, 122, 0.04);
+  border-radius: 3px;
+}
+
+.dossier-page .network-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.dossier-page .person-chip {
+  padding: 10px;
+  border: 1px solid rgba(200, 168, 75, 0.15);
+  background: rgba(200, 168, 75, 0.03);
+  border-radius: 3px;
+  text-align: center;
+}
+
+.dossier-page .person-chip-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d8d0b8;
+  margin-bottom: 2px;
+}
+
+.dossier-page .person-chip-rel {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #7a7068;
+}
+
+.dossier-page .bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(200, 168, 75, 0.15);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dossier-page .src-link {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #4ea3e0;
+  letter-spacing: 1px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(78, 163, 224, 0.3);
+}
+
+.dossier-page .adr-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #5ec97a;
+  letter-spacing: 2px;
+}
+
+.dossier-page .portrait-party {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 6px 4px;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.dossier-page .animate-in {
+  animation: dossier-slide-up 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes dossier-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dossier-page .stagger-1 {
+  animation-delay: 0.05s;
+}
+
+.dossier-page .stagger-2 {
+  animation-delay: 0.1s;
+}
+
+.dossier-page .stagger-3 {
+  animation-delay: 0.15s;
+}
+
+.dossier-page .stagger-4 {
+  animation-delay: 0.2s;
+}
+
+.dossier-page .stagger-5 {
+  animation-delay: 0.25s;
+}
+
+.dossier-page .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 14px;
+}
+
+.dossier-page .loading-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: #c8a84b;
+  letter-spacing: 3px;
+}
+
+.dossier-page .loading-bar {
+  width: 200px;
+  height: 2px;
+  background: #1e1e2a;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.dossier-page .loading-fill {
+  height: 100%;
+  background: #c8a84b;
+  animation: dossier-lp 1.2s ease-in-out infinite;
+}
+
+@keyframes dossier-lp {
+  0% {
+    width: 0%;
+  }
+  60% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.dossier-page .error-state {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #e85050;
+  letter-spacing: 1.5px;
+  text-align: center;
+  padding: 40px 20px;
+  line-height: 2;
+}
+
+.dossier-page .error-muted {
+  color: #4a4040;
+}
+
+.dossier-page .ipc-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dossier-page .ipc-pill {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #c8a84b;
+  background: rgba(200, 168, 75, 0.08);
+  border: 1px solid rgba(200, 168, 75, 0.4);
+  border-radius: 3px;
+  padding: 3px 7px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dossier-page .ipc-pill:hover {
+  background: rgba(200, 168, 75, 0.18);
+}
+
+.dossier-page .ipc-pill[aria-expanded='true'] {
+  background: rgba(200, 168, 75, 0.22);
+}
+
+.dossier-page .ipc-desc {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-left: 2px solid rgba(200, 168, 75, 0.4);
+  background: rgba(200, 168, 75, 0.04);
+  font-size: 12px;
+  color: #c0b8a8;
+  line-height: 1.5;
+  border-radius: 0 3px 3px 0;
+}
+
+.dossier-page .ipc-desc strong {
+  color: #e8e0cc;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.dossier-page .ipc-desc .ipc-chapter {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: #6a6258;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.dossier-page .ipc-desc.not-found {
+  color: #8a7a70;
+  font-style: italic;
+  border-left-color: rgba(200, 168, 75, 0.2);
+}
+
+.dossier-page .case-count-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #c8a84b;
+  background: rgba(200, 168, 75, 0.1);
+  border: 1px solid rgba(200, 168, 75, 0.4);
+  border-radius: 2px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dossier-page .case-serials {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #7a7068;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+.dossier-page .ipc-pill-count {
+  font-size: 9px;
+  color: #8a7a60;
+  margin-left: 3px;
+}
+
+.dossier-page .bar-footnote {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: #3a3530;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.dossier-page .education-block {
+  margin-bottom: 24px;
+}
+
+.dossier-page .edu-level {
+  font-size: 15px;
+  font-weight: 600;
+  color: #d8d0b8;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.dossier-page .edu-details {
+  font-size: 13px;
+  color: #8a8070;
+  line-height: 1.55;
+}
+
+.dossier-page .case-meta {
+  color: #6a6258;
+  font-size: 11px;
+}
+
+.dossier-page .case-serious {
+  color: #e85050;
+  font-size: 10px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+@media (max-width: 480px) {
+  .dossier-page .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-page .portrait {
+    width: 100%;
+    height: 200px;
+  }
+
+  .dossier-page .portrait-wrap {
+    width: 100%;
+  }
+
+  .dossier-page .stats-block {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-page .network-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dossier-page .mp-name {
+    font-size: 24px;
+  }
+}

@@ -112,8 +112,11 @@ class MpRepository:
                 m.age,
                 COALESCE(m.total_cases, 0)   AS total_cases,
                 COALESCE(m.serious_cases, 0) AS serious_cases,
-                m.severity_percentile
+                m.severity_percentile,
+                t.gender,
+                t.attendance
             FROM mps m
+            LEFT JOIN mp_track_record t ON t.mp_myneta_id = m.myneta_id
             {where}
             ORDER BY m.name
             LIMIT ? OFFSET ?
@@ -222,6 +225,54 @@ class CaseRepository:
         async with self._db.conn.execute(sql, [myneta_id]) as cursor:
             rows = await cursor.fetchall()
             return [dict(r) for r in rows]
+
+
+# ── TRACK RECORD REPOSITORY ───────────────────────────────────────────────────
+
+class TrackRecordRepository:
+    """All queries against the `mp_track_record` table."""
+
+    def __init__(self, db: Database) -> None:
+        self._db = db
+
+    async def get_by_mp_id(self, myneta_id: int) -> DBRow | None:
+        sql = """
+            SELECT
+                prs_id,
+                gender,
+                house,
+                membership_type,
+                term_label,
+                term_number,
+                term_start,
+                term_end,
+                in_office,
+                education_level,
+                education_details,
+                attendance,
+                debates,
+                questions,
+                private_member_bills,
+                national_avg_attendance,
+                national_avg_debates,
+                national_avg_questions,
+                national_avg_pmb,
+                state_avg_attendance,
+                state_avg_debates,
+                state_avg_questions,
+                state_avg_pmb,
+                note,
+                data_period_start,
+                data_period_end,
+                source
+            FROM mp_track_record
+            WHERE mp_myneta_id = ?
+            LIMIT 1
+        """
+        async with self._db.conn.execute(sql, [myneta_id]) as cursor:
+            row = await cursor.fetchone()
+            return dict(row) if row else None
+
 
 IPC_SECTIONS_SCHEMA = """
 CREATE TABLE IF NOT EXISTS ipc_sections (

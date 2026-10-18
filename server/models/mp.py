@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pydantic import BaseModel, ConfigDict
 from .cases import CriminalCase
+from .track import ParliamentRecord
 
 
 # ── RESPONSE MODELS (wire-facing) ─────────────────────────────────────────────
@@ -24,6 +25,8 @@ class MPSummary(BaseModel):
     total_cases: int = 0
     serious_cases: int = 0
     severity_percentile: int | None = None
+    gender: str | None = None
+    attendance: float | None = None
 
 class MPDetail(BaseModel):
     """
@@ -58,6 +61,7 @@ class MPDetail(BaseModel):
     severity_raw_score: float | None = None
     # Nested cases — empty list if clean record
     criminal_cases: list[CriminalCase] = []
+    parliament_record: ParliamentRecord | None = None
 
 
 # ── STATS MODELS ──────────────────────────────────────────────────────────────

@@ -3,9 +3,10 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 
-from db import Database, MpRepository, CaseRepository, get_db
+from db import Database, MpRepository, CaseRepository, TrackRecordRepository, get_db
 from models.mp import MPSummary, MPDetail, MpFilters
 from models.cases import CriminalCase
+from models.track import ParliamentRecord
 from middleware.rate_limit import limiter, LIMIT_LIST, LIMIT_DETAIL
 
 router = APIRouter(prefix="/api/v1/mps", tags=["mps"])
@@ -82,8 +83,9 @@ async def get_mp(
     - Criminal cases are ordered: serious first, then by id.
     - Returns 404 if myneta_id not found.
     """
-    mp_repo   = MpRepository(db)
-    case_repo = CaseRepository(db)
+    mp_repo    = MpRepository(db)
+    case_repo  = CaseRepository(db)
+    track_repo = TrackRecordRepository(db)
 
     mp_row = await mp_repo.get_by_id(myneta_id)
     if mp_row is None:
@@ -92,4 +94,13 @@ async def get_mp(
     case_rows = await case_repo.get_by_mp_id(myneta_id)
     cases = [CriminalCase(**row) for row in case_rows]
 
-    return MPDetail(**mp_row, criminal_cases=cases)
+    track_row = await track_repo.get_by_mp_id(myneta_id)
+    parliament_record = (
+        ParliamentRecord(**track_row) if track_row is not None else None
+    )
+
+    return MPDetail(
+        **mp_row,
+        criminal_cases=cases,
+        parliament_record=parliament_record,
+    )

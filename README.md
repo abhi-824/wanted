@@ -59,8 +59,6 @@ One row per pending criminal case declared in an MP's affidavit. Many-to-one wit
 
 Indexes: `mp_myneta_id`.
 
-> **Note on `parliament.html`:** the chamber visualization currently reads from a flat `criminal_records.json` + `mps.json` pair rather than hitting the API. This is a legacy/static path — `index.html`, `india-map.html`, and `dossier.html` are the ones wired to the live SQLite-backed API. Migrating `parliament.html` onto the same `/api/v1` endpoints is a natural next step.
-
 ---
 
 ## 2. Server (`server/`)
@@ -100,57 +98,68 @@ Design choices worth noting:
 
 ## 3. Frontend lifecycle
 
-Four static HTML pages, each independently fetching from `API_BASE = http://localhost:8000/api/v1`.
+The UI is a **React + TypeScript SPA** in `frontend/` (Vite). Production builds are emitted to `server/static/` and served by FastAPI. **Do not edit `server/static/` by hand** — change `frontend/src` and run `npm run build`.
+
+### Routes
+
+| Path | Page | Data |
+|---|---|---|
+| `/` | Home | static |
+| `/map` | Constituency map + finder | `/stats`, `/mps/constituencies`, `/mps?limit=543`, SVG asset |
+| `/dossier`, `/dossier/:id` | MP dossier card | `/mps/{id}` |
+| `/parliament`, `/parliament/:id` | Hemicycle seating chart | `/stats`, `/mps/constituencies`, `/mps?limit=600` |
+
+Legacy URLs (`/index.html`, `/india-map.html`, `/dossier.html?id=…`, `/parliament.html?id=…`) redirect to the routes above.
+
+### Source layout (`frontend/src/`)
 
 ```
-index.html        →  landing page, static content + parliament seating legend (no API calls)
-india-map.html    →  SVG constituency map + search → resolves to a myneta_id → links to dossier.html
-dossier.html       →  single-MP "GTA wanted poster" style card, driven entirely by /mps/{id}
-parliament.html    →  canvas-rendered seating chart (currently reads local mps.json/criminal_records.json)
+pages/
+  home/           landing
+  map/            SVG map, finder panel, shared TopBar + StatusBar
+  dossier/        dossier card components
+  parliament/     chamber layout (canvas), coalition tally, seat card
+  MapPage.tsx     route shell → map/
+  DossierPage.tsx route shell → dossier/
+  ParliamentPage.tsx / ParliamentDetailPage.tsx → parliament/
+api/              fetch client + TypeScript types
+lib/              formatting, party colors, coalition helpers
+components/       shared UI (tabs, stat chips, grid background)
 ```
 
-### Flow A — Find your MP (`india-map.html` → `dossier.html`)
+### Dev vs prod
 
-1. On load, `india-map.html` fetches three things in parallel:
-   - `india_constituencies.svg` — the map geometry, where each `<path>`/`<polygon>` carries `data-name`, `data-state`, `data-party`, `data-mp`, `data-coalition` baked in at SVG-build time (see `scripts/script.py`, out of scope here).
-   - `GET /api/v1/mps/constituencies` — names for the search dropdown.
-   - `GET /api/v1/mps?limit=543` — full MP list, used purely to build a `constituency name → myneta_id` lookup map client-side.
-   - `GET /api/v1/stats` — populates the header stat chips.
-2. The user either clicks a constituency on the map or selects one from the dropdown. Both paths converge on a normalized constituency name (`normConstName()` strips casing/punctuation/`(SC)`/`(ST)` suffixes so SVG names and API names line up).
-3. Clicking "View MP Dossier" resolves the normalized name to a `myneta_id` and navigates to `dossier.html?id=<myneta_id>`.
+**Development** — API on port 8000, Vite dev server on 5173 (proxies `/api` to the backend):
 
-### Flow B — Dossier (`dossier.html`)
+```bash
+cd server && uvicorn main:app --reload --port 8000
+cd frontend && npm install && npm run dev
+```
 
-1. Reads `id` from the query string.
-2. Single call: `GET /api/v1/mps/{id}` — returns the full `MPDetail` payload including nested `criminal_cases[]`.
-3. Client-side only logic (no extra fetches):
-   - Wanted-level stars (1–5) derived from `serious_cases`/`total_cases`.
-   - Tags (role, case count, coalition, state) — role/minister lookup is a small static table in the page's JS, not in the DB.
-   - "Performance" bars (attendance, questions raised, party loyalty) are **seeded pseudo-random placeholders** based on the MP's name — explicitly labeled "(est.)" in the UI. Only "Criminal severity" is computed from real data.
-   - Renders one `case-item` per entry in `criminal_cases[]`, or a clean-record message if empty.
+Open `http://localhost:5173`.
 
-### Flow C — Parliament chamber (`parliament.html`)
+**Production** — build the SPA, then serve everything from FastAPI:
 
-Currently a self-contained static visualization: it fetches `mps.json` and `criminal_records.json` directly (flat files alongside the HTML) rather than the API, and positions 543 seats on a canvas based on party/coalition. This predates the FastAPI migration and is the one piece still decoupled from SQLite — flagged above as a future migration target.
+```bash
+cd frontend && npm run build    # writes to server/static/
+cd server && uvicorn main:app --port 8000
+```
+
+Open `http://localhost:8000/`.
 
 ---
 
 ## 4. Local development
 
+See **§3 Dev vs prod** for the recommended Vite + FastAPI workflow. Minimal API-only setup:
+
 ```bash
-# 1. Set up the API
 cd server
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # set DB_PATH, ALLOWED_ORIGINS as needed
 uvicorn main:app --reload --port 8000
-
-# 2. Serve the frontend (any static server, must match ALLOWED_ORIGINS)
-cd ..
-python3 -m http.server 5500
 ```
-
-Open `http://localhost:5500/index.html`.
 
 ---
 

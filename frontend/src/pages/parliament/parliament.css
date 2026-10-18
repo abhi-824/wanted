@@ -1,0 +1,454 @@
+.map-page.parliament-page {
+  --card-w: 380px;
+  --bottombar-h: 72px;
+}
+
+.parliament-page .page {
+  grid-template-rows: 48px auto 1fr auto 28px;
+}
+
+.parliament-coalition-row {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 14px;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.coalition-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.coalition-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-family: var(--mono);
+}
+
+.coalition-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.coalition-pill .dot.nda {
+  background: #e8630a;
+}
+.coalition-pill .dot.india {
+  background: #1a7fe0;
+}
+.coalition-pill .dot.others {
+  background: #607080;
+}
+
+.coalition-pill .lbl {
+  color: #7aa4cc;
+  font-size: 11px;
+}
+.coalition-pill .val {
+  font-size: 12px;
+  font-weight: 600;
+}
+.coalition-pill .val.nda {
+  color: #e8630a;
+}
+.coalition-pill .val.india {
+  color: #1a7fe0;
+}
+.coalition-pill .val.others {
+  color: #aaa;
+}
+.coalition-pill .val.gold {
+  color: #d4a400;
+}
+
+.parliament-main {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.parliament-canvas-wrap {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  transition: flex 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.parliament-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.parliament-tooltip {
+  position: absolute;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  pointer-events: none;
+  z-index: 50;
+  min-width: 190px;
+  max-width: 240px;
+}
+
+.parliament-tooltip .tt-bar {
+  height: 2px;
+  border-radius: 1px;
+  margin-bottom: 8px;
+}
+.parliament-tooltip .tt-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8f4ff;
+  margin-bottom: 2px;
+}
+.parliament-tooltip .tt-cases {
+  font-family: var(--mono);
+  font-size: 10px;
+  margin-left: 6px;
+}
+.parliament-tooltip .tt-cases.warn {
+  color: var(--red);
+}
+.parliament-tooltip .tt-cases.clean {
+  color: var(--green);
+}
+.parliament-tooltip .tt-role-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-bottom: 6px;
+  border: 1px solid;
+}
+.parliament-tooltip .tt-const {
+  font-size: 11px;
+  color: var(--text2);
+  font-family: var(--mono);
+  margin-bottom: 6px;
+}
+.parliament-tooltip .tt-row {
+  display: flex;
+  gap: 12px;
+}
+.parliament-tooltip .tt-cell .l {
+  color: var(--text3);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1px;
+}
+.parliament-tooltip .tt-cell .v {
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 500;
+}
+.parliament-tooltip .tt-hint {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-top: 6px;
+}
+
+.parliament-panel {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-left: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.parliament-panel .pp-header {
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.parliament-panel .pp-sys {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.parliament-panel .pp-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 0.95;
+  color: #e8f4ff;
+}
+.parliament-panel .pp-title span {
+  color: var(--blue);
+}
+.parliament-panel .pp-sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+.parliament-panel .pp-body {
+  padding: 16px 18px;
+}
+
+.parliament-card-panel {
+  width: 0;
+  background: var(--bg2);
+  border-left: 1px solid var(--border2);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.parliament-card-panel.open {
+  width: var(--card-w);
+}
+
+.parliament-card-inner {
+  width: var(--card-w);
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.parliament-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.parliament-card-body {
+  padding: 20px;
+}
+
+.parliament-card-body .pc-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+}
+
+.parliament-card-body .pc-hero {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.parliament-card-body .pc-portrait {
+  width: 100px;
+  height: 120px;
+  border: 2px solid var(--gold);
+  background: #14141e;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parliament-card-body .pc-initials {
+  font-size: 32px;
+  font-weight: 700;
+  color: rgba(200, 168, 75, 0.25);
+}
+
+.parliament-card-body .pc-party {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 4px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.parliament-card-body .pc-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0e8cc;
+  line-height: 1.1;
+  margin: 0 0 6px;
+}
+
+.parliament-card-body .pc-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #8a8070;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.parliament-card-body .pc-role {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 2px;
+}
+
+.parliament-card-body .pc-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin: 0 0 18px;
+  font-size: 12px;
+}
+
+.parliament-card-body .pc-stats dt {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text3);
+  margin: 0;
+}
+.parliament-card-body .pc-stats dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+  color: #e8e0cc;
+}
+.parliament-card-body .pc-stats dd.warn {
+  color: var(--red);
+}
+
+.parliament-card-body .pc-dossier-link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #4ea3e0;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.parliament-card-body .pc-dossier-link:hover {
+  color: #7ac8ff;
+}
+
+.parliament-bottom {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.parliament-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: center;
+}
+
+.parliament-legend .li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text2);
+  font-family: var(--mono);
+}
+
+.parliament-legend .ld {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.parliament-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.parliament-tips .tk {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 2px 7px;
+  font-size: 11px;
+  color: #4a9fd4;
+  font-family: var(--mono);
+}
+
+.parliament-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  z-index: 100;
+  gap: 14px;
+}
+
+.parliament-loading-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #4a9fd4;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 900px) {
+  .parliament-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .parliament-card-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    height: 0;
+    max-height: 80vh;
+    border-left: none;
+    border-top: 1px solid var(--border2);
+    transition: height 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 200;
+    border-radius: 14px 14px 0 0;
+  }
+  .parliament-card-panel.open {
+    width: 100% !important;
+    height: 80vh;
+  }
+  .parliament-card-inner {
+    width: 100%;
+    max-height: 80vh;
+  }
+}
