@@ -4,7 +4,13 @@ from pydantic import BaseModel, field_validator
 
 
 class ParliamentRecord(BaseModel):
-    """PRS MPTrack row for a single MP (identity fields omitted — see MPDetail)."""
+    """
+    PRS MPTrack row for a single MP (identity fields omitted — see MPDetail).
+
+    Activity fields (attendance, debates, questions, private_member_bills and
+    their national/state averages) are None for ministers, the Speaker and the
+    Leader of the Opposition, who do not participate in those activities.
+    """
 
     prs_id: int
     gender: str | None = None
@@ -14,7 +20,7 @@ class ParliamentRecord(BaseModel):
     term_number: int | None = None
     term_start: str | None = None
     term_end: str | None = None
-    in_office: bool | None = None
+    in_office: bool = True
     education_level: str | None = None
     education_details: str | None = None
     attendance: float | None = None
@@ -36,7 +42,7 @@ class ParliamentRecord(BaseModel):
 
     @field_validator("in_office", mode="before")
     @classmethod
-    def int_to_bool(cls, v: int | bool | None) -> bool | None:
+    def int_to_bool(cls, v: int | bool | None) -> bool:
         if v is None:
-            return None
+            return True
         return bool(v)

@@ -1,41 +1,68 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { normConstName } from '../../lib/format'
+import { memberKey, type MemberIndex } from '../../lib/format'
+import { COALITIONS, PARTY_COLORS } from '../../lib/parties'
 import MapTooltip, { type TooltipData } from './MapTooltip'
 
 type MapPanelProps = {
   svgHtml: string | null
   loading: boolean
   error: string | null
+  members: MemberIndex
   selectedName: string
-  onSelectName: (name: string) => void
+  selectedState?: string
+  onSelectName: (name: string, state?: string) => void
 }
 
-function readTooltipData(el: Element): TooltipData {
+function readTooltipData(el: Element, members: MemberIndex): TooltipData {
   const d = (el as HTMLElement).dataset
-  return {
-    name: d.name || '—',
-    state: d.state || '',
-    party: d.party || '—',
-    mp: d.mp || '—',
-    coalition: d.coalition || '—',
-    color: d.color || '#607080',
+  const name = d.name?.trim() || '—'
+  const state = d.state || ''
+  const member = members.get(memberKey(d.name, state)) ?? members.get(memberKey(d.name))
+  if (!member) {
+    return {
+      name,
+      state,
+      party: '—',
+      mp: '—',
+      coalition: '—',
+      color: d.color || '#607080',
+    }
   }
+  return {
+    name,
+    state,
+    party: member.party,
+    mp: member.name,
+    coalition: COALITIONS[member.party] || member.coalition || '—',
+    color: PARTY_COLORS[member.party] || d.color || '#607080',
+  }
+}
+
+function constituencySelector(name: string, state?: string): string {
+  const namePart = `[data-name="${CSS.escape(name)}" i]`
+  const statePart = state ? `[data-state="${CSS.escape(state)}" i]` : ''
+  return `.constituency${namePart}${statePart}`
 }
 
 export default function MapPanel({
   svgHtml,
   loading,
   error,
+  members,
   selectedName,
+  selectedState,
   onSelectName,
 }: MapPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
-  const selectedRef = useRef(selectedName)
-  selectedRef.current = selectedName
+  const membersRef = useRef(members)
+  const onSelectRef = useRef(onSelectName)
+  const activeElRef = useRef<SVGElement | null>(null)
+  const selectedElRef = useRef<SVGElement | null>(null)
+  membersRef.current = members
+  onSelectRef.current = onSelectName
 
-  const [hoveredName, setHoveredName] = useState<string | null>(null)
   const [tooltip, setTooltip] = useState<{
     visible: boolean
     left: number
@@ -57,89 +84,15 @@ export default function MapPanel({
 
   useEffect(() => {
     const wrap = wrapRef.current
-    if (!wrap || !svgHtml) return
-
-    const paths = wrap.querySelectorAll<SVGElement>('.constituency')
-
-    function onEnter(e: Event) {
-      const el = e.currentTarget as SVGElement
-      const name = el.dataset.name || ''
-      setHoveredName(name)
-      const { left, top } = posTooltip((e as MouseEvent).clientX, (e as MouseEvent).clientY)
-      setTooltip({ visible: true, left, top, data: readTooltipData(el) })
-    }
-
-    function onMove(e: Event) {
-      const me = e as MouseEvent
-      const { left, top } = posTooltip(me.clientX, me.clientY)
-      setTooltip((t) => (t.visible ? { ...t, left, top } : t))
-    }
-
-    function onLeave(e: Event) {
-      const el = e.currentTarget as SVGElement
-      if (el.dataset.name !== selectedRef.current) {
-        /* highlight synced in class effect */
-      }
-      setHoveredName((h) => (h === el.dataset.name ? null : h))
-      setTooltip((t) => ({ ...t, visible: false }))
-    }
-
-    function onClick(e: Event) {
-      const el = e.currentTarget as SVGElement
-      onSelectName(el.dataset.name || '')
-      setTooltip((t) => ({ ...t, visible: false }))
-    }
-
-    paths.forEach((el) => {
-      el.addEventListener('mouseenter', onEnter)
-      el.addEventListener('mousemove', onMove)
-      el.addEventListener('mouseleave', onLeave)
-      el.addEventListener('click', onClick)
-    })
-
-    return () => {
-      paths.forEach((el) => {
-        el.removeEventListener('mouseenter', onEnter)
-        el.removeEventListener('mousemove', onMove)
-        el.removeEventListener('mouseleave', onLeave)
-        el.removeEventListener('click', onClick)
-      })
-    }
-  }, [svgHtml, onSelectName])
-
-  useEffect(() => {
-    const wrap = wrapRef.current
     if (!wrap) return
-    const selectedNorm = normConstName(selectedName)
-    const hoveredNorm = normConstName(hoveredName)
-    wrap.querySelectorAll<SVGElement>('.constituency').forEach((el) => {
-      const n = normConstName(el.dataset.name)
-      const active = n === selectedNorm || (hoveredNorm && n === hoveredNorm)
-      el.classList.toggle('active', Boolean(active))
-    })
-  }, [svgHtml, selectedName, hoveredName])
-
-  useEffect(() => {
-    if (!selectedName || !wrapRef.current) return
-    const el = wrapRef.current.querySelector<SVGElement>(
-      `.constituency[data-name="${CSS.escape(selectedName)}"]`,
-    )
-    if (!el) {
-      const paths = wrapRef.current.querySelectorAll<SVGElement>('.constituency')
-      for (const p of paths) {
-        if (p.dataset.name === selectedName) {
-          p.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-          break
-        }
-      }
+    activeElRef.current = null
+    selectedElRef.current = null
+    if (!svgHtml) {
+      wrap.innerHTML = ''
       return
     }
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-  }, [selectedName, svgHtml])
-
-  useEffect(() => {
-    if (!svgHtml || !wrapRef.current) return
-    const svg = wrapRef.current.querySelector('svg')
+    wrap.innerHTML = svgHtml
+    const svg = wrap.querySelector('svg')
     if (svg) {
       svg.setAttribute('preserveAspectRatio', 'xMidYMid meet')
       svg.style.width = '100%'
@@ -147,10 +100,117 @@ export default function MapPanel({
     }
   }, [svgHtml])
 
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap || !svgHtml) return
+
+    function pathFrom(target: EventTarget | null): SVGElement | null {
+      if (!(target instanceof Element)) return null
+      return target.closest<SVGElement>('.constituency')
+    }
+
+    function onOver(e: MouseEvent) {
+      const el = pathFrom(e.target)
+      if (!el) return
+      const from = e.relatedTarget
+      if (from instanceof Node && el.contains(from)) return
+      const prev = activeElRef.current
+      if (prev && prev !== el && prev !== selectedElRef.current) {
+        prev.classList.remove('active')
+      }
+      activeElRef.current = el
+      el.classList.add('active')
+      const { left, top } = posTooltip(e.clientX, e.clientY)
+      setTooltip({
+        visible: true,
+        left,
+        top,
+        data: readTooltipData(el, membersRef.current),
+      })
+    }
+
+    function onMove(e: MouseEvent) {
+      const el = pathFrom(e.target)
+      const { left, top } = posTooltip(e.clientX, e.clientY)
+      setTooltip((t) => {
+        if (!el) return t.visible ? { ...t, visible: false } : t
+        return t.visible ? { ...t, left, top } : t
+      })
+    }
+
+    function onOut(e: MouseEvent) {
+      const el = pathFrom(e.target)
+      if (!el) return
+      const to = e.relatedTarget
+      if (to instanceof Node && el.contains(to)) return
+      if (activeElRef.current === el) activeElRef.current = null
+      if (el !== selectedElRef.current) el.classList.remove('active')
+      setTooltip((t) => ({ ...t, visible: false }))
+    }
+
+    function onClick(e: MouseEvent) {
+      const el = pathFrom(e.target)
+      if (!el) return
+      onSelectRef.current(el.dataset.name || '', el.dataset.state || undefined)
+      setTooltip((t) => ({ ...t, visible: false }))
+    }
+
+    function onLeaveWrap() {
+      const el = activeElRef.current
+      if (el && el !== selectedElRef.current) el.classList.remove('active')
+      activeElRef.current = null
+      setTooltip((t) => ({ ...t, visible: false }))
+    }
+
+    wrap.addEventListener('mouseover', onOver)
+    wrap.addEventListener('mousemove', onMove)
+    wrap.addEventListener('mouseout', onOut)
+    wrap.addEventListener('click', onClick)
+    wrap.addEventListener('mouseleave', onLeaveWrap)
+
+    return () => {
+      wrap.removeEventListener('mouseover', onOver)
+      wrap.removeEventListener('mousemove', onMove)
+      wrap.removeEventListener('mouseout', onOut)
+      wrap.removeEventListener('click', onClick)
+      wrap.removeEventListener('mouseleave', onLeaveWrap)
+    }
+  }, [svgHtml])
+
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const next = selectedName
+      ? wrap.querySelector<SVGElement>(constituencySelector(selectedName, selectedState))
+      : null
+    const prev = selectedElRef.current
+    if (prev && prev !== next && prev !== activeElRef.current) {
+      prev.classList.remove('active')
+    }
+    selectedElRef.current = next
+    if (next) next.classList.add('active')
+  }, [svgHtml, selectedName, selectedState])
+
+  useEffect(() => {
+    const el = activeElRef.current
+    if (!el) return
+    setTooltip((t) =>
+      t.visible ? { ...t, data: readTooltipData(el, members) } : t,
+    )
+  }, [members])
+
+  useEffect(() => {
+    if (!selectedName || !wrapRef.current) return
+    const el = wrapRef.current.querySelector<SVGElement>(
+      constituencySelector(selectedName, selectedState),
+    )
+    el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }, [selectedName, selectedState, svgHtml])
+
   return (
     <div className="map-panel" ref={panelRef}>
       <div className="map-label">// INDIA — 543 LOK SABHA CONSTITUENCIES</div>
-      <div id="map-wrap" ref={wrapRef} dangerouslySetInnerHTML={svgHtml ? { __html: svgHtml } : undefined} />
+      <div id="map-wrap" ref={wrapRef} />
       {loading ? (
         <div id="map-loading">
           <div className="load-text">LOADING CONSTITUENCY MAP...</div>

@@ -18,7 +18,6 @@ frontend/.h2r/
 !frontend/tsconfig.json
 !frontend/tsconfig.app.json
 !frontend/tsconfig.node.json
-!frontend/.oxlintrc.json
 
 # Logs
 *.log

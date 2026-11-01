@@ -1,3 +1,7 @@
+import type { MPSummary } from '../api/types'
+
+export type MemberIndex = Map<string, MPSummary>
+
 export function normConstName(name: string | null | undefined): string {
   return (name || '')
     .toLowerCase()
@@ -6,6 +10,16 @@ export function normConstName(name: string | null | undefined): string {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .replace(/\s+/g, ' ')
+}
+
+export function memberKey(
+  constituency: string | null | undefined,
+  state?: string | null,
+): string {
+  const name = normConstName(constituency)
+  if (!name) return ''
+  const stateKey = normConstName(state)
+  return stateKey ? `${name}|${stateKey}` : name
 }
 
 export function formatAvgAssetsCr(inr: number | null | undefined): string {

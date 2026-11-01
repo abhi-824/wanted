@@ -1,12 +1,3 @@
-#root:has(.map-page) {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  text-align: unset;
-  border-inline: none;
-  min-height: 100vh;
-}
-
 .map-page {
   --bg: #05080f;
   --bg2: #080d18;

@@ -87,6 +87,61 @@ INSERT INTO mp_track_record (
 );
 """
 
+# --- MATCHING ---
+
+MISSING_TEXT = {"", "NA", "N/A"}
+
+CONSTITUENCY_ALIASES: dict[str, str] = {
+    "palasur": "palamu",
+    "palamau": "palamu",
+    "devangare": "davanagere",
+    "davangere": "davanagere",
+    "hatkanangle": "hatkanangale",
+    "baharaich": "bahraich",
+    "kurnool": "kurnool",
+    "kurnoolu": "kurnool",
+    "darangudguri": "derrangadulguri",
+    "darangudalguri": "darrangudalguri",
+    "bangaon": "bongaon",
+    "srerampur": "sreerampur",
+    "thirupati": "thirupathi",
+    "patliputra": "pataliputra",
+    "dadraandnagarhaveli": "dadradandnagarhaveli",
+    "dadarandnagarhaveli": "dadradandnagarhaveli",
+    "damananddiu": "damanddiu",
+}
+
+STATE_ALIASES: dict[str, str] = {
+    "dadraandnagarhaveli": "dadraandnagarhavelianddamanddiu",
+    "damanddiu": "dadraandnagarhavelianddamanddiu",
+    "dadraandnagarhavelianddamananddiu": "dadraandnagarhavelianddamanddiu",
+}
+
+PAREN_SUFFIX_RE = re.compile(r"\((?:sc|st|nct)\)", re.IGNORECASE)
+NON_LETTERS_RE = re.compile(r"[^a-z]")
+
+
+def normalize_name(value: str | None) -> str:
+    text = (value or "").lower()
+    text = PAREN_SUFFIX_RE.sub("", text)
+    text = text.replace("&", "and")
+    return NON_LETTERS_RE.sub("", text)
+
+
+def normalize_constituency(value: str | None) -> str:
+    name = normalize_name(value)
+    return CONSTITUENCY_ALIASES.get(name, name)
+
+
+def normalize_state(value: str | None) -> str:
+    name = normalize_name(value)
+    return STATE_ALIASES.get(name, name)
+
+
+def match_key(constituency: str | None, state: str | None) -> tuple[str, str]:
+    return normalize_constituency(constituency), normalize_state(state)
+
+
 # --- PARSING ---
 
 TERM_ORDINALS: dict[str, int] = {
@@ -112,6 +167,11 @@ def _strip(value: str | None) -> str:
     return (value or "").strip()
 
 
+def clean_text(value: str | None) -> str | None:
+    text = _strip(value)
+    return None if text.upper() in MISSING_TEXT else text
+
+
 def parse_term_number(term_label: str) -> int | None:
     label = _strip(term_label)
     if not label:
@@ -121,8 +181,8 @@ def parse_term_number(term_label: str) -> int | None:
 
 
 def parse_dd_mm_yyyy(raw: str) -> str | None:
-    text = _strip(raw)
-    if not text or text.lower() == "in office":
+    text = clean_text(raw)
+    if text is None or text.lower() == "in office":
         return None
     try:
         day, month, year = text.split("-")
@@ -132,22 +192,22 @@ def parse_dd_mm_yyyy(raw: str) -> str | None:
 
 
 def parse_na_real(raw: str) -> float | None:
-    text = _strip(raw)
-    if not text or text.upper() == "NA":
+    text = clean_text(raw)
+    if text is None:
         return None
     return float(text)
 
 
 def parse_na_int(raw: str) -> int | None:
-    text = _strip(raw)
-    if not text or text.upper() == "NA":
+    text = clean_text(raw)
+    if text is None:
         return None
     return int(float(text))
 
 
 def parse_age(raw: str) -> int | None:
-    text = _strip(raw)
-    if not text or text.upper() == "NA":
+    text = clean_text(raw)
+    if text is None:
         return None
     return int(text)
 
@@ -159,30 +219,30 @@ def parse_data_period(note: str) -> tuple[str | None, str | None]:
     return parse_dd_mm_yyyy(match.group(1)), parse_dd_mm_yyyy(match.group(2))
 
 
-def row_to_tuple(row: dict[str, str], loaded_at: str) -> tuple:
+def row_to_tuple(row: dict[str, str], loaded_at: str, mp_myneta_id: int | None) -> tuple:
     term_end_raw = _strip(row.get("term_end_date"))
     in_office = 1 if term_end_raw.lower() == "in office" else 0
-    note = _strip(row.get("mp_note"))
-    period_start, period_end = parse_data_period(note)
+    note = clean_text(row.get("mp_note"))
+    period_start, period_end = parse_data_period(note or "")
 
     return (
         int(_strip(row["mp_election_index"])),
-        None,  # mp_myneta_id — linked in a later pipeline step if needed
+        mp_myneta_id,
         _strip(row.get("mp_name")),
         _strip(row.get("pc_name")),
         _strip(row.get("state")),
-        _strip(row.get("mp_political_party")) or None,
-        _strip(row.get("mp_gender")) or None,
+        clean_text(row.get("mp_political_party")),
+        clean_text(row.get("mp_gender")),
         parse_age(row.get("mp_age", "")),
-        _strip(row.get("mp_house")) or None,
-        _strip(row.get("nature_membership")) or None,
-        _strip(row.get("term")) or None,
+        clean_text(row.get("mp_house")),
+        clean_text(row.get("nature_membership")),
+        clean_text(row.get("term")),
         parse_term_number(row.get("term", "")),
         parse_dd_mm_yyyy(row.get("term_start_date", "")),
         parse_dd_mm_yyyy(term_end_raw),
         in_office,
-        _strip(row.get("educational_qualification")) or None,
-        _strip(row.get("educational_qualification_details")) or None,
+        clean_text(row.get("educational_qualification")),
+        clean_text(row.get("educational_qualification_details")),
         parse_na_real(row.get("attendance", "")),
         parse_na_int(row.get("debates", "")),
         parse_na_int(row.get("questions", "")),
@@ -195,7 +255,7 @@ def row_to_tuple(row: dict[str, str], loaded_at: str) -> tuple:
         parse_na_real(row.get("state_average_debate", "")),
         parse_na_real(row.get("state_average_questions", "")),
         parse_na_real(row.get("state_average_pmb", "")),
-        note or None,
+        note,
         period_start,
         period_end,
         "PRS Legislative Research MPTrack",
@@ -223,9 +283,41 @@ def load(db_path: Path, csv_path: Path) -> None:
     conn = sqlite3.connect(db_path)
     try:
         conn.execute("PRAGMA foreign_keys = ON")
-        conn.executescript(SCHEMA)
 
-        rows = [row_to_tuple(rec, loaded_at) for rec in records]
+        mp_by_key: dict[tuple[str, str], int] = {}
+        for myneta_id, constituency, state in conn.execute(
+            "SELECT myneta_id, constituency, state FROM mps"
+        ):
+            mp_by_key.setdefault(match_key(constituency, state), myneta_id)
+
+        parsed: list[tuple[dict[str, str], tuple[str, str], str | None]] = []
+        earliest: dict[tuple[str, str], str | None] = {}
+        for rec in records:
+            key = match_key(rec.get("pc_name"), rec.get("state"))
+            term_start = parse_dd_mm_yyyy(rec.get("term_start_date", ""))
+            parsed.append((rec, key, term_start))
+            current = earliest.get(key)
+            if key not in earliest or (
+                term_start is not None and (current is None or term_start < current)
+            ):
+                earliest[key] = term_start
+
+        rows: list[tuple] = []
+        unlinked: list[tuple[dict[str, str], tuple[str, str], str | None]] = []
+        linked_ids: set[int] = set()
+        for rec, key, term_start in parsed:
+            mp_myneta_id = None
+            if term_start is not None and term_start == earliest.get(key):
+                candidate = mp_by_key.get(key)
+                if candidate is not None and candidate not in linked_ids:
+                    mp_myneta_id = candidate
+                    linked_ids.add(candidate)
+            if mp_myneta_id is None:
+                unlinked.append((rec, key, term_start))
+            rows.append(row_to_tuple(rec, loaded_at, mp_myneta_id))
+
+        # Build every row (and its link) before replacing the table.
+        conn.executescript(SCHEMA)
         conn.executemany(INSERT_SQL, rows)
         conn.commit()
 
@@ -233,9 +325,19 @@ def load(db_path: Path, csv_path: Path) -> None:
         ministers = conn.execute(
             "SELECT COUNT(*) FROM mp_track_record WHERE attendance IS NULL AND debates IS NULL"
         ).fetchone()[0]
+        linked = sum(1 for row in rows if row[1] is not None)
         print(f"Loaded {len(rows)} MPTrack row(s) into mp_track_record.")
         print(f"Total rows in mp_track_record: {count}")
+        print(f"Linked {linked} of {len(rows)} MPTrack row(s) to mps.")
         print(f"Rows with NULL participation metrics (ministers / Speaker / LoP): {ministers}")
+        print(f"Unlinked MPTrack rows: {len(unlinked)}")
+        for rec, key, term_start in unlinked:
+            reason = "by-election" if term_start != earliest.get(key) else "no matching MP"
+            print(
+                f"  {rec.get('mp_election_index')} | {rec.get('pc_name')} | "
+                f"{rec.get('state')} | {rec.get('term_start_date')} | "
+                f"{rec.get('mp_name')} | {key[0]}|{key[1]} | {reason}"
+            )
     finally:
         conn.close()
 
