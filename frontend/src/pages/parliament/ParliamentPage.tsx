@@ -42,7 +42,7 @@ function parseSelectedId(raw: string | undefined): number | null {
   return Number.isFinite(id) ? id : null
 }
 
-export default function ParliamentView() {
+export default function ParliamentPage() {
   const { id: idParam } = useParams<{ id?: string }>()
   const navigate = useNavigate()
   const canvasWrapRef = useRef<HTMLDivElement>(null)

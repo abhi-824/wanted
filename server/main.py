@@ -4,9 +4,9 @@ from contextlib import asynccontextmanager
 
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -18,7 +18,6 @@ from middleware.rate_limit import limiter, rate_limit_handler
 from routers import mps, stats, ipc, severity
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
-INDEX_HTML = STATIC_DIR / "index.html"
 
 
 # ── LIFESPAN ──────────────────────────────────────────────────────────────────
@@ -100,8 +99,8 @@ def create_app() -> FastAPI:
 
     @app.get("/{full_path:path}", include_in_schema=False)
     async def spa_fallback(full_path: str):
-        if full_path.startswith("api/"):
-            return JSONResponse({"detail": "Not Found"}, status_code=404)
+        if full_path == "api" or full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not Found")
 
         if full_path:
             static_root = STATIC_DIR.resolve()
@@ -109,11 +108,12 @@ def create_app() -> FastAPI:
             if candidate.is_relative_to(static_root) and candidate.is_file():
                 return FileResponse(candidate)
 
-        if not INDEX_HTML.is_file():
-            return HTMLResponse("Frontend not built", status_code=503)
+        index_html = STATIC_DIR / "index.html"
+        if not index_html.is_file():
+            raise HTTPException(status_code=503, detail="Frontend not built")
 
         return FileResponse(
-            INDEX_HTML,
+            index_html,
             media_type="text/html",
             headers={"Cache-Control": "no-cache"},
         )

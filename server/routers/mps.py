@@ -94,13 +94,11 @@ async def get_mp(
     case_rows = await case_repo.get_by_mp_id(myneta_id)
     cases = [CriminalCase(**row) for row in case_rows]
 
-    track_row = await track_repo.get_by_mp_id(myneta_id)
-    parliament_record = (
-        ParliamentRecord(**track_row) if track_row is not None else None
-    )
+    row = await track_repo.get_by_mp_id(myneta_id)
+    record = ParliamentRecord(**row) if row else None
 
     return MPDetail(
         **mp_row,
         criminal_cases=cases,
-        parliament_record=parliament_record,
+        parliament_record=record,
     )
