@@ -55,6 +55,7 @@ export default function ParliamentPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchName, setSearchName] = useState('')
+  const [finderOpen, setFinderOpen] = useState(true)
   const [hoverTarget, setHoverTarget] = useState<HoverTarget>(null)
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
 
@@ -135,11 +136,16 @@ export default function ParliamentPage() {
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape' && selectedId != null) navigate('/parliament')
+      if (e.key !== 'Escape') return
+      if (selectedId != null) {
+        navigate('/parliament')
+        return
+      }
+      if (finderOpen) setFinderOpen(false)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [selectedId, navigate])
+  }, [selectedId, navigate, finderOpen])
 
   const selectMp = useCallback(
     (mpId: number) => {
@@ -202,7 +208,23 @@ export default function ParliamentPage() {
             )}
           </div>
 
-          <ParliamentPanel names={names} selectedName={searchName} onSelectName={setSearchName} />
+          {finderOpen ? (
+            <ParliamentPanel
+              names={names}
+              selectedName={searchName}
+              onSelectName={setSearchName}
+              onClose={() => setFinderOpen(false)}
+            />
+          ) : (
+            <button
+              type="button"
+              className="parliament-finder-reopen"
+              onClick={() => setFinderOpen(true)}
+              aria-label="Find a seat"
+            >
+              FIND A SEAT
+            </button>
+          )}
 
           {selectedMp ? (
             <SeatCard mp={selectedMp} seat={selectedSeat} onClose={() => navigate('/parliament')} />

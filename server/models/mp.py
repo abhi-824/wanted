@@ -12,6 +12,8 @@ class MPSummary(BaseModel):
     Returned by GET /api/v1/mps (bulk list).
     Intentionally omits assets, liabilities, and cases — bulk responses
     should never be a scraping-friendly dump of the full dataset.
+    Includes photo_url so list-driven views (parliament seat card, search)
+    can render the MP portrait without a second fetch.
     """
     model_config = ConfigDict(from_attributes=True)
 
@@ -27,6 +29,7 @@ class MPSummary(BaseModel):
     severity_percentile: int | None = None
     gender: str | None = None
     attendance: float | None = None
+    photo_url: str | None = None
 
 class MPDetail(BaseModel):
     """
