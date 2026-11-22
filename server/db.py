@@ -114,7 +114,8 @@ class MpRepository:
                 COALESCE(m.serious_cases, 0) AS serious_cases,
                 m.severity_percentile,
                 t.gender,
-                t.attendance
+                t.attendance,
+                m.photo_url
             FROM mps m
             LEFT JOIN mp_track_record t ON t.mp_myneta_id = m.myneta_id
             {where}

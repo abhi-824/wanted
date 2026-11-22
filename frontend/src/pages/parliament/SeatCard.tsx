@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 
 import type { MPSummary } from '../../api/types'
@@ -14,6 +15,9 @@ type SeatCardProps = {
 export default function SeatCard({ mp, seat, onClose }: SeatCardProps) {
   const color = partyColor(mp.party)
   const role = roleForName(mp.name)
+  const [photoFailed, setPhotoFailed] = useState(false)
+  const photoUrl = mp.photo_url || null
+  const showPhoto = photoUrl != null && !photoFailed
   const seatLabel =
     seat != null ? `Block ${seat.block + 1} · Row ${seat.row + 1}` : mp.name === 'Om Birla' ? 'Speaker' : '—'
 
@@ -27,7 +31,12 @@ export default function SeatCard({ mp, seat, onClose }: SeatCardProps) {
           <div className="pc-label">// SELECTED SEAT</div>
           <div className="pc-hero">
             <div className="pc-portrait" aria-hidden="true">
-              <span className="pc-initials">{initials(mp.name)}</span>
+              {showPhoto ? (
+                <img src={photoUrl} alt={mp.name} onError={() => setPhotoFailed(true)} />
+              ) : null}
+              <span className="pc-initials" style={showPhoto ? { display: 'none' } : undefined}>
+                {initials(mp.name)}
+              </span>
               <span className="pc-party" style={{ color }}>
                 {mp.party}
               </span>

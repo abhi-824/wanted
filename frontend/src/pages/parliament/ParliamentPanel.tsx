@@ -4,15 +4,20 @@ type ParliamentPanelProps = {
   names: string[]
   selectedName: string
   onSelectName: (name: string) => void
+  onClose: () => void
 }
 
 export default function ParliamentPanel({
   names,
   selectedName,
   onSelectName,
+  onClose,
 }: ParliamentPanelProps) {
   return (
-    <div className="parliament-panel">
+    <aside className="parliament-panel" aria-label="Find a seat">
+      <button type="button" className="parliament-close-btn" onClick={onClose} aria-label="Close">
+        ✕
+      </button>
       <div className="pp-header">
         <div className="pp-sys">CHAMBER NAV v1.0</div>
         <div className="pp-title">
@@ -26,6 +31,6 @@ export default function ParliamentPanel({
         <div className="field-label">// SEARCH CONSTITUENCY</div>
         <ConstituencyCombobox names={names} value={selectedName} onChange={onSelectName} />
       </div>
-    </div>
+    </aside>
   )
 }

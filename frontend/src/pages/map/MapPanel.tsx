@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { memberKey, type MemberIndex } from '../../lib/format'
-import { COALITIONS, PARTY_COLORS } from '../../lib/parties'
+import { COALITIONS, PARTY_COLORS, partyColor } from '../../lib/parties'
 import MapTooltip, { type TooltipData } from './MapTooltip'
 
 type MapPanelProps = {
@@ -60,8 +60,26 @@ export default function MapPanel({
   const onSelectRef = useRef(onSelectName)
   const activeElRef = useRef<SVGElement | null>(null)
   const selectedElRef = useRef<SVGElement | null>(null)
+  const originalFillsRef = useRef<Map<string, string>>(new Map())
+  const [partyColors, setPartyColors] = useState(false)
   membersRef.current = members
   onSelectRef.current = onSelectName
+
+  const partyLegend = useMemo(() => {
+    const seen = new Set<number>()
+    const counts = new Map<string, { party: string; color: string; count: number }>()
+    for (const m of members.values()) {
+      if (seen.has(m.myneta_id)) continue
+      seen.add(m.myneta_id)
+      const color = partyColor(m.party)
+      const row = counts.get(m.party) ?? { party: m.party, color, count: 0 }
+      row.count += 1
+      counts.set(m.party, row)
+    }
+    return [...counts.values()].sort(
+      (a, b) => b.count - a.count || a.party.localeCompare(b.party),
+    )
+  }, [members])
 
   const [tooltip, setTooltip] = useState<{
     visible: boolean
@@ -98,7 +116,35 @@ export default function MapPanel({
       svg.style.width = '100%'
       svg.style.height = '100%'
     }
+    originalFillsRef.current = new Map()
+    wrap.querySelectorAll<SVGElement>('.constituency').forEach((el) => {
+      const key = el.getAttribute('data-index') || el.id
+      originalFillsRef.current.set(key, el.getAttribute('fill') ?? '#607080')
+    })
   }, [svgHtml])
+
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap || !svgHtml) return
+    if (!partyColors) {
+      wrap.querySelectorAll<SVGElement>('.constituency').forEach((el) => {
+        const key = el.getAttribute('data-index') || el.id
+        const original = originalFillsRef.current.get(key) ?? el.getAttribute('fill') ?? '#607080'
+        el.setAttribute('fill', original)
+      })
+      return
+    }
+    wrap.querySelectorAll<SVGElement>('.constituency').forEach((el) => {
+      const key = el.getAttribute('data-index') || el.id
+      originalFillsRef.current.set(key, el.getAttribute('fill') ?? '#607080')
+      const name = el.dataset.name || ''
+      const state = el.dataset.state || ''
+      const member = members.get(memberKey(name, state)) ?? members.get(memberKey(name))
+      const color = member ? partyColor(member.party) : '#607080'
+      el.setAttribute('fill', color)
+      el.setAttribute('data-color', color)
+    })
+  }, [svgHtml, partyColors, members])
 
   useEffect(() => {
     const wrap = wrapRef.current
@@ -211,6 +257,31 @@ export default function MapPanel({
     <div className="map-panel" ref={panelRef}>
       <div className="map-label">// INDIA — 543 LOK SABHA CONSTITUENCIES</div>
       <div id="map-wrap" ref={wrapRef} />
+      <div className="map-mode-wrap">
+        <button
+          type="button"
+          className={`map-mode-toggle${partyColors ? ' on' : ''}`}
+          onClick={() => setPartyColors((v) => !v)}
+          role="switch"
+          aria-checked={partyColors}
+        >
+          <span className="mm-track" aria-hidden="true">
+            <span className="mm-thumb" />
+          </span>
+          <span className="mm-label">PARTY COLORS</span>
+        </button>
+        {partyColors && partyLegend.length > 0 ? (
+          <div className="map-legend" role="legend">
+            {partyLegend.map((row) => (
+              <div className="map-legend-row" key={row.party}>
+                <span className="ml-dot" style={{ background: row.color }} />
+                <span className="ml-party">{row.party}</span>
+                <span className="ml-count">{row.count}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
       {loading ? (
         <div id="map-loading">
           <div className="load-text">LOADING CONSTITUENCY MAP...</div>

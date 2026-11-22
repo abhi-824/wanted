@@ -177,6 +177,106 @@
   z-index: 5;
 }
 
+.map-page .map-mode-wrap {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: calc(100% - 40px);
+}
+
+.map-page .map-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 7px 11px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+.map-page .map-mode-toggle:hover {
+  border-color: var(--text2);
+}
+.map-page .map-mode-toggle.on {
+  color: var(--gold);
+  border-color: rgba(200, 168, 75, 0.55);
+}
+
+.map-page .mm-track {
+  position: relative;
+  width: 26px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  flex-shrink: 0;
+}
+.map-page .mm-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--text3);
+  transition: left 0.18s;
+}
+.map-page .map-mode-toggle.on .mm-thumb {
+  left: 14px;
+  background: var(--gold);
+}
+
+.map-page .mm-label {
+  user-select: none;
+}
+
+.map-page .map-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 190px;
+  overflow-y: auto;
+  background: rgba(8, 13, 24, 0.88);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 12px;
+}
+.map-page .map-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+}
+.map-page .ml-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.map-page .ml-party {
+  color: var(--text2);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.map-page .ml-count {
+  margin-left: auto;
+  color: var(--text3);
+}
+
 .map-page #map-wrap {
   position: absolute;
   inset: 0;

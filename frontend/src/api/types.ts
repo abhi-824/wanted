@@ -54,6 +54,7 @@ export interface MPSummary {
   severity_percentile: number | null
   gender: string | null
   attendance: number | null
+  photo_url: string | null
 }
 
 export interface MPDetail {
