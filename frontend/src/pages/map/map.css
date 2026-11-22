@@ -179,11 +179,12 @@
 
 .map-page .map-mode-wrap {
   position: absolute;
-  top: 40px;
-  left: 20px;
+  bottom: 20px;
+  right: 20px;
   z-index: 6;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 8px;
   max-width: calc(100% - 40px);
 }
@@ -752,6 +753,14 @@
   .map-page .map-panel {
     border-right: none;
     border-bottom: 1px solid var(--border);
+  }
+  .map-page .map-mode-wrap {
+    bottom: 12px;
+    right: 12px;
+    max-width: calc(100% - 24px);
+  }
+  .map-page .map-legend {
+    max-height: 140px;
   }
   .map-page .corner {
     display: none;
