@@ -9,6 +9,7 @@ node_modules
 data/
 scraps/
 *.db
+!server/netacheck.db
 
 # JSON data files
 *.json

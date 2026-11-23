@@ -144,7 +144,7 @@ server/
 ├── services/severity.py # scoring + percentile pipeline
 ├── middleware/          # slowapi limiter + rate-limit handler
 ├── static/              # GENERATED frontend build (do not edit by hand)
-└── netacheck.db         # the SQLite file (not committed — see .gitignore)
+└── netacheck.db         # committed SQLite dataset served by the API
 ```
 
 ### Endpoints
