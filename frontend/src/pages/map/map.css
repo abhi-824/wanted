@@ -736,19 +736,35 @@
 }
 
 @media (max-width: 800px) {
+  html,
+  body,
+  #root {
+    height: auto;
+    min-height: 100%;
+  }
+
+  #root:has(.map-page) {
+    width: 100%;
+  }
+
   .map-page {
-    overflow: auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    overflow-y: visible;
     height: auto;
     min-height: 100vh;
   }
   .map-page .page {
     grid-template-rows: 48px 1fr auto;
+    width: 100%;
     height: auto;
     min-height: 100vh;
   }
   .map-page .main {
     grid-template-columns: 1fr;
-    grid-template-rows: 400px 1fr;
+    grid-template-rows: 400px auto;
+    overflow: visible;
   }
   .map-page .map-panel {
     border-right: none;

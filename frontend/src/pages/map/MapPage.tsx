@@ -39,12 +39,9 @@ export default function MapPage() {
 
   useEffect(() => {
     const prevTitle = document.title
-    const prevOverflow = document.body.style.overflow
     document.title = PAGE_TITLE
-    document.body.style.overflow = 'hidden'
     return () => {
       document.title = prevTitle
-      document.body.style.overflow = prevOverflow
     }
   }, [])
 
